@@ -1,0 +1,1 @@
+export { default as user3 } from './user/user-03.png'

@@ -1,0 +1,1476 @@
+[33mcommit ab08d47077cc457480a7066889a4c6ccf4e47360[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mnabeel[m[33m, [m[1;31morigin/nabeel[m[33m)[m
+Merge: ccb6b45 4fa1d94
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Jun 11 14:10:14 2024 +0500
+
+    Merge branch 'usman' into nabeel
+
+[33mcommit 4fa1d9409708be9b49210cb828709524f4a50465[m[33m ([m[1;31morigin/usman[m[33m, [m[1;32musman[m[33m)[m
+Author: UsmanNadeem3621 <usman.nadeem@sosglobal.pk>
+Date:   Tue Jun 11 13:23:49 2024 +0500
+
+    CreateTeamTable Changes
+
+[33mcommit b6906857a01ef765c1648ca6d78a18db1aed9469[m
+Author: UsmanNadeem3621 <usman.nadeem@sosglobal.pk>
+Date:   Tue Jun 11 11:29:15 2024 +0500
+
+    CreateTeam Page Changes
+
+[33mcommit ccb6b45bee96136db967c1230c0ef2318b3e6625[m[33m ([m[1;32mym[m[33m)[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Jun 10 16:59:36 2024 +0500
+
+    Add maintenance Team
+
+[33mcommit 3d9774f9abdd5943cfde852fd13c03410e936ae0[m
+Merge: 70233f2 a28c012
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Jun 10 10:22:17 2024 +0500
+
+    Merge branch 'moiz' into ym
+
+[33mcommit 70233f20fcbc7914e9c3198757e552062de0401f[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat Jun 8 11:40:53 2024 +0500
+
+    EmergencyMaintenance
+
+[33mcommit 34ff2fe8125cec06b7b4d1751fd6978bbb18eb51[m
+Merge: edb1570 2c101e8
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Thu Jun 6 14:20:13 2024 +0500
+
+    Merge branch 'ym' into usman
+
+[33mcommit edb1570133e1ad37d50816567893ce03da03e6ed[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Thu Jun 6 14:16:04 2024 +0500
+
+    New CheckBox UI
+
+[33mcommit a28c012ea7542cad808a67a748b315a27983f638[m[33m ([m[1;31morigin/moiz[m[33m, [m[1;32mmoiz[m[33m)[m
+Merge: 2c101e8 02a60ae
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu Jun 6 12:11:00 2024 +0500
+
+    Merge remote-tracking branch 'origin/usman' into moiz
+
+[33mcommit 02a60aef78a5b7229e60d5274c6b4245373b2d95[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Thu Jun 6 11:49:29 2024 +0500
+
+    Fixed bugs
+
+[33mcommit 2c101e85b77c0fe35651fa519ece419d3781b04a[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed Jun 5 16:42:06 2024 +0500
+
+    Daily Maintenance FInalised
+
+[33mcommit b6517671d505489c137ae377675431e6389c827a[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Tue Jun 4 16:12:41 2024 +0500
+
+    Daily Maintenance Complete
+
+[33mcommit 187ff8d0c5f192c2a62ed87ee601868a630f55ac[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Tue Jun 4 15:34:57 2024 +0500
+
+    Daily Maintenance
+
+[33mcommit 043e9a3a4c71761840880bf9765fb2f7c42d1b5d[m
+Merge: 511f906 8139475
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Jun 3 09:16:09 2024 +0500
+
+    Merge branch 'moiz' into ym
+
+[33mcommit 511f906582fbe09c42b431469ae5dc40ea06e4b5[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Jun 3 09:14:00 2024 +0500
+
+    dashboard code
+
+[33mcommit 81394759e7df8777fbb1e6d6dc0411f1e78ff1e5[m
+Author: AbdulMoizJawed <manahiljawed51@gmail.com>
+Date:   Mon Jun 3 05:23:55 2024 +0500
+
+    Reports Dashboard
+
+[33mcommit 25b668c3234efa5513f608249ab7e5f9e6e20a63[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Sat Jun 1 15:04:38 2024 +0500
+
+    Update
+
+[33mcommit 542b90f52c68e6674abfc43e375bdf17111e4ba4[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat Jun 1 11:06:41 2024 +0500
+
+    periodic Complete form Full n Final
+
+[33mcommit dae1de800d007132d6eb5e6be9e2abdad6ee02a5[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri May 31 16:03:31 2024 +0500
+
+    code cleaned
+
+[33mcommit 216f212578c9e9685885c175199998055bcae308[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri May 31 10:47:52 2024 +0500
+
+    CompletePeriodicForm
+
+[33mcommit c16f6903bf38bc6daa6b06942bb4a3801675132e[m
+Merge: 19ca65a d138737
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu May 30 11:52:34 2024 +0500
+
+    Merge branch 'moiz' into ym
+
+[33mcommit 19ca65a2db0bd52d9b460fac0d81a765162d4cb9[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu May 30 11:49:42 2024 +0500
+
+    DailyMaintenanceView started
+
+[33mcommit d1387374948cae97f58fb912b13dc0c912f69436[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Thu May 30 11:45:36 2024 +0500
+
+    Update form working
+
+[33mcommit b651eb0b3075906ccfff83c33bcfe1638ca12ce6[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed May 29 16:03:39 2024 +0500
+
+    dailyMaintenaceView Button
+
+[33mcommit e131c554d9c8453d94689ad5bf3c284115335ef0[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed May 29 12:47:58 2024 +0500
+
+    UpdatePeriodicMaintenance
+
+[33mcommit 87b6ccbc8f329232a2369071245d7a5be47d1220[m
+Merge: e517d16 6b2a85b
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed May 29 11:23:45 2024 +0500
+
+    Merge branch 'moiz' of https://github.com/sosglobal/fms into moiz
+
+[33mcommit e517d16fdfbab9486fb1eaa8d16ce75e6b80b76a[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed May 29 11:23:38 2024 +0500
+
+    UpdatePeriodicRequest
+
+[33mcommit 6b2a85bf7a1b73cda9434663de20618cd095aa4a[m
+Merge: 2d48e3b 6dab4b7
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Mon May 27 17:30:32 2024 +0500
+
+    Merge branch 'moiz' of https://github.com/sosglobal/fms into moiz
+
+[33mcommit 6dab4b7c0469fe45fa0394bfb8eff35c362cccae[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 27 16:22:34 2024 +0500
+
+    daily Maintainance
+
+[33mcommit 3eb9dbf871abd00750b9765cfb300328be1db327[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 27 15:49:55 2024 +0500
+
+    daily maintainence in progress
+
+[33mcommit daf98e03611fab34f616b03ae8efcaf677dc765b[m
+Merge: fe1ecf4 75840ce
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 27 15:13:44 2024 +0500
+
+    Merge branch 'moiz' into na
+
+[33mcommit 75840ce93ea1ee718949e2c838b00a5701f257dc[m
+Merge: 3aa1021 94e954e
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 27 15:07:54 2024 +0500
+
+    Merge branch 'moiz' of https://github.com/sosglobal/fms into moiz
+
+[33mcommit 3aa1021c37e62a1d008a98081a6400d6a11f45d2[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 27 15:07:48 2024 +0500
+
+    periodic form update
+
+[33mcommit 2d48e3be1f8fcf67a48ccd3552943e5a2281d82f[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Mon May 27 15:04:09 2024 +0500
+
+    commented import button
+
+[33mcommit f26758ae3231e2eeaece914d53d298baae1467f0[m
+Merge: f38ab49 94e954e
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Mon May 27 14:57:21 2024 +0500
+
+    Merge branch 'moiz' into nabeel
+
+[33mcommit 94e954e414c8be8d6becb911a91e8cbbe82dc09f[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Mon May 27 14:54:01 2024 +0500
+
+    periodic reports
+
+[33mcommit fe1ecf4b44c8077808165f660ba3d0896e47d8fb[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 27 10:58:32 2024 +0500
+
+    DailyMaintenance
+
+[33mcommit 04ae5edc83cd5b715c78d530e9d8eb338cc9c3ea[m
+Author: manahil51 <manahiljawed51@gmail.com>
+Date:   Mon May 27 08:54:06 2024 +0500
+
+    periodic
+
+[33mcommit f38ab492d0da32e9a38c75c71e77c5a6112f8387[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Sat May 25 12:44:55 2024 +0500
+
+    export to pdf and csv file required formatting and additional columns changes done in Fuel Index and ExportPDFCSV file.
+
+[33mcommit 92460d85e971fbaa4e904922c3d0aeb3d20e17ec[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri May 24 17:47:24 2024 +0500
+
+    dailyUpdates
+
+[33mcommit f3a67f2e8d8816b246015b133899fb5438e94ce2[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri May 24 17:13:19 2024 +0500
+
+    error  debug
+
+[33mcommit 243c6f91bb1b1b338ddf8be75576e64b1ce8e864[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri May 24 16:46:09 2024 +0500
+
+    DailyMaintenance
+
+[33mcommit b774fb8381680834006cee1066754b81de722037[m
+Author: SOS Global <162976442+sosglobal@users.noreply.github.com>
+Date:   Fri May 24 16:26:58 2024 +0500
+
+    env
+
+[33mcommit b79dce530438866755ecd3e1f63215a4ae902feb[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Fri May 24 16:24:49 2024 +0500
+
+    parameters
+
+[33mcommit 69d10de13288249d7513227d890da5eee6b6aa49[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu May 23 17:31:49 2024 +0500
+
+    report issue flag and its form added in Actions column in fuel management.
+
+[33mcommit cf2f0182b7644b3c6727480767bd155385948696[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Wed May 22 09:52:39 2024 +0500
+
+    changes in FuelRequestForm, FuelView, UpdateFuelRequestForm
+
+[33mcommit 7d61c222de3f3f341bf05aed815c55635a9a894c[m
+Merge: c633c98 1f4186c
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Tue May 21 15:08:28 2024 +0500
+
+    Merge branch 'nabeel' into moiz
+
+[33mcommit c633c98bcd33652b8e759301edd491eda93c36de[m
+Merge: 8aa785d 5674f12
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Tue May 21 14:29:24 2024 +0500
+
+    Merge branch 'testing' into moiz
+
+[33mcommit 5674f12336161ff2414ffa94899e443a31f8ca2c[m[33m ([m[1;31morigin/testing[m[33m, [m[1;32mtesting[m[33m)[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Tue May 21 13:41:55 2024 +0500
+
+    Mode of fuel added
+
+[33mcommit 8aa785d7eda8382ebad6c9b003c2de1bbb2074df[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Tue May 21 13:16:56 2024 +0500
+
+    logs completed
+
+[33mcommit 1f4186c8e9eb236e74e4732787123e362c307660[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue May 21 12:10:18 2024 +0500
+
+    .
+
+[33mcommit 4628aa5ed28bc67ceec30c0c5900844fbb945578[m
+Merge: eb8b0e2 ca1104e
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue May 21 11:11:09 2024 +0500
+
+    Merge branch 'moiz' into nabeel
+
+[33mcommit eb8b0e2a2cb7e5d6fab79405dceafaa048d4eae2[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue May 21 10:59:52 2024 +0500
+
+    .
+
+[33mcommit ca1104e764b1583c3bc9759195941a9f3b3e73d2[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Tue May 21 10:59:39 2024 +0500
+
+    station wise filters added
+
+[33mcommit a5b13d38eee282c02ad67ffdd68da70850188940[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon May 20 17:34:46 2024 +0500
+
+    status filter done in fuel approval table.
+
+[33mcommit 8dd36c4a7175728fb545db3bf49ce0e391bc14fd[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon May 20 16:53:26 2024 +0500
+
+    Filter request button UI added in Status able heading in fuelApprovalTable.
+
+[33mcommit 593f71ce51ad59a8bd4b717787e9eb0173dafe72[m
+Merge: ddf4112 cbad2a2
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Mon May 20 15:21:35 2024 +0500
+
+    Merge branch 'zanzibar' into moiz
+
+[33mcommit aa1da81a2591732cdf1612d062eacce0691a23b6[m
+Merge: 37abbea 9e1c05e
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon May 20 13:11:02 2024 +0500
+
+    Merge branch 'moiz' into nabeel
+
+[33mcommit e0889acb79f55893903eaa4fed3018f1d03d9d3d[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat May 18 10:16:24 2024 +0500
+
+    hot fix
+
+[33mcommit 9d1d88a536408bc303869dcc880d3d9d91d0fc6f[m
+Merge: cbad2a2 37abbea
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat May 18 10:16:16 2024 +0500
+
+    Merge branch 'nabeel' into testing
+
+[33mcommit cbad2a295782d30ec46114c809bc4d9c1bd6d2c2[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat May 18 09:42:28 2024 +0500
+
+    hotfixes
+
+[33mcommit 37abbeac003f9c4ae3e135182d97d804c4c4d9c0[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Fri May 17 17:43:53 2024 +0500
+
+    Export to pdf csv done till latest module periodic maintenance with modifications.
+
+[33mcommit e23030277873246900e749f130382ccb778ebb26[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu May 16 17:32:50 2024 +0500
+
+    Have complete all the export as pdf and csv functionality till periodic maintenance table.
+
+[33mcommit 8e061003b88b3d3da5cdcda489c25617150944af[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu May 16 16:47:27 2024 +0500
+
+    fix: delete Assign Driver applied
+
+[33mcommit 05873c5aefd734e11183fce1da69bb167b0c2cdc[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu May 16 16:10:23 2024 +0500
+
+    HotFIxes
+
+[33mcommit 80284ac3f65c5adff100c4f8d483bb4e17319d85[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Wed May 15 17:39:59 2024 +0500
+
+    data tables Exportable to csv and pdf format done.
+
+[33mcommit ddf41129a72fbdbc6aec7137d3c730a2484db37b[m
+Merge: 9e1c05e 52004e3
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Wed May 15 11:52:19 2024 +0500
+
+    Merge branch 'zanzibar' into moiz
+
+[33mcommit 52004e30e9b0b32ff761d202a24adc404a862f2e[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed May 15 11:39:21 2024 +0500
+
+    Cleaned Code
+
+[33mcommit 93a0766605811cd3e2dc1ff8aa4453dff7ef9df0[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed May 15 11:35:25 2024 +0500
+
+    CLeaned Code
+
+[33mcommit e64f8c83077f5af9169e703a725686c9c9db0352[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue May 14 17:35:18 2024 +0500
+
+    Column wise sorting done till periodic maintenance.
+
+[33mcommit 9e1c05e871290ce3a72e8693731aae3690df47ec[m
+Merge: fa94e33 a7f17a5
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Tue May 14 15:08:09 2024 +0500
+
+    Merge branch 'zanzibar' into moiz
+
+[33mcommit a7f17a59ea351a004b00a5ed6eadf870375c9096[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Tue May 14 14:59:35 2024 +0500
+
+    hotfix
+
+[33mcommit fa94e3300d16aa1b11c4f5ce5ba5319d32215b74[m
+Merge: cd7c9c2 0c2b332
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Tue May 14 14:53:30 2024 +0500
+
+    Merge branch 'nabeel' into moiz
+
+[33mcommit cd7c9c2c6ca22f41cab1960047a4d6e1b6702e4f[m
+Merge: 8edf290 8fc97fe
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Tue May 14 14:52:28 2024 +0500
+
+    Merge branch 'zanzibar' into moiz
+
+[33mcommit 0c2b33264a53282f033f7c47fb1a15596d01b6c4[m
+Merge: 03590bf 813e389
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon May 13 17:29:51 2024 +0500
+
+    Merge branch 'zanzibar' into nabeel
+
+[33mcommit 8fc97fe872ff094eddbbbbbc6885620282c61f57[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 13 17:22:24 2024 +0500
+
+    fixed bugs
+
+[33mcommit 03590bfa37bace0ab3aa0a2f49fc03189f98f891[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon May 13 17:17:47 2024 +0500
+
+    data table added till 'vehicle assigned' and returned token in ApiSlice
+
+[33mcommit 813e389c79710feb293d89d84731937229ca9d9e[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Mon May 13 16:37:14 2024 +0500
+
+    permission update
+
+[33mcommit 79be9044ea7d82c39193860701ae651bf1b1117a[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 13 16:29:54 2024 +0500
+
+    Uncommented in sidebar
+
+[33mcommit 3e98b1da515ac650086d025fc3ea7ca27870a81e[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 13 16:15:38 2024 +0500
+
+    added Statiion dropdown in usersAdd and userApdate form
+
+[33mcommit 043589cb3aa3c3e1255ccf368b1fb917d69387ef[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 13 15:18:31 2024 +0500
+
+    fixed
+
+[33mcommit 86dc1fb49482daede143b964460b26f72bc1657d[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 13 09:52:12 2024 +0500
+
+    fixed update periodic and bugs
+
+[33mcommit 46eb6a8e2a2eeb0b0508f5cdeffd10aef6f8b3f0[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Sat May 11 13:33:35 2024 +0500
+
+    Sorting done on Vehicle and driver tables.
+
+[33mcommit 28ec976f2796102dc6598c2ce05061837da0e48b[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat May 11 09:47:09 2024 +0500
+
+    Fixed Update form
+
+[33mcommit 429ee21edd2a7a6c8171dbc6062a7571c293e583[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Fri May 10 17:33:49 2024 +0500
+
+    sorting column-wise added in driversTable
+
+[33mcommit 072f57bca8752e7896a74e9cb4a08735d2cf2463[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri May 10 12:25:29 2024 +0500
+
+    fixedUpdatePeriodicRequestform
+
+[33mcommit d3142be25db70c6334be494f22f15e34ac188421[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu May 9 16:41:43 2024 +0500
+
+    update periodic form
+
+[33mcommit 4028afd847668c1bd621a3253d69c00250176318[m
+Merge: 5362c09 216bfd2
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu May 9 15:03:10 2024 +0500
+
+    Merge branch 'nabeel' into zanzibar
+
+[33mcommit 216bfd22fcf1adff7210e3bc69f13ea2191c34fa[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu May 9 14:26:31 2024 +0500
+
+    Pagination done
+
+[33mcommit 5362c09b2d4db26905d47163cb9c488f4ece1678[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu May 9 14:26:12 2024 +0500
+
+    periodic created
+
+[33mcommit a9e41644e2b425f72677b3dc9b38b4f62c2c58bc[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu May 9 10:02:32 2024 +0500
+
+    periodic table
+
+[33mcommit 8edf2909e945d687780a04adee7af95563420735[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Wed May 8 12:26:14 2024 +0500
+
+    index.html updated
+
+[33mcommit 0cf71c7f726cb908d0e65ac73ea9761b5d3e05b3[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed May 8 11:53:06 2024 +0500
+
+    dropdown hidden
+
+[33mcommit 95b8e0f5edf5e18e95d6d1213584b93147974f44[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed May 8 11:41:38 2024 +0500
+
+    links hidden
+
+[33mcommit 74047a13421abe4333f597eb8ef00555575aa9e2[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed May 8 11:28:39 2024 +0500
+
+    login page updated
+
+[33mcommit 3e7c19a43acf3fbe2c7e636b2602a40140281672[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed May 8 10:49:18 2024 +0500
+
+    updated code
+
+[33mcommit ded9cba8cf5166a8f4f7b3a5631628742fee36db[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed May 8 10:48:50 2024 +0500
+
+    updated periodic and fixed bugs
+
+[33mcommit 34e6782939db93d2140f549c37783c6d91c0e50f[m
+Merge: 28301c0 48e5db9
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Tue May 7 10:41:38 2024 +0500
+
+    Merge branch 'yunus' of https://github.com/sosglobal/fms into yunus
+
+[33mcommit 28301c0b1dd127acba6a6c62c40943e6c139209b[m
+Merge: 344fd61 627e585
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Tue May 7 10:41:25 2024 +0500
+
+    Merge branch 'nabeel' into yunus
+
+[33mcommit 48e5db914179dfab5000091135061220bdbbb5f2[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Mon May 6 17:51:53 2024 +0500
+
+    updated index.html
+
+[33mcommit 627e585893c9f03ad279ad536cf7c104b85e51c4[m
+Author: AbdulMoizJawed <amoizj16@gmail.com>
+Date:   Mon May 6 17:51:05 2024 +0500
+
+    update
+
+[33mcommit 344fd610d43c351121dbb51aab889acaa515a638[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 6 17:12:58 2024 +0500
+
+    updated periodic maintenance
+
+[33mcommit c7758170e07ed118d7bcf90b544548cb8ddf69ac[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon May 6 12:45:54 2024 +0500
+
+    modification correction in DriverTable
+
+[33mcommit 0225817a04e397963602047bde84c20c4ca024bc[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon May 6 11:53:12 2024 +0500
+
+    Modification in fuel request
+
+[33mcommit 3a323a68c6240c1b0b8112fe7c75b0aad1d5ed6e[m
+Merge: 3e0b631 742a98b
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon May 6 11:52:41 2024 +0500
+
+    Merge branch 'yunus' into nabeel
+
+[33mcommit 3e0b631f10b9ab08c96040fe97221d7dfefd53b7[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon May 6 10:53:33 2024 +0500
+
+    pagination till vehicle tagged
+
+[33mcommit 742a98b217addacc1bb4dd8c7d3a58bdea8c74f8[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon May 6 10:35:22 2024 +0500
+
+    fixed vehicle request module
+
+[33mcommit 908bc744ee0ca9a8a3aba0c46d9f018335e39c94[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Sat May 4 12:03:08 2024 +0500
+
+    Search functionality completed
+
+[33mcommit 0c94a6b1000e724af390c429b760e459c3748dce[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat May 4 09:39:40 2024 +0500
+
+    reusable constants added and fixed respected files
+
+[33mcommit 18af79caf235f9f91c302e64c1acccdd1fcacae2[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu May 2 17:37:24 2024 +0500
+
+    Ui improvement in fuel management tab switching, search functionalty in Users module from Frontend
+
+[33mcommit 8d2a1de592758b0d6d1a7c08d48e5eec2b67e31f[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu May 2 17:36:13 2024 +0500
+
+    Updated Role Based fuel  Request Approval,
+
+[33mcommit 17bb020fc6a816d13a3f76a6e3e5809bd25fb05e[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu May 2 13:18:21 2024 +0500
+
+    Tag Vehicle Form Updated
+
+[33mcommit 339f9ab110ea04bd778d1e15071dbec37e00096b[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu May 2 12:32:53 2024 +0500
+
+    Pagination till 'Vehicle Assigned' module.
+
+[33mcommit 4aececb9a3447f715a79099cd8885c081ae6c024[m
+Merge: 50cb8c0 1d45e36
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu May 2 10:08:33 2024 +0500
+
+    Merge branch 'yunus' into nabeel
+
+[33mcommit 50cb8c0a8227029c1321a55aeb830c5938dcc5cc[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu May 2 10:04:57 2024 +0500
+
+    debounce functionality (not working)
+
+[33mcommit 1d45e36161455e84fe4d333ddb78a34d54597daf[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Tue Apr 30 17:55:58 2024 +0500
+
+    fuel approval
+
+[33mcommit 15201384bf7e08e23b4ad5ffa4cec10ec0a78101[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Tue Apr 30 16:42:31 2024 +0500
+
+    feat: vehicle module, driver module, fuel management
+
+[33mcommit ea6250fba4b3221c41456d20ca241b0ca95528df[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Apr 30 13:11:35 2024 +0500
+
+    'search' front end integration done
+
+[33mcommit 3e085a51fb65fb41c6eafd395de1a28856855f16[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Apr 30 12:05:10 2024 +0500
+
+    unused pagination file added
+
+[33mcommit 8bcbce320e6bb1b0e0fc5e61f055de62274bdbd2[m
+Merge: df5de4e c102545
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Tue Apr 30 10:59:31 2024 +0500
+
+    Merge branch 'nabeel' into yunus
+
+[33mcommit c102545af110d3d602164f22aa9852009cdb172b[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 29 17:31:12 2024 +0500
+
+    pagination modified
+
+[33mcommit df5de4e21101b0cb1250669070b889eb6926e628[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 29 17:28:33 2024 +0500
+
+    edited Fuel Approval Table
+
+[33mcommit 819312f7e69cc79ab6b0d0704f7e7124ccfe1b92[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 29 16:06:05 2024 +0500
+
+    Searchbox UI added
+
+[33mcommit eafe1e0021b668e2ad770b2dbaf0bcd37c5ce672[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 29 14:47:54 2024 +0500
+
+    Pagination modified with more more pages functionality.
+
+[33mcommit 62e87dced11fdeaa43a9e0c3e86c518fbb41b02c[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 29 12:19:52 2024 +0500
+
+    Pagination Done with Api integration.
+
+[33mcommit 72bc65145e00bb5c127667b740a9f961f5080c5b[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 29 11:48:42 2024 +0500
+
+    Updated Fuel request form
+
+[33mcommit ad97e091de6b7d9b44c4d347d1e942aafc890864[m
+Merge: 0507bc2 3e197eb
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 29 09:40:52 2024 +0500
+
+    Merge branch 'yunus' into nabeel
+
+[33mcommit 3e197eb2374143658016f62a4cdfc2cdfef4993b[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 29 09:26:16 2024 +0500
+
+    API integration of Vehicle Update
+
+[33mcommit 0507bc284ae17d27af9e74c48fddff33c0e4fb21[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Sat Apr 27 13:33:30 2024 +0500
+
+    pagination in user module
+
+[33mcommit af742ba3f2ad061b2e91115d38e6043b05b6e1ef[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat Apr 27 11:13:47 2024 +0500
+
+    added daily maintenance module template
+
+[33mcommit 17e39f9155c28196e5caf6b66ee5976f4ff076f0[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Fri Apr 26 16:55:29 2024 +0500
+
+    Emergency Maintenance Module added and in progress
+
+[33mcommit 6f935309853482da0becb44c6095978df3eed362[m
+Merge: 6c7a2f7 ab817bb
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Fri Apr 26 11:13:03 2024 +0500
+
+    Merge branch 'yunus' into nabeel
+
+[33mcommit ab817bbe9671448a70b76b2ff8833b7091eda627[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri Apr 26 10:12:10 2024 +0500
+
+    added Fuuel approval Table
+
+[33mcommit 6c7a2f77f01f70942bee4918640a973f4ccd1abc[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu Apr 25 17:35:24 2024 +0500
+
+    Roles module colors modified
+
+[33mcommit de05ce54d07ca42dd9ee3324b170c5a3f66f0758[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu Apr 25 16:48:56 2024 +0500
+
+    Drivers CRUD
+
+[33mcommit d38c6bc30130bb42858404d4da338a561255dee0[m
+Merge: 719cacd 6bfdab9
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu Apr 25 12:47:00 2024 +0500
+
+    Merge branch 'yunus' into nabeel
+
+[33mcommit 719cacd56c7b24ccd6a9e0b37c749b3e6feb76a9[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu Apr 25 12:40:49 2024 +0500
+
+    driver module debugging
+
+[33mcommit 6bfdab9a93217ab524481af0fca15caa32d23912[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu Apr 25 10:56:02 2024 +0500
+
+    vehicle module CRUD
+
+[33mcommit e00b4711a2ba5715e6bd1e71348a57a9b5e0f9f1[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu Apr 25 10:37:43 2024 +0500
+
+    Driver module api integration continue
+
+[33mcommit 2b471ba1493b6a8b32c5d982f3b168532f74baf0[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed Apr 24 17:41:39 2024 +0500
+
+    feat: get Vehicle Api Integration
+
+[33mcommit b8cd00119291110884131882c7575c873e3c76ea[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Wed Apr 24 17:39:03 2024 +0500
+
+    API Integration work on driver module
+
+[33mcommit ea8b276ea8ef4d4d11c9a5d8d4dda9def4bfc516[m
+Merge: 7909929 2210cd1
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed Apr 24 17:16:46 2024 +0500
+
+    Merge branch 'humdullah' into yunus
+
+[33mcommit 790992958744e1b31b574fdbc72c560a571d742f[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed Apr 24 17:14:15 2024 +0500
+
+    chore : vehicle
+
+[33mcommit 2210cd1d859f38509c4637813f36110b4c539454[m[33m ([m[1;31morigin/humdullah[m[33m, [m[1;32mhumdullah[m[33m)[m
+Author: umer-siddique <sheikhumersiddique1999@gmail.com>
+Date:   Wed Apr 24 05:08:34 2024 -0700
+
+    users crud api integration with RTK QUERY
+
+[33mcommit e7966de42aef0f0334eca21fedcfe86b148722a4[m
+Merge: 19902f3 f4b49c4
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed Apr 24 12:55:03 2024 +0500
+
+    Merge branch 'nabeel' into yunus
+
+[33mcommit f4b49c4522b7d35e516e2f5593d52d9464aa228e[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Wed Apr 24 12:50:16 2024 +0500
+
+    ...
+
+[33mcommit c79b6f4b600cef806a85d13c1f092a9ee1c65287[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Wed Apr 24 12:47:47 2024 +0500
+
+    Redefined Update routes in App.jsx file and other respective files.
+
+[33mcommit 19902f3d3cdf035a9d99f3b9eaed4dc9cac7cc41[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed Apr 24 12:47:10 2024 +0500
+
+    feat: vehicleSlice, sepereated vehicle add and update form
+
+[33mcommit d8aa9ca780a66c4a01af740cc575ac6ae99da0e6[m
+Merge: d659509 30d0383
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 22 15:47:02 2024 +0500
+
+    Merge branch 'yunus' into nabeel
+
+[33mcommit d659509184a8a901dcb1e81d74c04ec269ccb15c[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 22 15:44:50 2024 +0500
+
+    Company module colors set and fuel view page added.
+
+[33mcommit 30d03832fdd15f626f3f5fa4156c109fd655674d[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 22 15:43:16 2024 +0500
+
+    Feat: Users api integration
+
+[33mcommit 6ee2bd35f576fcb2f048808a7841fb86516d8e98[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 22 11:14:43 2024 +0500
+
+    fix: Upload Widget, added Loader.
+    feat: PeriodicView
+
+[33mcommit efcdd9bd1a7a95dd3773f8bcfc119a8e6a680fa9[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 22 11:07:59 2024 +0500
+
+    Driver view modified
+
+[33mcommit e59e922481a53217641d05644b2173d22e9f10f0[m
+Merge: f73aa70 61e0bdb
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 22 09:51:25 2024 +0500
+
+    Merge branch 'yunus' into nabeel
+
+[33mcommit 57e392c448fde24202ae1e3b5f542f60c3012adb[m
+Merge: 61e0bdb f73aa70
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 22 09:50:34 2024 +0500
+
+    Merge branch 'nabeel' into yunus
+
+[33mcommit 61e0bdb09609927bae64cc624bf02a0e8c2a99b7[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 22 09:46:20 2024 +0500
+
+    Fix: Periodic View
+
+[33mcommit f73aa7074ad3cc805bfe49c7746179b3dbf6ec1e[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Sat Apr 20 13:33:36 2024 +0500
+
+    .
+
+[33mcommit f3dab0a9cfaed8364c230663c69e2f86f1888600[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Sat Apr 20 11:45:44 2024 +0500
+
+    Worked on Drivers View Form and modified few other changes .
+
+[33mcommit 22e378b971529e31270bb1c4877f546b322f1d1b[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat Apr 20 11:40:11 2024 +0500
+
+    feat: upload widget added in driver and vehicle form
+
+[33mcommit 15fcd39c9a68ec5ccd0a8e12fae7d48397f9b614[m
+Merge: c7632dd dc7135b
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri Apr 19 09:41:10 2024 +0500
+
+    Merge remote-tracking branch 'origin/main' into yunus
+
+[33mcommit c7632ddbdccf52d5bc6d3cbf7a0152827ec0fbe1[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri Apr 19 09:25:48 2024 +0500
+
+    fix: vehicle and driver view, adeed modal
+
+[33mcommit dc7135b83d78bff6b0133470ab35c1b249a25a96[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu Apr 18 17:38:27 2024 +0500
+
+    Major changes(required modifications) in Driver Add form and Driver View form
+
+[33mcommit 1c2b68da386e8eaba73fd1ec3b5f4bf1e78d9115[m
+Merge: 0f0e4ce 6a75b59
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu Apr 18 09:32:36 2024 +0500
+
+    Merge branch 'nabeel' into yunus
+
+[33mcommit 0f0e4cee17d0d0e1ae1d6e96b8dfd3d42b207bb1[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu Apr 18 09:28:23 2024 +0500
+
+    feat: Periodinc Maintenance and added uploader in VehicleForm
+
+[33mcommit 6a75b594b8daf287c43f284b0c97544e975bae35[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Apr 16 17:31:29 2024 +0500
+
+    modifications and improvement in fuel management table and dropdowns all acroos the fms
+
+[33mcommit 1dd1e60dc5326b7ee3773f928d385978470958e4[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 15 17:29:27 2024 +0500
+
+    Fuel management table modified and request fuel button added in it
+
+[33mcommit e3be5d307e2e7f949c40676d56cec2d8e9ab6821[m
+Merge: 28ae58c a1156ca
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 15 10:48:32 2024 +0500
+
+    Merge remote-tracking branch 'origin/nabeel' into yunus
+
+[33mcommit 28ae58c7129a2f7a2c1c0ed11d6080390c79c835[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 15 10:47:04 2024 +0500
+
+    Fix Location
+
+[33mcommit a1156caf43421abc02a8e69359af3b9580cee9c0[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 15 10:38:39 2024 +0500
+
+    Fuel Management and other modifications
+
+[33mcommit 770daff9264e199e77452a9a4759b2e0ef81ff72[m
+Merge: 8d4c598 0a206dd
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Apr 9 11:59:12 2024 +0500
+
+    added FuelManagement Module and its files
+
+[33mcommit 8d4c598a169e388d8ac120632de96776c247ffa6[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Apr 9 11:32:05 2024 +0500
+
+    FuelManagement module added in Sidebar with its files.
+
+[33mcommit 0a206dd444cdca695477d5751d61571b2c214fa1[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 8 15:27:02 2024 +0500
+
+    fix: Location Module, Color Scheme
+
+[33mcommit 1a1254e80eef9256d8376cb94de550c2ac50f37d[m
+Merge: ea24596 0174809
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 8 09:50:59 2024 +0500
+
+    Merge branch 'yunus' into nabeel
+
+[33mcommit ea24596ae758e99392f173456acb0fbc3e1cd186[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 8 09:49:00 2024 +0500
+
+    Added "Tag Driver" button and Form in Vehicle assigned module.
+
+[33mcommit 0174809d0bf1d8204ef49751349de1d02bf818bc[m
+Merge: 791cee8 1d53035
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 8 09:45:18 2024 +0500
+
+    Merge branch 'nabeel' of https://github.com/sosglobal/fms into yunus
+
+[33mcommit 791cee84dffc82751aebe98c029570a68c91c74c[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 8 09:34:21 2024 +0500
+
+    Feat: Vehicle Module (Form, Tbale, View one)
+
+[33mcommit 1d530354a453afaf83e033dcae808c171b7314e1[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 8 09:33:01 2024 +0500
+
+    Modified changes in Driver and Vehicle assigning module
+
+[33mcommit da6412cd4795803aa0ef09ff4186b0f8489bb481[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Sat Apr 6 09:32:08 2024 +0500
+
+    index sidebar routing debugged
+
+[33mcommit 2bebc45841660048a76a59107c094a06f7cf920b[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat Apr 6 09:30:54 2024 +0500
+
+    Edited Vehicle form
+
+[33mcommit 8c26f629368d94aafabb91bda43612d7db08d8dc[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat Apr 6 09:29:53 2024 +0500
+
+    edited vehicle form
+
+[33mcommit 31f2f5598c81c60350a60f61f057fff2894231d1[m
+Merge: 908b2d9 6dedc3b
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Sat Apr 6 09:26:52 2024 +0500
+
+    Merge branch 'yunus' into nabeel
+
+[33mcommit 908b2d91fa472281b25e650e170385a7ac98c354[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Fri Apr 5 12:41:19 2024 +0500
+
+    feat: new Driverss Added
+
+[33mcommit 6dedc3bd39685430017d33036880775f6a18ec42[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri Apr 5 12:37:03 2024 +0500
+
+    Feat: Vehicle Module
+
+[33mcommit 7118cc02c5dd9907ea0fadd39be0e5f3cc6d1501[m
+Merge: 08478a6 3041761
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri Apr 5 10:08:19 2024 +0500
+
+    Merge remote-tracking branch 'origin/nabeel' into yunus
+
+[33mcommit 08478a64443ac486145c176fbae6032ea8c8b2b2[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri Apr 5 10:04:30 2024 +0500
+
+    Feat: Location fix
+
+[33mcommit 304176194752c560da671f59e42a3cc3f99f4a84[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Fri Apr 5 09:31:56 2024 +0500
+
+    DriverAddForm updated
+
+[33mcommit fb6d88263adc51775e14c04589d089d257c38839[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu Apr 4 13:04:10 2024 +0500
+
+    hotfix: routing
+
+[33mcommit 6ccc1b0dffbe1cf157a26af5d4cab12d05fc6578[m
+Merge: 39d9bbc f6884c7
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu Apr 4 13:03:36 2024 +0500
+
+    Merge branch 'staging' of https://github.com/sosglobal/fms into staging
+
+[33mcommit 39d9bbc0dfd6f72b171fc80a3ebaa91e598b7986[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Thu Apr 4 13:00:28 2024 +0500
+
+    UI: LocationTable
+
+[33mcommit 92c342308beb7dc8a1c1fc5e862698a14b43fcab[m
+Merge: a97b307 f6884c7
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu Apr 4 10:28:55 2024 +0500
+
+    Merge branch 'staging' into nabeel
+
+[33mcommit a97b3077bb1825b2cbb61d409c5fb064577e14f3[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu Apr 4 10:23:23 2024 +0500
+
+    DriverAddForm file added
+
+[33mcommit a120e2bff5f56cf0d59beab5ca51414ce0aa988b[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Thu Apr 4 10:05:54 2024 +0500
+
+    Fixed width  of Selectboxes in Drivertable
+
+[33mcommit 6c5f02fb4fbf1aabc092ea7b09d0c19efa71db48[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Wed Apr 3 15:29:10 2024 +0500
+
+    Filters and Modal UI in Drivers
+
+[33mcommit f6884c71e7114c44095e713c6a079b22a73847a5[m
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Wed Apr 3 15:27:16 2024 +0500
+
+    feat: update role complete
+
+[33mcommit 76bef0191904ecebf3838e34366305fb54866a0c[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Apr 2 15:34:21 2024 +0500
+
+    DriversTable modal in progress
+
+[33mcommit 9a136d9acd1af480650bcb46747b061eb9f253e2[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Apr 2 12:50:27 2024 +0500
+
+    Modal Added in DriversTable
+
+[33mcommit d52a49a1a25b3ac5221e6fae4f1822158693f80f[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Apr 2 12:37:17 2024 +0500
+
+    rolesSlice and DriversTable
+
+[33mcommit 6414b4530407d445335254fe715878f6f5034b7a[m
+Merge: 3d00c0b 8f1f133
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Apr 2 10:05:39 2024 +0500
+
+    Merge branch 'staging' into nabeel
+
+[33mcommit 3d00c0bd491a0537153f6325292f30256287957e[m
+Merge: 731139b 428f2af
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Apr 2 10:04:11 2024 +0500
+
+    Merge branch 'nabeel' of https://github.com/sosglobal/fms into nabeel
+
+[33mcommit 731139b35ab57a6a84a94d286d3edaecdc68d4e3[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Apr 2 10:04:06 2024 +0500
+
+    drivers table
+
+[33mcommit 8f1f133651a5777384b6cae932d5fea345ea1d94[m
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Mon Apr 1 15:47:20 2024 +0500
+
+    sidebar fix
+
+[33mcommit a59d4ca95f93a5ee5e6fa9b72e9e27329efb9d1c[m
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Mon Apr 1 15:46:09 2024 +0500
+
+    hotfix
+
+[33mcommit 4de0ac849ec7f46a6249885d9f58378c603594bb[m
+Merge: 428f2af 76fffb3
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Mon Apr 1 15:45:01 2024 +0500
+
+    Merge branch 'humdullah-users-integration' into staging
+
+[33mcommit 428f2af072f8c42513e0e8f4d96dd5e07461f666[m
+Merge: eb45078 1988c11
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Mon Apr 1 15:36:49 2024 +0500
+
+    Merge branch 'staging' into nabeel
+
+[33mcommit 76fffb30be3b6ef19d94ed3b065ea6c4f6d136fc[m
+Author: Humdullah-Siddique <humdullah.siddique@sosglobal.pk>
+Date:   Mon Apr 1 03:33:43 2024 -0700
+
+    redux toolkit query setup with users api integration
+
+[33mcommit eb4507865deffe3afe565747b9dc3a3279fd7181[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Apr 1 15:27:04 2024 +0500
+
+    Roles Module and Drivers Module UI added
+
+[33mcommit 1988c11547166866d845f9dae030b3346d01485b[m
+Merge: 8a94853 129d26c
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Mon Apr 1 12:33:18 2024 +0500
+
+    Merge branch 'staging' into yunus
+
+[33mcommit 8a948535a75368ac8d91ed0e98a90f74400d3e16[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Apr 1 12:13:36 2024 +0500
+
+    User add
+
+[33mcommit 129d26c0857715fa419b9bb0fe728fa1034c2ff3[m
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Mon Apr 1 12:13:15 2024 +0500
+
+    password
+
+[33mcommit 39cef0e62098f5b5d83ef1d8226700c062eeff50[m
+Merge: 332c2bb 5e9b6d9
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Sun Mar 31 10:20:12 2024 +0500
+
+    Merge branch 'staging' of https://github.com/sosglobal/fms into staging
+
+[33mcommit 332c2bb3f24912645c0b994a0758c430e734a82a[m
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Sun Mar 31 10:20:06 2024 +0500
+
+    set password
+
+[33mcommit 5e9b6d912d891297468fb5d00bf23ccf5005a3d5[m
+Merge: 25d1637 61a23ad
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat Mar 30 12:02:23 2024 +0500
+
+    Merge branch 'companies' into staging
+
+[33mcommit 61a23ad192b0d64f4971a86e6c9dcd9a78d69bc3[m[33m ([m[1;31morigin/companies[m[33m, [m[1;32mcompanies[m[33m)[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Sat Mar 30 11:53:31 2024 +0500
+
+    Feat: Get all Company users integration,
+
+[33mcommit 25d1637f61c2c5f1b698c4faaca7caaa10a108ec[m
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Fri Mar 29 09:18:32 2024 +0500
+
+    email:set password token
+
+[33mcommit d964790e028e369bae2598884be56229c367e88a[m[33m ([m[1;31morigin/users[m[33m, [m[1;31morigin/routing/integration[m[33m, [m[1;32musers[m[33m, [m[1;32mrouting/integration[m[33m)[m
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Wed Mar 27 12:44:43 2024 +0500
+
+    feat: super admin, company api integration complete
+
+[33mcommit 5e8a87a05951f403013055ea3909d5fce7fdc781[m
+Merge: 377694c 4feae81
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Tue Mar 26 14:04:57 2024 +0500
+
+    Merge remote-tracking branch 'origin/companies' into staging
+
+[33mcommit 377694c44e3d3f4022717774ffd1660a99a8d8f6[m
+Merge: 5081b9e 095b5ec
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Tue Mar 26 14:00:53 2024 +0500
+
+    Merge remote-tracking branch 'origin/users' into staging
+
+[33mcommit 5081b9ec407ba589c9de7a7e65e3842834210b6c[m
+Merge: 4522c08 6f6e8e6
+Author: AbdulMoizSOS <164129557+AbdulMoizSOS@users.noreply.github.com>
+Date:   Tue Mar 26 13:56:03 2024 +0500
+
+    Merge pull request #1 from sosglobal/routing/integration
+    
+    feat: private routing, auth, login api,
+
+[33mcommit 4feae81e32e957b5b35f800bc00a9df0c53d5fab[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Tue Mar 26 13:47:48 2024 +0500
+
+    Edited Header and Company Form and Fixed add Company Button
+
+[33mcommit 6f6e8e670398b2c8de65d2d3e715d5d7482f8005[m
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Tue Mar 26 13:41:45 2024 +0500
+
+    feat: private routing, auth, login api,
+
+[33mcommit 095b5ec03b0a669b0b62a006d5e3ee4c439c3df1[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Tue Mar 26 11:22:31 2024 +0500
+
+    All User module and forms are done
+
+[33mcommit b9802d11b7797be7c4d4847097bf3c6fb02c42b9[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Mar 25 15:33:21 2024 +0500
+
+    user table : view and update option for each user (row)
+
+[33mcommit 4522c0883e3b6368ee9ecb43a2934428c3ad8898[m
+Merge: 0486b79 41b751b
+Author: AbdulMoizSOS <abdul.moiz@sosglobal.pk>
+Date:   Mon Mar 25 14:04:09 2024 +0500
+
+    Merge remote-tracking branch 'origin/users' into staging
+
+[33mcommit 0486b79fc624fcdb12cce54dabfb942a76849bc6[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Mon Mar 25 13:49:58 2024 +0500
+
+    Add, Edit, View, Delete Functionality added in Companies
+
+[33mcommit 41b751be55e9c08a3899f941c868fcada8fa1b19[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Mon Mar 25 13:47:02 2024 +0500
+
+    Added "Add User "button in User module, made "Add User" form
+
+[33mcommit 148c2a9b008db520e460e2bf1116060d7ecef2cf[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Fri Mar 22 12:59:21 2024 +0500
+
+    user table and button above table
+
+[33mcommit 3d073f88e4e7a52923437f029fb316401abdb83f[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Fri Mar 22 10:45:38 2024 +0500
+
+    uielements/table.tsx(deleted)
+
+[33mcommit d6eb7c7d6f174d394804a421c2dadbd787972521[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Fri Mar 22 10:36:41 2024 +0500
+
+    removed lock files
+
+[33mcommit 34e5fe49821e3b013ca8996092b7d32890d15541[m
+Merge: 0f15611 74bbbf0
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Fri Mar 22 10:35:55 2024 +0500
+
+    Merge branch 'main' of https://github.com/sosglobal/fms
+
+[33mcommit 0f156113270af660106718c997d2dad480a51130[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Fri Mar 22 10:34:22 2024 +0500
+
+    feat: login and user management
+
+[33mcommit 74bbbf09efbf9de890343cd71e82147e53787f2e[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Fri Mar 22 10:33:32 2024 +0500
+
+    feat: companymodule/
+
+[33mcommit cdad2f6f374e62df111772a505432241cb5d794f[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Wed Mar 20 10:37:32 2024 +0500
+
+    company page created
+
+[33mcommit 732b291fabbde99abe6ea21cb38b00aec8975e93[m
+Author: nabeelarshadsos <nabeel.arshad@sosglobal.pk>
+Date:   Wed Mar 20 10:08:42 2024 +0500
+
+    test change
+
+[33mcommit 1d85474844200751afcefe0d2807a6dc703a8fd6[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed Mar 20 10:02:26 2024 +0500
+
+    Initial Commit
+
+[33mcommit 1a4d4871902d23814822b3bdede78b4cb2fdf326[m
+Author: Yunus-Mustafa <yunus.mustafa@sosglobal.pk>
+Date:   Wed Mar 20 10:01:46 2024 +0500
+
+    Initial Commit
+
+[33mcommit b043b8bdd3dc2265367f99a66a69855df5b1b7a5[m
+Author: SOS Global <162976442+sosglobal@users.noreply.github.com>
+Date:   Wed Mar 20 07:59:34 2024 +0500
+
+    Initial commit
