@@ -14,6 +14,7 @@ import PaginationComponent from '../../components/Pagination/Pagination';
 import DeleteModal from '../../components/DeleteModal';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const MaintenanceTeamsTable = () => {
   const { showErrorToast, showSuccessToast } = useToast();
@@ -93,7 +94,11 @@ const MaintenanceTeamsTable = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Maintenance Teams" />
+      <BreadcrumbNav
+        pageName="Maintenance Teams"
+        pageNameprev="Daily Maintenance" //show the name on top heading
+        pagePrevPath="daily-maintenance" // add the previous path to the navigation
+      />
       {isLoading ? (
         <Loader />
       ) : error ? (

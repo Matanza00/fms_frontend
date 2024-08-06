@@ -7,6 +7,7 @@ import {
   useUpdateRolePermissionsMutation,
 } from '../../services/rolesSlice';
 import { produce } from 'immer';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const RoleUpdate = () => {
   const companyId = useSelector((state) => state.auth.user.companyId);
@@ -57,7 +58,11 @@ const RoleUpdate = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Update Roles" />
+      <BreadcrumbNav
+        pageName="Update Roles"
+        pageNameprev="Roles" //show the name on top heading
+        pagePrevPath="roles" // add the previous path to the navigation
+      />
       <div className="flex text-white  flex-col bg-gray-200 p-4 rounded-lg shadow-lg min-h-180 ">
         {!isLoading &&
           data &&

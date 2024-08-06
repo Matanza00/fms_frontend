@@ -46,10 +46,19 @@ export const dailySlice = apiSlice.injectEndpoints({
     }),
 
     // Update Company Vehicle
-    UpdatePeriodicRequest: builder.mutation({
+    UpdateDailyStatus: builder.mutation({
       query: ({ id, formData }) => ({
-        url: `/daily/${id}`,
-        method: 'PATCH',
+        url: `/daily/vehicles/${id}`,
+        method: 'POST',
+        body: formData,
+      }),
+      invalidatesTags: ['Daily'],
+    }),
+
+    UpdateDailyByRequest: builder.mutation({
+      query: ({ id, formData }) => ({
+        url: `/daily/vehicle/${id}`,
+        method: 'POST',
         body: formData,
       }),
       invalidatesTags: ['Daily'],
@@ -71,4 +80,7 @@ export const {
   useGetAllDailyReportsQuery,
   useAddDailyRequestMutation,
   useGetChecklistDataQuery,
+  useUpdateDailyRequestMutation,
+  useUpdateDailyStatusMutation,
+  useUpdateDailyByRequestMutation,
 } = dailySlice;

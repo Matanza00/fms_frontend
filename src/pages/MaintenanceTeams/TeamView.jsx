@@ -4,6 +4,7 @@ import { useGetOneMaintenanceTeamQuery } from '../../services/maintenanceTeamSli
 import Loader from '../../common/Loader';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const TeamView = () => {
   const { teamId } = useParams();
@@ -21,7 +22,11 @@ const TeamView = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Team Details" />
+      <BreadcrumbNav
+        pageName="Team Details"
+        pageNameprev="Maintenance Teams" //show the name on top heading
+        pagePrevPath="daily-maintenance/maintenance-team" // add the previous path to the navigation
+      />
       <div className="max-w-full mx-auto p-4">
         <div className="rounded-sm border border-stroke bg-white my-2 px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <h2 className="text-2xl font-bold mb-4">Team Details</h2>

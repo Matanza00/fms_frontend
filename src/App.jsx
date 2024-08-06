@@ -85,6 +85,8 @@ import Reports from './pages/PeriodicMaintenance/Reports';
 import Dashboards from './pages/PeriodicMaintenance/Dashboards';
 import DailyMaintenanceAdminForm from './pages/DailyMaintenance/DailyMaintenanceAdminForm';
 import EmergencyDashboard from './pages/EmergencyMaintenace/Dashboard/EmergencyDashboard';
+import DailyProcessForm from './pages/DailyMaintenance/DailyProcessForm';
+import DailyMaintenanceProcessView from './pages/DailyMaintenance/DailyMaintenanceProcessView';
 // import EmergencyDashboard from './pages/EmergencyMaintenace/Dashboard/emergencyDashboard';
 
 // import Drivers from './pages/Vehicle Assigned';
@@ -228,6 +230,14 @@ function App() {
         <Route
           path="/daily-maintenance/maintenance-team/update/:teamId"
           element={<EditTeam />}
+        />
+        <Route
+          path="/daily-maintenance/process/:id"
+          element={<DailyProcessForm />}
+        />
+        <Route
+          path="/daily-maintenance/process/view/:id"
+          element={<DailyMaintenanceProcessView />}
         />
 
         {/* <Route

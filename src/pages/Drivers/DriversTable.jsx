@@ -9,7 +9,6 @@ import useToast from '../../hooks/useToast';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import CONSTANTS from '../../utils/constants';
-import axios from 'axios';
 import {
   useGetDriverByCompanyIdQuery,
   useDeleteDriverMutation,
@@ -90,7 +89,6 @@ const DriversTable = ({ searchTerm, setSortedDataIndex }) => {
         </center>
       </div>
     );
-console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",data)
   return (
     <>
       <div
@@ -238,30 +236,8 @@ console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",data)
                         onClick={() => navigate(`view/${e?.id}`)}
                         className="hover:text-primary"
                       >
-                        {/* <IoEyeOutline style={{ fontSize: '20px' }} /> */}
                         View
                       </button>
-                      {/* <button
-                        onClick={() => navigate(`update/${e?.id}`)}
-                        className="hover:text-primary"
-                      >
-                        <CiEdit style={{ fontSize: '20px' }} />
-                      </button> */}
-
-                      {/* <button
-                        onClick={() => {
-                          setDeleteId(e?.id);
-                          document.getElementById('delete_modal').showModal();
-                        }}
-                        className="hover:text-primary"
-                      >
-                        <RiDeleteBinLine style={{ fontSize: '20px' }} />
-                      </button>
-                      <DeleteModal
-                        deleteModule="Driver"
-                        // Id={e?.id}
-                        handleDelete={() => DeleteDriver(deleteId)}
-                      /> */}
                     </div>
                   </td>
                 </tr>

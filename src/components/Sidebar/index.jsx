@@ -136,7 +136,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
   );
-
+  let adminRole =
+    user.Role.roleName == 'companyAdmin' ||
+    user.Role.roleName == 'Maintenance Admin';
   useEffect(() => {
     const clickHandler = ({ target }) => {
       if (!sidebar.current || !trigger.current) return;
@@ -187,16 +189,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       styleChecker: 'daily',
     });
 
-    allLinks.push({
-      id: 'emergency',
-      path: '/emergency-maintenance',
-      icon: <IoIosWarning className="w-6 h-6" />,
-      text: 'Emergency Maintenance',
-      styleChecker: 'emergency',
-    });
+    {
+      adminRole &&
+        allLinks.push({
+          id: 'emergency',
+          path: '/emergency-maintenance',
+          icon: <IoIosWarning className="w-6 h-6" />,
+          text: 'Emergency Maintenance',
+          styleChecker: 'emergency',
+        });
+    }
+
     setFilteredLinks(allLinks);
     // setFilteredLinks(links);
-
     return () => {};
   }, []);
 

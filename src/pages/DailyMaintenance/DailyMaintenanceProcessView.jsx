@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { useGetOneEmergencyRequestQuery } from '../../services/emergencySlice';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
+import { useGetChecklistDataQuery } from '../../services/dailySlice';
 
 // Utility function to format date and time
 const formatDateTime = (dateString) => {
@@ -31,9 +32,19 @@ const getBackgroundColor = (serviceType) => {
   }
 };
 
-const EmergencyMntView = () => {
+const DailyMaintenanceProcessView = () => {
   const { id } = useParams();
-  const { data: EmergencyData, isLoading } = useGetOneEmergencyRequestQuery(id);
+  //   const { data: EmergencyData, isLoading } = useGetOneEmergencyRequestQuery(id);
+  console.log('first', id);
+  const location = useLocation();
+  const { registrationNo } = location.state || {};
+  const {
+    data: dailyData,
+    isLoading,
+    error,
+  } = useGetChecklistDataQuery({
+    registrationNo,
+  });
 
   const [modalContent, setModalContent] = useState(null);
 
@@ -42,7 +53,7 @@ const EmergencyMntView = () => {
   const handleImageClick = (content) => {
     setModalContent(content);
   };
-  console.log('first', EmergencyData);
+  console.log('DailyData', dailyData);
 
   return (
     <DefaultLayout>
@@ -64,88 +75,77 @@ const EmergencyMntView = () => {
               <div>
                 <p className="text-md font-semibold">ID:</p>
                 <p className="text-md mb-5 font-normal">
-                  {EmergencyData?.data?.id}
+                  {dailyData?.data?.id}
                 </p>
               </div>
               <div>
                 <p className="text-md font-semibold">Registration No.:</p>
                 <p className="text-md mb-5 font-normal">
-                  {EmergencyData?.data?.registrationNo}
+                  {dailyData?.data?.registrationNo}
                 </p>
               </div>
               <div>
                 <p className="text-md font-semibold">Make:</p>
                 <p className="text-md mb-5 font-normal">
-                  {EmergencyData?.data?.make}
+                  {dailyData?.data?.make}
                 </p>
               </div>
               <div>
                 <p className="text-md font-semibold">Driver Name:</p>
                 <p className="text-md mb-5 font-normal">
-                  {EmergencyData?.data?.driverName}
+                  {dailyData?.data?.driverName}
                 </p>
               </div>
               <div>
                 <p className="text-md font-semibold">GBMS:</p>
                 <p className="text-md mb-5 font-normal">
-                  {EmergencyData?.data?.gbmsNo}
+                  {dailyData?.data?.gbmsNo}
                 </p>
               </div>
               <div>
                 <p className="text-md font-semibold">Station:</p>
                 <p className="text-md mb-5 font-normal">
-                  {EmergencyData?.data?.station}
+                  {dailyData?.data?.station}
                 </p>
               </div>
 
               <div>
                 <p className="text-md font-semibold">Current Odometer:</p>
                 <p className="text-md mb-5 font-normal">
-                  {EmergencyData?.data?.meterReading}
+                  {dailyData?.data?.meterReading}
                 </p>
               </div>
-              <div>
-                <p className="text-md font-semibold">CE:</p>
-                <p className="text-md mb-5 font-normal">
-                  {EmergencyData?.data?.ce}
-                </p>
-              </div>
-              <div>
-                <p className="text-md font-semibold">RM / OM / Name:</p>
-                <p className="text-md mb-5 font-normal">
-                  {EmergencyData?.data?.rm_omorName}
-                </p>
-              </div>
+
               <div>
                 <p className="text-md font-semibold">Supervisor:</p>
                 <p className="text-md mb-5 font-normal">
-                  {EmergencyData?.data?.emergencySupervisor}
+                  {dailyData?.data?.emergencySupervisor}
                 </p>
               </div>
               <div>
                 <p className="text-md font-semibold">APL Card No.:</p>
                 <p className="text-md mb-5 font-normal">
-                  {EmergencyData?.data?.aplCardNo}
+                  {dailyData?.data?.aplCardNo}
                 </p>
               </div>
               <div>
                 <p className="text-md font-semibold">Created At:</p>
                 <p className="text-md mb-5 font-normal">
-                  {formatDateTime(EmergencyData?.data?.created_at)}
+                  {formatDateTime(dailyData?.data?.created_at)}
                 </p>
               </div>
               <div>
                 <p className="text-md font-semibold">Updated At:</p>
                 <p className="text-md mb-5 font-normal">
-                  {formatDateTime(EmergencyData?.data?.updated_at)}
+                  {formatDateTime(dailyData?.data?.updated_at)}
                 </p>
               </div>
             </div>
 
             <div className="mt-5">
               <h3 className="text-lg font-bold">Services:</h3>
-              {EmergencyData?.data?.services.length > 0 ? (
-                EmergencyData?.data?.services.map((service, index) => (
+              {dailyData?.data?.dailyServices.length > 0 ? (
+                dailyData?.data?.dailyServices.map((service, index) => (
                   <div
                     key={index}
                     className="mb-4 p-4 rounded-lg"
@@ -219,26 +219,23 @@ const EmergencyMntView = () => {
             <div className="grid grid-cols-2 gap-1">
               <div>
                 <p className="text-md font-semibold">Repair Request Images:</p>
-                {EmergencyData?.data?.emergencyRepairRequestImgs.length > 0 &&
-                  EmergencyData?.data?.emergencyRepairRequestImgs.map(
-                    (item, index) => (
-                      <img
-                        key={index}
-                        className="w-48 h-48 object-contain mb-4"
-                        src={item}
-                        alt="Repair Request"
-                      />
-                    ),
-                  )}
+                {dailyData?.data?.dailyRepairRequestImgs.length > 0 &&
+                  dailyData?.data?.dailyRepairRequestImgs.map((item, index) => (
+                    <img
+                      key={index}
+                      className="w-48 h-48 object-contain mb-4"
+                      src={item}
+                      alt="Repair Request"
+                    />
+                  ))}
               </div>
 
               <div>
                 <p className="text-md font-semibold">
                   Driver Statement Videos:
                 </p>
-                {EmergencyData?.data?.emergencyRepairStatementVideos.length >
-                  0 &&
-                  EmergencyData?.data?.emergencyRepairStatementVideos.map(
+                {dailyData?.data?.dailyRepairStatementVideos.length > 0 &&
+                  dailyData?.data?.dailyRepairStatementVideos.map(
                     (item, index) => (
                       <img
                         key={index}
@@ -252,26 +249,23 @@ const EmergencyMntView = () => {
 
               <div>
                 <p className="text-md font-semibold">Repair Receipt Images:</p>
-                {EmergencyData?.data?.emergencyReceiptImgs.length > 0 &&
-                  EmergencyData?.data?.emergencyReceiptImgs.map(
-                    (item, index) => (
-                      <img
-                        key={index}
-                        className="w-48 h-48 object-contain mb-4"
-                        src={item}
-                        alt="Receipt Images"
-                      />
-                    ),
-                  )}
+                {dailyData?.data?.dailyReceiptImgs.length > 0 &&
+                  dailyData?.data?.dailyReceiptImgs.map((item, index) => (
+                    <img
+                      key={index}
+                      className="w-48 h-48 object-contain mb-4"
+                      src={item}
+                      alt="Receipt Images"
+                    />
+                  ))}
               </div>
 
               <div>
                 <p className="text-md font-semibold">
                   Repair Completion Images:
                 </p>
-                {EmergencyData?.data?.emergencyRepairCompletionImgs.length >
-                  0 &&
-                  EmergencyData?.data?.emergencyRepairCompletionImgs.map(
+                {dailyData?.data?.dailyRepairCompletionImgs.length > 0 &&
+                  dailyData?.data?.dailyRepairCompletionImgs.map(
                     (item, index) => (
                       <img
                         key={index}
@@ -293,4 +287,4 @@ const EmergencyMntView = () => {
   );
 };
 
-export default EmergencyMntView;
+export default DailyMaintenanceProcessView;

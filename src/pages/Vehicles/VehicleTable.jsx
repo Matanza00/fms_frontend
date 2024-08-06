@@ -368,14 +368,14 @@ const VehicleTable = ({ searchTerm, setSortedDataIndex }) => {
                   <td className="border-b border-[#eee] py-4 px-4 dark:border-strokedark">
                     <div className="flex items-center justify-center space-x-3.5">
                       <button
-                        onClick={() => navigate(`view/${e?.id}`)}
+                        onClick={() => navigate(`view/${e?.registrationNo}`)}
                         className="hover:text-primary"
                       >
                         <IoEyeOutline style={{ fontSize: '20px' }} />
                       </button>
                       {adminRole && (
                         <button
-                          onClick={() => navigate(`update/${e?.id}`)}
+                          onClick={() => navigate(`update/${e?.registrationNo}`)}
                           className="hover:text-primary"
                         >
                           <CiEdit style={{ fontSize: '20px' }} />

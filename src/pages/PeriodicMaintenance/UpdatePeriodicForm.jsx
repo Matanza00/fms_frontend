@@ -21,6 +21,7 @@ import { stationOptions, periodicThreshold } from '../../constants/Data';
 import { customStyles } from '../../constants/Styles';
 import UploadWidget from '../../components/UploadWidget';
 import { formatDateAndTime, formatDateForInput } from '../../utils/helpers';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const UpdatePeriodicForm = () => {
   const navigate = useNavigate();
@@ -211,7 +212,11 @@ const UpdatePeriodicForm = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Periodic Maintenance Update Form" />
+        <BreadcrumbNav
+          pageName="Periodic Maintenance Update Form"
+          pageNameprev="Periodic Maintenance" //show the name on top heading
+          pagePrevPath="periodic" // add the previous path to the navigation
+        />
         <div className=" gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

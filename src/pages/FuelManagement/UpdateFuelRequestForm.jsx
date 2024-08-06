@@ -23,6 +23,8 @@ import {
   requestType,
 } from '../../constants/Data';
 import { customStyles } from '../../constants/Styles';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
+import { formatDateAndTime } from '../../utils/helpers';
 
 const UpdateFuelRequestForm = () => {
   const navigate = useNavigate();
@@ -35,6 +37,7 @@ const UpdateFuelRequestForm = () => {
   const { user } = useSelector((state) => state.auth);
   const [fuelReceipImgUrl, setfuelReceipImgUrl] = useState('');
   const [odometerImgUrl, setOdometerImgUrl] = useState('');
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const [UpdateFuelRequest, { isLoading }] = useUpdateFuelRequestMutation();
   const { data: vehicles, isLoading: vehicleLoading } =
@@ -138,8 +141,21 @@ const UpdateFuelRequestForm = () => {
     }
   }, [tagDriverByVehicle]);
 
+  // useEffect(() => {
+  //   if (fuelData && fuelData.data) {
+  //     const fuelingDate = fuelData.data.currentFuelingDate
+  //       ? new Date(fuelData.data.currentFuelingDate).toISOString().split('T')[0]
+  //       : '';
+  //     setFormValues((prevValues) => ({
+  //       ...prevValues,
+  //       ...fuelData.data,
+  //       currentFuelingDate: fuelingDate,
+
+  //     }));
+  //   }
+  // }, [fuelData]);
   useEffect(() => {
-    if (fuelData && fuelData.data) {
+    if (fuelData && fuelData.data && initialLoad) {
       const fuelingDate = fuelData.data.currentFuelingDate
         ? new Date(fuelData.data.currentFuelingDate).toISOString().split('T')[0]
         : '';
@@ -147,10 +163,10 @@ const UpdateFuelRequestForm = () => {
         ...prevValues,
         ...fuelData.data,
         currentFuelingDate: fuelingDate,
-        station: user?.station, // Pre-fill the station with the user's station
       }));
+      setInitialLoad(false);
     }
-  }, [fuelData]);
+  }, [fuelData, initialLoad]);
 
   useEffect(() => {
     if (
@@ -230,8 +246,11 @@ const UpdateFuelRequestForm = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Update Fuel Request" />
-
+        <BreadcrumbNav
+          pageName="Update Fuel Request"
+          pageNameprev="Fuel Management" //show the name on top heading
+          pagePrevPath="fuel-management" // add the previous path to the navigation
+        />
         <div className=" gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -575,7 +594,10 @@ const UpdateFuelRequestForm = () => {
                         placeholder="Enter quantity of fuel."
                         onChange={handleChangeValue}
                         value={formValues.quantityOfFuel}
-                        disabled={fuelData?.data?.status === 'approved'}
+                        disabled={
+                          fuelData?.data?.status === 'approved' ||
+                          fuelData?.data?.status === 'APPROVED'
+                        }
                       />
                     </div>
                   </div>
@@ -709,7 +731,7 @@ const UpdateFuelRequestForm = () => {
                       Previous Fueling Record
                     </h3>
                     <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                      {/* <div className="w-full sm:w-1/2 md:w-1/3">
+                      <div className="w-full sm:w-1/2 md:w-1/3">
                         <label
                           className="mb-3 block text-md font-medium text-black dark:text-white"
                           htmlFor="previousFuelQuantity"
@@ -727,7 +749,7 @@ const UpdateFuelRequestForm = () => {
                             disabled
                           />
                         </div>
-                      </div> */}
+                      </div>
 
                       <div className="w-full sm:w-1/2 md:w-1/3">
                         <label
@@ -742,11 +764,22 @@ const UpdateFuelRequestForm = () => {
                             type="text"
                             name="previousOddometerReading"
                             id="previousOddometerReading"
+                            placeholder="50,000 km"
+                            onChange={handleChangeValue}
+                            value={fuelData?.data?.previousOddometerReading}
+                            disabled
+                          />
+                        </div>
+                        {/* <input
+                            className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary uneditable"
+                            type="text"
+                            name="previousOddometerReading"
+                            id="previousOddometerReading"
                             placeholder="Previous Odometer Reading"
                             value={formValues?.previousOddometerReading}
                             disabled
                           />
-                        </div>
+                        </div> */}
                       </div>
 
                       <div className="w-full sm:w-1/2 md:w-1/3">
@@ -767,6 +800,26 @@ const UpdateFuelRequestForm = () => {
                               formValues?.currentOddometerReading -
                               formValues?.previousOddometerReading
                             }
+                            disabled
+                          />
+                        </div>
+                      </div>
+                      <div className=" sm:w-1/2 md:w-1/3 lg:1/4">
+                        <label
+                          className="mb-3 block text-md font-medium text-black dark:text-white"
+                          htmlFor="previousOddometerReading"
+                        >
+                          Last Fueling Date
+                        </label>
+                        <div className="relative">
+                          <input
+                            className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary uneditable"
+                            type="text"
+                            name="previousOddometerReading"
+                            id="previousOddometerReading"
+                            placeholder="Date & Time"
+                            onChange={handleChangeValue}
+                            value={formatDateAndTime(formValues?.lastCreatedAt)}
                             disabled
                           />
                         </div>

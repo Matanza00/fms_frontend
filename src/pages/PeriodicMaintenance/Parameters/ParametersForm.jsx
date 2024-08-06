@@ -8,6 +8,7 @@ import {
 import { useAddPeriodicParameterMutation } from '../../../services/periodicSlice';
 import useToast from '../../../hooks/useToast';
 import { useNavigate } from 'react-router-dom';
+import BreadcrumbNav from '../../../components/Breadcrumbs/BreadcrumbNav';
 
 const ParametersForm = () => {
   const navigate = useNavigate();
@@ -53,7 +54,11 @@ const ParametersForm = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Add A Parameter" />
+        <BreadcrumbNav
+          pageName="Add a parameter"
+          pageNameprev="Parameters" //show the name on top heading
+          pagePrevPath="periodic/parameters" // add the previous path to the navigation
+        />
         <div className=" gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

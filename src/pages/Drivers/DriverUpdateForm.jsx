@@ -19,6 +19,7 @@ import AsyncSelect from 'react-select/async';
 import { stationOptions, licenseOptions } from '../../constants/Data';
 import { customStyles } from '../../constants/Styles';
 import { formatDateForInput } from '../../utils/helpers';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const DriversUpdateForm = () => {
   const { id } = useParams();
@@ -185,7 +186,11 @@ const DriversUpdateForm = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Update Driver" />
+        <BreadcrumbNav
+          pageName="Update Driver"
+          pageNameprev="Drivers" //show the name on top heading
+          pagePrevPath="drivers" // add the previous path to the navigation
+        />
 
         <div className=" gap-8">
           <div className="col-span-5 xl:col-span-3">

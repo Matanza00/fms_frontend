@@ -3,29 +3,25 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { useSelector } from 'react-redux';
-import { addEmergencyRequestSchema } from '../../utils/schemas';
-import { useGetRolesByCompanyIdQuery } from '../../services/rolesSlice';
 import useToast from '../../hooks/useToast';
-import { useAddCompanyUserMutation } from '../../services/usersSlice';
 import { useGetVehicleByCompanyIdQuery } from '../../services/vehicleSlice';
-import { useGetTagDriversFromVehicleQuery } from '../../services/tagDriverSlice';
-import { useGetOneVehicleDetailsQuery } from '../../services/periodicSlice';
-
+import {
+  useGetOneEmergencyRequestQuery,
+  useUpdateEmergencyRequestMutation,
+} from '../../services/emergencySlice';
 import LoadingButton from '../../components/LoadingButton';
-import DeleteModal from '../../components/DeleteModal';
 import Select from 'react-select';
 import {
   stationOptions,
   vendorType,
   indoorVendorName,
+  serviceType,
 } from '../../constants/Data';
 import AsyncSelect from 'react-select/async';
-import UploadWidget from '../../components/UploadWidget';
 import { customStyles } from '../../constants/Styles';
-import {
-  useGetOneEmergencyRequestQuery,
-  useUpdateEmergencyRequestMutation,
-} from '../../services/emergencySlice';
+import MultipleUploadWidget from '../../components/MultipleUploadWidget';
+import { addEmergencyRequestSchema } from '../../utils/schemas';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const EmergencyProcessForm = () => {
   const { id } = useParams();
@@ -33,10 +29,8 @@ const EmergencyProcessForm = () => {
   const navigate = useNavigate();
 
   const { showErrorToast, showSuccessToast } = useToast();
-
   const { user } = useSelector((state) => state.auth);
 
-  const [selectedRole, setSelectedRole] = useState(null);
   const [formValues, setFormValues] = useState({
     ...addEmergencyRequestSchema,
   });
@@ -44,34 +38,40 @@ const EmergencyProcessForm = () => {
   const { data: EmergencyData, isLoading } = useGetOneEmergencyRequestQuery(id);
   const [UpdateEmergencyRequest, { isLoading: updateLoading }] =
     useUpdateEmergencyRequestMutation();
+  const [
+    emergencyRepairCompletionImgUrls,
+    setEmergencyRepairCompletionImgUrls,
+  ] = useState([]);
+  const [emergencyReceiptImgUrls, setEmergencyReceiptImgUrls] = useState([]);
 
   useEffect(() => {
-    let eData = EmergencyData?.data;
-    setFormValues({
-      ...formValues,
-      station: eData?.station,
-      registrationNo: eData?.registrationNo,
-      driverName: eData?.driverName,
-      aplCardNo: eData?.aplCardNo,
-      make: eData?.make,
-      gbmsNo: eData?.gbmsNo,
-      ce: eData?.ce,
-      meterReading: eData?.meterReading,
-      rm_omorName: eData?.rm_omorName,
-      emergencyRepairRequestImg: eData?.emergencyRepairRequestImg,
-      emergencyRepairStatementVideo: eData?.emergencyRepairStatementVideo,
-      emergencyJob: eData?.emergencyJob,
-      description: eData?.description,
-      emergencySupervisor: eData?.emergencySupervisor,
-      repairCost: eData?.repairCost,
-      vendorType: eData?.vendorType,
-      indoorVendorName: eData?.indoorVendorName,
-      outdoorVendorName: eData?.outdoorVendorName,
-      outdoorVendorReason: eData?.outdoorVendorReason,
-      emergencyReceiptImg: eData?.emergencyReceiptImg,
-      emergencyRepairCompletionImg: eData?.emergencyRepairCompletionImg,
-      status: eData?.status, // Ensure status is included
-    });
+    if (EmergencyData) {
+      let eData = EmergencyData?.data;
+      setFormValues({
+        ...formValues,
+        station: eData?.station,
+        registrationNo: eData?.registrationNo,
+        driverName: eData?.driverName,
+        aplCardNo: eData?.aplCardNo,
+        make: eData?.make,
+        gbmsNo: eData?.gbmsNo,
+        ce: eData?.ce,
+        meterReading: eData?.meterReading,
+        rm_omorName: eData?.rm_omorName,
+        emergencyRepairRequestImgs: eData?.emergencyRepairRequestImgs,
+        emergencyRepairStatementVideos: eData?.emergencyRepairStatementVideos,
+        emergencySupervisor: eData?.emergencySupervisor,
+        emergencyReceiptImgs: eData?.emergencyReceiptImgs,
+        emergencyRepairCompletionImgs: eData?.emergencyRepairCompletionImgs,
+        services: eData?.services || [],
+        status: eData?.status,
+      });
+
+      setEmergencyRepairCompletionImgUrls(
+        eData?.emergencyRepairCompletionImgs || [],
+      );
+      setEmergencyReceiptImgUrls(eData?.emergencyReceiptImgs || []);
+    }
   }, [EmergencyData]);
 
   const { data: vehicles, isLoading: vehicleLoading } =
@@ -88,111 +88,112 @@ const EmergencyProcessForm = () => {
     });
   };
 
-  const handleNormalSelectChange = (selectedOption, name) => {
+  const handleServiceChange = (index, fieldName, value) => {
+    const updatedServices = formValues.services.map((service, i) =>
+      i === index ? { ...service, [fieldName]: value } : service,
+    );
     setFormValues({
       ...formValues,
-      [name]: selectedOption.value,
+      services: updatedServices,
     });
   };
 
-  const handleSelectChange = (fieldName, selectedOption) => {
-    setFormValues((prevState) => ({
-      ...prevState,
-      [fieldName]: selectedOption.label,
-    }));
-  };
-
-  const handleSelectVendorChange = (selectedOption, fieldName) => {
-    setFormValues((prevState) => ({
-      ...prevState,
-      [fieldName]: selectedOption.label,
-    }));
-  };
-
-  const handleChangeValue = (e) => {
-    const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
+  const handleDelete = (indexToDelete, setImgUrls) => {
+    setImgUrls((prevUrls) =>
+      prevUrls.filter((url, index) => index !== indexToDelete),
+    );
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
       ...formValues,
+      emergencyRepairCompletionImgs: emergencyRepairCompletionImgUrls,
+      emergencyReceiptImgs: emergencyReceiptImgUrls,
     };
 
-    // Only update the status if all fields are filled
     if (areAllFieldsFilled()) {
       formData.status = 'Completed';
     }
 
-    delete formValues.registrationNo;
     try {
-      console.log(formData);
       await UpdateEmergencyRequest({ id, formData }).unwrap();
-
       showSuccessToast('Request Processed Successfully!');
       navigate(-1);
     } catch (err) {
-      console.log(err);
       showErrorToast(
         'An error has occurred while updating emergency Maintenance Request',
       );
     }
   };
 
-  const handleUploadImage = (url, name) => {
-    setFormValues((prevState) => ({
-      ...prevState,
-      [name]: url,
-    }));
-  };
-
   const areAllFieldsFilled = () => {
     const requiredFields = [
       'station',
       'registrationNo',
-      // 'driverName',
       'aplCardNo',
       'make',
-      // 'gbmsNo',
       'ce',
       'meterReading',
       'rm_omorName',
-      'emergencyRepairRequestImg',
-      'emergencyRepairStatementVideo',
-      'emergencyJob',
-      'description',
+      'emergencyRepairRequestImgs',
+      'emergencyRepairStatementVideos',
       'emergencySupervisor',
-      'repairCost',
-      'vendorType',
-      'indoorVendorName', // If vendorType is Indoor
-      'outdoorVendorName', // If vendorType is Outdoor
-      'outdoorVendorReason', // If vendorType is Outdoor
-      'emergencyReceiptImg',
-      'emergencyRepairCompletionImg',
+      'emergencyReceiptImgs',
+      'emergencyRepairCompletionImgs',
     ];
 
+    // Check main fields
     for (let field of requiredFields) {
-      if (formValues.vendorType === 'Indoor' && field === 'outdoorVendorName')
-        continue;
-      if (formValues.vendorType === 'Indoor' && field === 'outdoorVendorReason')
-        continue;
-      if (formValues.vendorType === 'Outdoor' && field === 'indoorVendorName')
-        continue;
       if (!formValues[field]) {
         return false;
       }
     }
+
+    // Check services fields
+    for (let service of formValues.services) {
+      if (
+        !service.serviceType ||
+        !service.description ||
+        !service.repairCost ||
+        !service.vendorType ||
+        (service.vendorType === 'Indoor' && !service.indoorVendorName) ||
+        (service.vendorType === 'Outdoor' &&
+          (!service.outdoorVendorName || !service.outdoorVendorReason))
+      ) {
+        return false;
+      }
+    }
+
     return true;
+  };
+
+  const addService = () => {
+    setFormValues({
+      ...formValues,
+      services: [
+        ...formValues.services,
+        {
+          vendorType: 'Indoor',
+          indoorVendorName: '',
+          outdoorVendorName: '',
+          outdoorVendorReason: '',
+          description: '',
+          repairCost: '',
+          serviceType: '',
+        },
+      ],
+    });
   };
 
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Emergency Maintenance Form" />
+        <BreadcrumbNav
+          pageName="Emergency Maintenance Process Form"
+          pageNameprev="Emergency Maintenance" //show the name on top heading
+          pagePrevPath="Emergency-Maintenance" // add the previous path to the navigation
+        />
         <div className=" gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -220,10 +221,6 @@ const EmergencyProcessForm = () => {
                               : null
                           }
                           isDisabled
-                          // onChange={(selectedOption) =>
-                          //   handleNormalSelectChange(selectedOption, 'station')
-                          // }
-                          // placeholder="Select Station"
                         />
                       </div>
                     </div>
@@ -238,9 +235,7 @@ const EmergencyProcessForm = () => {
                       <div className="relative">
                         <AsyncSelect
                           styles={customStyles}
-                          disabled
                           className="w-full rounded border border-stroke bg-gray h-[50px] text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary uneditable"
-                          // loadOptions={vehicleLoadOptions}
                           value={
                             formValues.registrationNo
                               ? {
@@ -250,15 +245,10 @@ const EmergencyProcessForm = () => {
                               : null
                           }
                           isDisabled
-                          // onChange={(selectedOption) =>
-                          //   handleSelectChange('registrationNo', selectedOption)
-                          // }
-                          // isLoading={vehicleLoading}
-                          // isDisabled={vehicleLoading}
-                          // placeholder="Select a Vehicle..."
                         />
                       </div>
                     </div>
+
                     <div className=" sm:w-1/2 md:w-1/3 lg:1/4">
                       <label
                         className="mb-3 block text-md font-medium text-black dark:text-white"
@@ -273,7 +263,7 @@ const EmergencyProcessForm = () => {
                           name="make"
                           id="make"
                           placeholder="Make"
-                          onChange={handleChangeValue}
+                          onChange={handleChange}
                           value={formValues.make}
                           disabled
                         />
@@ -294,9 +284,8 @@ const EmergencyProcessForm = () => {
                           name="meterReading"
                           id="meterReading"
                           placeholder="50,000 km"
-                          onChange={handleChangeValue}
+                          onChange={handleChange}
                           value={formValues.meterReading}
-                          // disabled
                         />
                       </div>
                     </div>
@@ -344,6 +333,7 @@ const EmergencyProcessForm = () => {
                         />
                       </div>
                     </div>
+
                     <div className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3">
                       <label
                         className="mb-3 block text-md font-medium text-black dark:text-white"
@@ -364,6 +354,7 @@ const EmergencyProcessForm = () => {
                         />
                       </div>
                     </div>
+
                     <div className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3">
                       <label
                         className="mb-3 block text-md font-medium text-black dark:text-white"
@@ -428,296 +419,314 @@ const EmergencyProcessForm = () => {
                       </div>
                     </div>
                   </div>
+                  {/* Services */}
+                  <div className="mb-5.5 border-2 p-5">
+                    <label className="mb-3 block text-md font-bold text-black dark:text-white ">
+                      Services
+                    </label>
+                    {formValues.services.map((service, index) => (
+                      <div key={index} className="mb-5.5">
+                        <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                          <div className="w-full sm:w-1/2 md:w-1/3">
+                            <label className="mb-3 block text-md font-medium text-black dark:text-white">
+                              Select Service Type
+                            </label>
+                            <Select
+                              styles={customStyles}
+                              className="w-full rounded border border-stroke bg-gray h-[50px] text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              options={serviceType}
+                              value={
+                                service.serviceType
+                                  ? {
+                                      value: service.serviceType,
+                                      label: service.serviceType,
+                                    }
+                                  : null
+                              }
+                              onChange={(selectedOption) =>
+                                handleServiceChange(
+                                  index,
+                                  'serviceType',
+                                  selectedOption.value,
+                                )
+                              }
+                              placeholder="Select Service Type"
+                            />
+                          </div>
 
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3">
-                      <label
-                        className="mb-3 block text-md font-medium text-black dark:text-white"
-                        htmlFor="vendorType"
-                      >
-                        Select Vendor Type
-                      </label>
-                      <div className="relative">
-                        <Select
-                          styles={customStyles}
-                          className="w-full rounded border border-stroke bg-gray h-[50px] text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          options={vendorType}
-                          value={
-                            formValues?.vendorType
-                              ? {
-                                  value: formValues?.vendorType,
-                                  label: formValues?.vendorType,
+                          <div className="w-full sm:w-1/2 md:w-1/3">
+                            <label className="mb-3 block text-md font-medium text-black dark:text-white">
+                              Repair Amount
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="number"
+                              value={service.repairCost}
+                              onChange={(e) =>
+                                handleServiceChange(
+                                  index,
+                                  'repairCost',
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="Enter Repair Cost"
+                            />
+                          </div>
+
+                          <div className="w-full sm:w-1/2 md:w-1/3">
+                            <label className="mb-3 block text-md font-medium text-black dark:text-white">
+                              Description
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              value={service.description}
+                              onChange={(e) =>
+                                handleServiceChange(
+                                  index,
+                                  'description',
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="Enter Description"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                          <div className="w-full sm:w-1/2 md:w-1/3">
+                            <label className="mb-3 block text-md font-medium text-black dark:text-white">
+                              Select Vendor Type
+                            </label>
+                            <Select
+                              styles={customStyles}
+                              className="w-full rounded border border-stroke bg-gray h-[50px] text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              options={vendorType}
+                              value={{
+                                value: service.vendorType,
+                                label: service.vendorType,
+                              }}
+                              onChange={(selectedOption) =>
+                                handleServiceChange(
+                                  index,
+                                  'vendorType',
+                                  selectedOption.value,
+                                )
+                              }
+                              placeholder="Select Vendor Type"
+                            />
+                          </div>
+
+                          {service.vendorType === 'Indoor' && (
+                            <div className="w-full sm:w-1/2 md:w-1/3">
+                              <label className="mb-3 block text-md font-medium text-black dark:text-white">
+                                Select Indoor Vendor
+                              </label>
+                              <Select
+                                styles={customStyles}
+                                className="w-full rounded border border-stroke bg-gray h-[50px] text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                options={indoorVendorName}
+                                value={
+                                  service.indoorVendorName
+                                    ? {
+                                        value: service.indoorVendorName,
+                                        label: service.indoorVendorName,
+                                      }
+                                    : null
                                 }
-                              : null
-                          }
-                          onChange={(selectedOption) =>
-                            handleSelectVendorChange(
-                              selectedOption,
-                              'vendorType',
-                            )
-                          }
-                          placeholder="Select Vendor Type"
-                        />
-                      </div>
-                    </div>
+                                onChange={(selectedOption) =>
+                                  handleServiceChange(
+                                    index,
+                                    'indoorVendorName',
+                                    selectedOption.value,
+                                  )
+                                }
+                                placeholder="Select Indoor Vendor"
+                              />
+                            </div>
+                          )}
 
-                    {formValues.vendorType === 'Indoor' && (
-                      <div className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3">
-                        <label
-                          className="mb-3 block text-md font-medium text-black dark:text-white"
-                          htmlFor="indoorVendorName"
-                        >
-                          Select Indoor Vendor
-                        </label>
-                        <div className="relative">
-                          <Select
-                            styles={customStyles}
-                            className="w-full rounded border border-stroke bg-gray h-[50px] text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            options={indoorVendorName}
-                            value={
-                              formValues?.indoorVendorName
-                                ? {
-                                    value: formValues?.indoorVendorName,
-                                    label: formValues?.indoorVendorName,
+                          {service.vendorType === 'Outdoor' && (
+                            <>
+                              <div className="w-full sm:w-1/2 md:w-1/3">
+                                <label className="mb-3 block text-md font-medium text-black dark:text-white">
+                                  Outdoor Vendor Name
+                                </label>
+                                <input
+                                  className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                  type="text"
+                                  value={service.outdoorVendorName}
+                                  onChange={(e) =>
+                                    handleServiceChange(
+                                      index,
+                                      'outdoorVendorName',
+                                      e.target.value,
+                                    )
                                   }
-                                : null
-                            }
-                            onChange={(selectedOption) =>
-                              handleSelectVendorChange(
-                                selectedOption,
-                                'indoorVendorName',
-                              )
-                            }
-                            placeholder="Select Indoor Vendor"
-                          />
-                        </div>
-                      </div>
-                    )}
+                                  placeholder="Outdoor Vendor Name"
+                                />
+                              </div>
 
-                    {formValues.vendorType === 'Outdoor' && (
-                      <div className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3">
-                        <label
-                          className="mb-3 block text-md font-medium text-black dark:text-white"
-                          htmlFor="vendorName"
-                        >
-                          Outdoor Vendor Name
-                        </label>
-                        <div className="relative">
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name="outdoorVendorName"
-                            id="outdoorVendorName"
-                            placeholder="Outdoor Vendor Name"
-                            onChange={handleChange}
-                            value={formValues.outdoorVendorName}
-                          />
+                              <div className="w-full sm:w-1/2 md:w-1/3">
+                                <label className="mb-3 block text-md font-medium text-black dark:text-white">
+                                  Outdoor Vendor Reason
+                                </label>
+                                <input
+                                  className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                  type="text"
+                                  value={service.outdoorVendorReason}
+                                  onChange={(e) =>
+                                    handleServiceChange(
+                                      index,
+                                      'outdoorVendorReason',
+                                      e.target.value,
+                                    )
+                                  }
+                                  placeholder="Reason for Selecting Outside Vendor"
+                                />
+                              </div>
+                            </>
+                          )}
                         </div>
+                        <hr className="border-t-2 border-gray-300 my-8"></hr>
                       </div>
-                    )}
+                    ))}
 
-                    {formValues.vendorType === 'Outdoor' && (
-                      <div className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3">
-                        <label
-                          className="mb-3 block text-md font-medium text-black dark:text-white"
-                          htmlFor="outdoorVendorReason"
-                        >
-                          Outdoor Vendor Reason
-                        </label>
-                        <div className="relative">
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name="outdoorVendorReason"
-                            id="outdoorVendorReason"
-                            placeholder="Reason for Selecting Outside Vendor"
-                            onChange={handleChange}
-                            value={formValues.outdoorVendorReason}
-                          />
-                        </div>
-                      </div>
-                    )}
+                    <button
+                      type="button"
+                      className="mt-3 rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      onClick={addService}
+                    >
+                      Add Service
+                    </button>
                   </div>
+                  {/* PICTURES */}
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-1/2 md:w-1/3">
                       <label
                         className="mb-3 block text-md font-medium text-black dark:text-white"
-                        htmlFor="emergencyJob"
+                        htmlFor="emergencyRepairRequestImgWicdget"
                       >
-                        Emergency Job
+                        Emergency Repair Images
                       </label>
                       <div className="relative">
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="emergencyJob"
-                          id="emergencyJob"
-                          placeholder="Enter Emergency Job"
-                          onChange={handleChange}
-                          value={formValues.emergencyJob}
-                        />
-                      </div>
-                    </div>
-                    <div className="w-full sm:w-1/2 md:w-1/3">
-                      <label
-                        className="mb-3 block text-md font-medium text-black dark:text-white"
-                        htmlFor="repairCost"
-                      >
-                        Repair Amount
-                      </label>
-                      <div className="relative">
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="number"
-                          name="repairCost"
-                          id="repairCost"
-                          placeholder="Enter Repair Cost"
-                          onChange={handleChange}
-                          value={formValues?.repairCost}
-                        />
+                        <ul className="list-disc pl-5">
+                          {formValues.emergencyRepairRequestImgs?.map(
+                            (url, index) => (
+                              <li key={index}>
+                                <img
+                                  src={url}
+                                  alt={`Emergency Repair Image ${index + 1}`}
+                                  className="object-contain h-48 w-48 mb-4"
+                                />
+                              </li>
+                            ),
+                          )}
+                        </ul>
                       </div>
                     </div>
 
                     <div className="w-full sm:w-1/2 md:w-1/3">
                       <label
                         className="mb-3 block text-md font-medium text-black dark:text-white"
-                        htmlFor="description"
+                        htmlFor="emergencyRepairStatementVideos"
                       >
-                        Description
+                        Driver Statement Videos
                       </label>
                       <div className="relative">
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="description"
-                          id="description"
-                          placeholder="Enter Description"
-                          onChange={handleChange}
-                          value={formValues?.description}
-                        />
+                        <ul className="list-disc pl-5">
+                          {formValues.emergencyRepairStatementVideos?.map(
+                            (url, index) => (
+                              <li key={index}>
+                                <img
+                                  src={url}
+                                  alt={`Driver Statement ${index + 1}`}
+                                  className="object-contain h-48 w-48 mb-4"
+                                />
+                              </li>
+                            ),
+                          )}
+                        </ul>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full sm:w-1/2 md:w-1/3">
-                      <label
-                        className="mb-3 block text-md font-medium text-black dark:text-white"
-                        htmlFor="emergencyRepairRequestImgWidget"
-                      >
-                        {' '}
-                        Emergency Repair Image
-                      </label>
-                      <div className="relative">
-                        {formValues?.emergencyRepairRequestImg ? (
-                          <div className="flex justify-center items-center border border-blue-200 p-4 bg-slate-200">
-                            <img
-                              src={formValues?.emergencyRepairRequestImg}
-                              alt="Emergency Job Image"
-                              className="object-contain h-48 w-48"
-                            />
-                          </div>
-                        ) : (
-                          <UploadWidget
-                            setImgUrl={(url) =>
-                              handleUploadImage(
-                                url,
-                                'emergencyRepairRequestImg',
-                              )
-                            }
-                            id="emergencyRepairRequestImgWidget" // Unique identifier for this instance
-                            accept="image/*"
-                          />
-                        )}
-                      </div>
-                    </div>
-                    <div className="w-full sm:w-1/2 md:w-1/3">
-                      <label
-                        className="mb-3 block text-md font-medium text-black dark:text-white"
-                        htmlFor="emergencyRepairStatementVideoWidget"
-                      >
-                        Driver Statement Video
-                      </label>
-                      <div className="relative">
-                        {formValues?.emergencyRepairStatementVideo ? (
-                          <div className="flex justify-center items-center border border-blue-200 p-4 bg-slate-200">
-                            <video
-                              src={formValues?.emergencyRepairStatementVideo}
-                              alt="Upload Driver Statement"
-                              className="object-contain h-48 w-48"
-                              controls
-                            />
-                          </div>
-                        ) : (
-                          <UploadWidget
-                            setImgUrl={(url) =>
-                              handleUploadImage(
-                                url,
-                                'emergencyRepairStatementVideo',
-                              )
-                            }
-                            id="emergencyRepairStatementVideoWidget" // Unique identifier for this instance
-                            accept="video/*"
-                          />
-                        )}
-                      </div>
-                    </div>
                     <div className="w-full sm:w-1/2 md:w-1/3">
                       <label
                         className="mb-3 block text-md font-medium text-black dark:text-white"
                         htmlFor="emergencyRepairCompletionImgWidget"
                       >
-                        Emergency Completion Image
+                        Emergency Completion Images
                       </label>
                       <div className="relative">
-                        {formValues?.emergencyRepairCompletionImg ? (
-                          <div className="flex justify-center items-center border border-blue-200 p-4 bg-slate-200">
-                            <img
-                              src={formValues?.emergencyRepairCompletionImg}
-                              alt="Emergency Repair Completion Image"
-                              className="object-contain h-48 w-48"
-                            />
-                          </div>
-                        ) : (
-                          <UploadWidget
-                            setImgUrl={(url) =>
-                              handleUploadImage(
-                                url,
-                                'emergencyRepairCompletionImg',
-                              )
-                            }
-                            id="emergencyRepairCompletionImgWidget" // Unique identifier for this instance
-                            accept="image/*"
-                          />
-                        )}
+                        <MultipleUploadWidget
+                          setImgUrls={setEmergencyRepairCompletionImgUrls}
+                          id="emergencyRepairCompletionImgWidget"
+                        />
+                        <ul className="list-disc pl-5">
+                          {emergencyRepairCompletionImgUrls.map(
+                            (url, index) => (
+                              <li key={index}>
+                                <div className="relative border border-gray-300 bg-white m-2 p-2">
+                                  <button
+                                    onClick={() =>
+                                      handleDelete(
+                                        index,
+                                        setEmergencyRepairCompletionImgUrls,
+                                      )
+                                    }
+                                    className="absolute top-0 right-0 mt-2 mr-2 bg-red-500 text-white rounded-full p-1"
+                                  >
+                                    &#10005;
+                                  </button>
+                                  <img
+                                    src={url}
+                                    alt={`Emergency Job Completion Images ${index + 1}`}
+                                    className="object-contain h-48 w-48"
+                                  />
+                                </div>
+                              </li>
+                            ),
+                          )}
+                        </ul>
                       </div>
                     </div>
 
                     <div className="w-full sm:w-1/2 md:w-1/3">
                       <label
                         className="mb-3 block text-md font-medium text-black dark:text-white"
-                        htmlFor="emergencyReceiptImgUrl"
+                        htmlFor="emergencyReceiptImgWidget"
                       >
-                        Emergency Receipt Image
+                        Emergency Receipt Images
                       </label>
                       <div className="relative">
-                        {formValues?.emergencyReceiptImg ? (
-                          <div className="flex justify-center items-center border border-blue-200 p-4 bg-slate-200">
-                            <img
-                              src={formValues?.emergencyReceiptImg}
-                              alt="Emergency Repair Receipt Image"
-                              className="object-contain h-48 w-48"
-                            />
-                          </div>
-                        ) : (
-                          <UploadWidget
-                            setImgUrl={(url) =>
-                              handleUploadImage(url, 'emergencyReceiptImg')
-                            }
-                            id="emergencyReceiptImgUrl" // Unique identifier for this instance
-                            accept="image/*"
-                          />
-                        )}
+                        <MultipleUploadWidget
+                          setImgUrls={setEmergencyReceiptImgUrls}
+                          id="emergencyReceiptImgWidget"
+                        />
+                        <ul className="list-disc pl-5">
+                          {emergencyReceiptImgUrls.map((url, index) => (
+                            <li key={index}>
+                              <div className="relative border border-gray-300 bg-white m-2 p-2">
+                                <button
+                                  onClick={() =>
+                                    handleDelete(
+                                      index,
+                                      setEmergencyReceiptImgUrls,
+                                    )
+                                  }
+                                  className="absolute top-0 right-0 mt-2 mr-2 bg-red-500 text-white rounded-full p-1"
+                                >
+                                  &#10005;
+                                </button>
+                                <img
+                                  src={url}
+                                  alt={`Emergency Receipt Image ${index + 1}`}
+                                  className="object-contain h-48 w-48"
+                                />
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -725,43 +734,37 @@ const EmergencyProcessForm = () => {
                   <div className="mr-5">
                     <div className="flex justify-end gap-4.5">
                       <button
-                        className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black dark:border-strokedark dark:text-white transition duration-150 ease-in-out hover:border-gray dark:hover:border-white "
+                        className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black dark:border-strokedark dark:text-white transition duration-150 ease-in-out hover:border-gray dark:hover:border-white"
                         type="submit"
                       >
                         Cancel
                       </button>
                       {areAllFieldsFilled() ? (
-                        <>
-                          {updateLoading ? (
-                            <LoadingButton
-                              btnText="Completing..."
-                              isLoading={updateLoading}
-                            />
-                          ) : (
-                            <button
-                              className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                              type="submit"
-                            >
-                              Complete
-                            </button>
-                          )}
-                        </>
+                        updateLoading ? (
+                          <LoadingButton
+                            btnText="Completing..."
+                            isLoading={updateLoading}
+                          />
+                        ) : (
+                          <button
+                            className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                            type="submit"
+                          >
+                            Complete
+                          </button>
+                        )
+                      ) : updateLoading ? (
+                        <LoadingButton
+                          btnText="Updating..."
+                          isLoading={updateLoading}
+                        />
                       ) : (
-                        <>
-                          {updateLoading ? (
-                            <LoadingButton
-                              btnText="Updating..."
-                              isLoading={updateLoading}
-                            />
-                          ) : (
-                            <button
-                              className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                              type="submit"
-                            >
-                              Update Record
-                            </button>
-                          )}
-                        </>
+                        <button
+                          className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                          type="submit"
+                        >
+                          Update Record
+                        </button>
                       )}
                     </div>
                   </div>

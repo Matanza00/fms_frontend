@@ -23,54 +23,6 @@ const formatDateTime = (dateString) => {
   return `Date: ${formattedDate}, Time: ${formattedTime}`;
 };
 
-const EmergencyTableData = [
-  {
-    id: '1',
-    date: '2024-04-06',
-    region: 'South',
-    subregion: 'Karachi',
-    station: 'Karachi',
-    vehicle_selection: 'Truck',
-    reg: 'ABC123',
-    last_odometer_reading: '50,000 km',
-    last_period_date: '2024-04-06',
-    emergencyMnt_category: 'DD',
-    emergencyMnt_item_price: '4000',
-    current_oddometer: '32464',
-    oddo_difference: '',
-  },
-  {
-    id: '2',
-    date: '2024-04-06',
-    region: 'North',
-    subregion: 'Multan',
-    station: 'Multan',
-    vehicle_selection: 'Van',
-    reg: 'ABC123',
-    last_odometer_reading: '50,000 km',
-    last_period_date: '2024-04-06',
-    emergencyMnt_category: 'DD',
-    emergencyMnt_item_price: '3000',
-    current_oddometer: '21432',
-    oddo_difference: '',
-  },
-  {
-    id: '3',
-    date: '2024-04-06',
-    region: 'East',
-    subregion: 'Peshawar',
-    station: 'Peshawar',
-    vehicle_selection: 'Van',
-    reg: 'ABC123',
-    last_odometer_reading: '50,000 km',
-    last_period_date: '2024-04-06',
-    emergencyMnt_category: 'DD',
-    emergencyMnt_item_price: '2000',
-    current_oddometer: '3254',
-    oddo_difference: '',
-  },
-];
-
 const EmergencyTable = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
@@ -178,7 +130,7 @@ const EmergencyTable = () => {
                 </td>
                 <td className="border-b border-[#eee] py-4 px-4 dark:border-strokedark">
                   <p className="font-medium text-black dark:text-white">
-                    {formatDateTime(e?.updated_at)}
+                    {e?.status}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-4 px-4 dark:border-strokedark">
@@ -190,21 +142,19 @@ const EmergencyTable = () => {
                   <div className="flex items-center space-x-3.5">
                     <div>
                       {/* Restrict the view for users, only available to Maintenance Admin (PROCESS FOR EMERGENCY) */}
-                      {showButton &&
-                        user?.Role?.roleName === 'Maintenance Admin' &&
-                        e?.status === 'pending' && (
-                          <>
-                            <button
-                              onClick={() => navigate(`process/${e.id}`)}
-                              className="hover:text-primary"
-                              title="Process"
-                            >
-                              <HiOutlineClipboardDocumentList
-                                style={{ fontSize: '20px' }}
-                              />
-                            </button>
-                          </>
-                        )}
+                      {showButton && e?.status === 'pending' && (
+                        <>
+                          <button
+                            onClick={() => navigate(`process/${e.id}`)}
+                            className="hover:text-primary"
+                            title="Process"
+                          >
+                            <HiOutlineClipboardDocumentList
+                              style={{ fontSize: '20px' }}
+                            />
+                          </button>
+                        </>
+                      )}
                     </div>
                     <button
                       onClick={() => navigate(`view/${e.id}`)}

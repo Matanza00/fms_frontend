@@ -36,6 +36,7 @@ export const stationOptions = [
   { value: 'GBT', label: 'GBT' },
   { value: 'HNG', label: 'HNG' },
   { value: 'MZFRB', label: 'MZFRB' },
+  { value: 'Kotli AJK', label: 'Kotli AJK' },
   { value: 'Head Office', label: 'Head Office' },
 ];
 
@@ -162,8 +163,8 @@ export const periodicThreshold = {
 };
 
 export const vendorType = [
-  { value: 'indoor', label: 'Indoor' },
-  { value: 'outdoor', label: 'Outdoor' },
+  { value: 'Indoor', label: 'Indoor' },
+  { value: 'Outdoor', label: 'Outdoor' },
 ];
 
 export const indoorVendorName = [
@@ -265,4 +266,21 @@ export const indoorVendorName = [
     value: '101178 - (APL (Attock petroleum))',
     label: '101178 - (APL (Attock petroleum))',
   },
+];
+
+export const serviceType = [
+  { value: 'Brake Work', label: 'Brake Work' },
+  { value: 'Clutch Work', label: 'Clutch Work' },
+  { value: 'Suspension', label: 'Suspension' },
+  { value: 'AC Work', label: 'AC Work' },
+  { value: 'Lubrication', label: 'Lubrication' },
+  { value: 'Battery', label: 'Battery' },
+  { value: 'Tyres', label: 'Tyres' },
+  { value: 'Car Wash', label: 'Car Wash' },
+  { value: 'Outer Body', label: 'Outer Body' },
+  { value: 'Inner Body', label: 'Inner Body' },
+  { value: 'Accident Expense', label: 'Accident Expense' },
+  { value: 'Electric Work', label: 'Electric Work' },
+  { value: 'Engine Parts', label: 'Engine Parts' },
+  { value: 'Engine Overhaul', label: 'Engine Overhaul' },
 ];

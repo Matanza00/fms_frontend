@@ -18,6 +18,7 @@ import {
 } from '../../services/tagDriverSlice';
 import { customStyles } from '../../constants/Styles';
 import { stationOptions } from '../../constants/Data';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const VehicleTagUpdateForm = () => {
   const { id } = useParams();
@@ -133,8 +134,12 @@ const VehicleTagUpdateForm = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Tag Driver" />
-
+        {/* <Breadcrumb pageName="Tag Driver" /> */}
+        <BreadcrumbNav
+          pageName="Tag Driver"
+          pageNameprev="Vehicle Assigned" //show the name on top heading
+          pagePrevPath="vehicle-tagged" // add the previous path to the navigation
+        />
         <div className=" gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

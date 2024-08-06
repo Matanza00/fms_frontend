@@ -8,11 +8,12 @@ import useToast from '../../hooks/useToast';
 import LoadingButton from '../../components/LoadingButton';
 import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { useGetDriverByCompanyIdQuery } from '../../services/driverSlice';
+import { useGetDriverAllWithoutPaginationQuery } from '../../services/driverSlice';
 import { useGetVehicleByCompanyIdQuery } from '../../services/vehicleSlice';
 import { useAddTagDriverMutation } from '../../services/tagDriverSlice';
 import { stationOptions } from '../../constants/Data';
 import { customStyles } from '../../constants/Styles';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const TagVehicleForm = () => {
   const navigate = useNavigate();
@@ -23,9 +24,16 @@ const TagVehicleForm = () => {
 
   // Track whether the station is selected
   const [isStationSelected, setIsStationSelected] = useState(false);
+  const { data: drivers, isLoading: driverLoading } =
+    useGetDriverAllWithoutPaginationQuery({
+      companyId: user?.companyId,
+      station: formValues?.station,
+    });
+  console.log('drivers', drivers);
 
   useEffect(() => {
     // Enable driver and vehicle select dropdowns if station is selected
+
     if (formValues.station) {
       setIsStationSelected(true);
     } else {
@@ -33,11 +41,6 @@ const TagVehicleForm = () => {
     }
   }, [formValues.station]);
 
-  const { data: drivers, isLoading: driverLoading } =
-    useGetDriverByCompanyIdQuery({
-      companyId: user?.companyId,
-      station: formValues?.station,
-    });
   const { data: vehicles, isLoading: vehicleLoading } =
     useGetVehicleByCompanyIdQuery({
       companyId: user?.companyId,
@@ -130,7 +133,11 @@ const TagVehicleForm = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Tag Driver" />
+        <BreadcrumbNav
+          pageName="Tag Driver"
+          pageNameprev="Vehicle Assigned" //show the name on top heading
+          pagePrevPath="vehicle-tagged" // add the previous path to the navigation
+        />
 
         <div className=" gap-8">
           <div className="col-span-5 xl:col-span-3">

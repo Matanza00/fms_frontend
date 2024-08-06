@@ -16,6 +16,7 @@ import {
 } from '../../services/maintenanceTeamSlice';
 import { stationOptions } from '../../constants/Data';
 import { customStyles } from '../../constants/Styles';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const CreateTeam = () => {
   const navigate = useNavigate();
@@ -196,7 +197,11 @@ const CreateTeam = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Maintenance Team Form" />
+        <BreadcrumbNav
+          pageName="Maintenance Team Form"
+          pageNameprev="Daily Maintenance" //show the name on top heading
+          pagePrevPath="daily-maintenance" // add the previous path to the navigation
+        />
         <div className="gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

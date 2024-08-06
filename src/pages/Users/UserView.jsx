@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useGetUserQuery } from '../../services/usersSlice';
 import Loader from '../../common/Loader';
 import roleValue from '../../utils/helpers';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const UserView = () => {
   const { id } = useParams();
@@ -22,6 +23,11 @@ const UserView = () => {
 
   return (
     <DefaultLayout>
+      <BreadcrumbNav
+        pageName="View User"
+        pageNameprev="Users" //show the name on top heading
+        pagePrevPath="users" // add the previous path to the navigation
+      />
       <div className="flex flex-col bg-gray-100 rounded-lg overflow-hidden shadow-lg">
         <div className="flex justify-between items-end p-6 border-b border-gray-200">
           <h2 className="text-xl font-bold">Employee Details</h2>

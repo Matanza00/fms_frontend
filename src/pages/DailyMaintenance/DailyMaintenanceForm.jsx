@@ -7,6 +7,7 @@ import useToast from '../../hooks/useToast';
 import { useGetDailyReportsQuery } from '../../services/dailySlice';
 import { useGetVehicleInfoQuery } from '../../services/vehicleSlice'; // Import the vehicleSlice query
 import { useGetAllMaintenanceTeamsQuery } from '../../services/maintenanceTeamSlice';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const DailyMaintenanceForm = () => {
   const navigate = useNavigate();
@@ -62,7 +63,11 @@ const DailyMaintenanceForm = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Daily Maintenance Form" />
+        <BreadcrumbNav
+          pageName="Daily Maintenance Form"
+          pageNameprev="Daily Maintenance" //show the name on top heading
+          pagePrevPath="daily-maintenance" // add the previous path to the navigation
+        />
 
         <div className="gap-8">
           <div className="col-span-5 xl:col-span-3">

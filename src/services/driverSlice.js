@@ -22,6 +22,18 @@ export const driversSlice = apiSlice.injectEndpoints({
       query: () => `/drivers/`,
       providesTags: ['Driver'],
     }),
+    // Get All Driver Without pagination
+    GetDriverAllWithoutPagination: builder.query({
+      query: ({ companyId, station }) => {
+        let queryString = `/drivers/id/${companyId}`;
+        if (station) {
+          queryString += `?station=${station}`;
+        }
+        return queryString;
+      },
+      providesTags: ['Driver'],
+    }),
+
     // Get One Driver
     GetDriver: builder.query({
       query: (id) => `/drivers/${id}`,
@@ -61,6 +73,7 @@ export const driversSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetDriverByCompanyIdQuery,
+  useGetDriverAllWithoutPaginationQuery,
   useGetDriverAllQuery,
   useGetDriverQuery,
   useUpdateDriverMutation,

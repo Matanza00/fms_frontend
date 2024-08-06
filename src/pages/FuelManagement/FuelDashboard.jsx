@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import DefaultLayout from '../../layout/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { useGetFuelByCompanyIdQuery } from '../../services/fuelSlice';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const Modal = ({ data, title, categoryField }) => {
   const formatText = (text) => {
@@ -45,7 +46,9 @@ const Modal = ({ data, title, categoryField }) => {
                 <td className="border px-4 py-2">{vehicle.quantityOfFuel}</td>
                 <td className="border px-4 py-2">{vehicle.rateOfFuel}</td>
                 <td className="border px-4 py-2">{vehicle.cardNo}</td>
-                <td className="border px-4 py-2">{formatText(vehicle[categoryField])}</td>
+                <td className="border px-4 py-2">
+                  {formatText(vehicle[categoryField])}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -64,8 +67,12 @@ const FuelDashboard = () => {
   const companyId = 25; // Replace with actual company ID
   const [fuelTypeData, setFuelTypeData] = useState([]);
   const [statusData, setStatusData] = useState([]);
-  const [selectedFuelTypeMonth, setSelectedFuelTypeMonth] = useState(new Date().getMonth() + 1);
-  const [selectedStatusMonth, setSelectedStatusMonth] = useState(new Date().getMonth() + 1);
+  const [selectedFuelTypeMonth, setSelectedFuelTypeMonth] = useState(
+    new Date().getMonth() + 1,
+  );
+  const [selectedStatusMonth, setSelectedStatusMonth] = useState(
+    new Date().getMonth() + 1,
+  );
   const [selectedStation, setSelectedStation] = useState('');
   const [stations, setStations] = useState([]);
   const [modalData, setModalData] = useState([]);
@@ -109,7 +116,7 @@ const FuelDashboard = () => {
   useEffect(() => {
     if (fuelData && Array.isArray(fuelData.data)) {
       const stationSet = new Set();
-      fuelData.data.forEach(request => {
+      fuelData.data.forEach((request) => {
         if (request.station) {
           stationSet.add(request.station);
         }
@@ -120,12 +127,17 @@ const FuelDashboard = () => {
 
   useEffect(() => {
     if (fuelData && Array.isArray(fuelData.data)) {
-      const requestTypes = { Domestic: { count: 0, vehicles: [] }, Local: { count: 0, vehicles: [] } };
+      const requestTypes = {
+        Domestic: { count: 0, vehicles: [] },
+        Local: { count: 0, vehicles: [] },
+      };
 
       fuelData.data
-        .filter(request => 
-          new Date(request.created_at).getMonth() + 1 === selectedFuelTypeMonth &&
-          (selectedStation === '' || request.station === selectedStation)
+        .filter(
+          (request) =>
+            new Date(request.created_at).getMonth() + 1 ===
+              selectedFuelTypeMonth &&
+            (selectedStation === '' || request.station === selectedStation),
         )
         .forEach((request) => {
           if (request.requestType === 'Domestic') {
@@ -137,11 +149,13 @@ const FuelDashboard = () => {
           }
         });
 
-      const formattedFuelTypeData = Object.entries(requestTypes).map(([type, { count, vehicles }]) => ({
-        name: type,
-        value: count,
-        vehicles,
-      }));
+      const formattedFuelTypeData = Object.entries(requestTypes).map(
+        ([type, { count, vehicles }]) => ({
+          name: type,
+          value: count,
+          vehicles,
+        }),
+      );
 
       setFuelTypeData(formattedFuelTypeData);
     }
@@ -149,12 +163,18 @@ const FuelDashboard = () => {
 
   useEffect(() => {
     if (fuelData && Array.isArray(fuelData.data)) {
-      const statusCounts = { pending: { count: 0, vehicles: [] }, approved: { count: 0, vehicles: [] }, rejected: { count: 0, vehicles: [] } };
+      const statusCounts = {
+        pending: { count: 0, vehicles: [] },
+        approved: { count: 0, vehicles: [] },
+        rejected: { count: 0, vehicles: [] },
+      };
 
       fuelData.data
-        .filter(request => 
-          new Date(request.created_at).getMonth() + 1 === selectedStatusMonth &&
-          (selectedStation === '' || request.station === selectedStation)
+        .filter(
+          (request) =>
+            new Date(request.created_at).getMonth() + 1 ===
+              selectedStatusMonth &&
+            (selectedStation === '' || request.station === selectedStation),
         )
         .forEach((request) => {
           const status = request.status.toLowerCase();
@@ -164,11 +184,13 @@ const FuelDashboard = () => {
           }
         });
 
-      const formattedStatusData = Object.entries(statusCounts).map(([status, { count, vehicles }]) => ({
-        name: status.charAt(0).toUpperCase() + status.slice(1), // Capitalize the first letter
-        value: count,
-        vehicles,
-      }));
+      const formattedStatusData = Object.entries(statusCounts).map(
+        ([status, { count, vehicles }]) => ({
+          name: status.charAt(0).toUpperCase() + status.slice(1), // Capitalize the first letter
+          value: count,
+          vehicles,
+        }),
+      );
 
       setStatusData(formattedStatusData);
     }
@@ -202,17 +224,21 @@ const FuelDashboard = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Fuel Dashboard" />
+      <BreadcrumbNav
+        pageName="Fuel Dashboard"
+        pageNameprev="Fuel Management" //show the name on top heading
+        pagePrevPath="fuel-management" // add the previous path to the navigation
+      />
       <div className="flex justify-center mt-10 space-x-4">
         <div className="w-1/2 bg-white rounded-lg shadow-lg p-6 flex flex-col">
-          <div className='mb-4 flex justify-between'>
+          <div className="mb-4 flex justify-between">
             <h6 className="text-xl font-semibold text-black dark:text-white">
               Fuel Request Type
             </h6>
             <div className="flex">
-              <select 
-                className="border rounded p-2 mr-2" 
-                value={selectedFuelTypeMonth} 
+              <select
+                className="border rounded p-2 mr-2"
+                value={selectedFuelTypeMonth}
                 onChange={handleFuelTypeMonthChange}
               >
                 {months.map((month) => (
@@ -221,9 +247,9 @@ const FuelDashboard = () => {
                   </option>
                 ))}
               </select>
-              <select 
-                className="border rounded p-2" 
-                value={selectedStation} 
+              <select
+                className="border rounded p-2"
+                value={selectedStation}
                 onChange={handleStationChange}
               >
                 <option value="">All Stations</option>
@@ -246,10 +272,19 @@ const FuelDashboard = () => {
                 fill="#8884d8"
                 paddingAngle={5}
                 dataKey="value"
-                onClick={(data, index) => handlePieClick(data.payload, 'Fuel Request Type', 'requestType')}
+                onClick={(data, index) =>
+                  handlePieClick(
+                    data.payload,
+                    'Fuel Request Type',
+                    'requestType',
+                  )
+                }
               >
                 {fuelTypeData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={chartColorMap[entry.name]} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={chartColorMap[entry.name]}
+                  />
                 ))}
               </Pie>
             </PieChart>
@@ -257,12 +292,15 @@ const FuelDashboard = () => {
           <div className="mt-4 flex justify-end space-x-4">
             {['Domestic', 'Local'].map((type, index) => (
               <div key={index} className="flex items-center space-x-2">
-                <span className={`block h-3 w-3 rounded-full`} style={{ backgroundColor: colorMap[type] }}></span>
+                <span
+                  className={`block h-3 w-3 rounded-full`}
+                  style={{ backgroundColor: colorMap[type] }}
+                ></span>
                 <p className="text-sm font-medium text-black dark:text-white">
                   {type}
                 </p>
                 <p className="ml-2 text-sm font-medium text-black dark:text-white">
-                  {fuelTypeData.find(data => data.name === type)?.value || 0}
+                  {fuelTypeData.find((data) => data.name === type)?.value || 0}
                 </p>
               </div>
             ))}
@@ -270,14 +308,14 @@ const FuelDashboard = () => {
         </div>
 
         <div className="w-1/2 bg-white rounded-lg shadow-lg p-6 flex flex-col">
-          <div className='mb-4 flex justify-between'>
+          <div className="mb-4 flex justify-between">
             <h6 className="text-xl font-semibold text-black dark:text-white">
               Fuel Request Status
             </h6>
             <div className="flex">
-              <select 
-                className="border rounded p-2 mr-2" 
-                value={selectedStatusMonth} 
+              <select
+                className="border rounded p-2 mr-2"
+                value={selectedStatusMonth}
                 onChange={handleStatusMonthChange}
               >
                 {months.map((month) => (
@@ -286,9 +324,9 @@ const FuelDashboard = () => {
                   </option>
                 ))}
               </select>
-              <select 
-                className="border rounded p-2" 
-                value={selectedStation} 
+              <select
+                className="border rounded p-2"
+                value={selectedStation}
                 onChange={handleStationChange}
               >
                 <option value="">All Stations</option>
@@ -311,10 +349,15 @@ const FuelDashboard = () => {
                 fill="#8884d8"
                 paddingAngle={5}
                 dataKey="value"
-                onClick={(data, index) => handlePieClick(data.payload, 'Fuel Request Status', 'status')}
+                onClick={(data, index) =>
+                  handlePieClick(data.payload, 'Fuel Request Status', 'status')
+                }
               >
                 {statusData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={chartColorMap[entry.name]} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={chartColorMap[entry.name]}
+                  />
                 ))}
               </Pie>
             </PieChart>
@@ -322,12 +365,15 @@ const FuelDashboard = () => {
           <div className="mt-4 flex justify-end space-x-4">
             {['Pending', 'Approved', 'Rejected'].map((status, index) => (
               <div key={index} className="flex items-center space-x-2">
-                <span className={`block h-3 w-3 rounded-full`} style={{ backgroundColor: colorMap[status] }}></span>
+                <span
+                  className={`block h-3 w-3 rounded-full`}
+                  style={{ backgroundColor: colorMap[status] }}
+                ></span>
                 <p className="text-sm font-medium text-black dark:text-white">
                   {status}
                 </p>
                 <p className="ml-2 text-sm font-medium text-black dark:text-white">
-                  {statusData.find(data => data.name === status)?.value || 0}
+                  {statusData.find((data) => data.name === status)?.value || 0}
                 </p>
               </div>
             ))}
@@ -335,7 +381,11 @@ const FuelDashboard = () => {
         </div>
       </div>
 
-      <Modal data={modalData} title={modalTitle} categoryField={modalCategoryField} />
+      <Modal
+        data={modalData}
+        title={modalTitle}
+        categoryField={modalCategoryField}
+      />
     </DefaultLayout>
   );
 };

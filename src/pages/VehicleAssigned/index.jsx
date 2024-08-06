@@ -7,9 +7,9 @@ import { FaSearch } from 'react-icons/fa';
 import VehicleTaggingTable from './VehicleTaggingTable';
 import { useGetTagDriversQuery } from '../../services/tagDriverSlice';
 import { exportToPDF } from '../../components/ExportPDFCSV/ExportPDFCSV';
-import { CiLight } from 'react-icons/ci';
 import { FaFileExport } from 'react-icons/fa6';
 import { MdDownload } from 'react-icons/md';
+import ExcelJS from 'exceljs';
 
 const VehicleAssigned = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,7 +19,6 @@ const VehicleAssigned = () => {
 
   const handleSearch = (e) => {
     const { value } = e.target;
-
     setSearchTerm(value);
   };
 
@@ -35,80 +34,95 @@ const VehicleAssigned = () => {
 
   const exportPDF = (processedData) => {
     const columnsToFilter = ['index', 'driverName', 'vehicleId', 'station'];
-    const columnsToPrint = [
-      'S. No',
-      'Driver Name',
-      'Vehicle Number',
-      'Station',
-    ];
-
-    exportToPDF(
-      processedData,
-      columnsToFilter,
-      columnsToPrint,
-      'Vehicles Assigned',
-    );
+    const columnsToPrint = ['S. No', 'Driver Name', 'Vehicle Number', 'Station'];
+    exportToPDF(processedData, columnsToFilter, columnsToPrint, 'Vehicles Assigned');
   };
-  const exportToCsv = (data) => {
+
+  const exportToExcel = async (data) => {
     if (data.length === 0) {
       console.error('No data provided.');
       return;
     }
 
-    const columnsToFilter = ['index', 'driverName', 'vehicleId', 'station'];
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Vehicles Assigned');
 
-    const columnsToPrint = [
-      'S. No',
-      'Driver Name',
-      'Vehicle Number',
-      'Station',
+    // Define columns
+    worksheet.columns = [
+      { header: 'S. No', key: 'index', width: 10 },
+      { header: 'Driver Name', key: 'driverName', width: 20 },
+      { header: 'Vehicle Number', key: 'vehicleId', width: 20 },
+      { header: 'Station', key: 'station', width: 20 },
     ];
 
-    const csvRows = [];
+    // Group data by station
+    const groupedData = data.reduce((acc, item) => {
+      if (!acc[item.station]) {
+        acc[item.station] = [];
+      }
+      acc[item.station].push(item);
+      return acc;
+    }, {});
 
-    // Get the current date and time
-    const now = new Date();
-    const formattedDate = now
-      .toISOString()
-      .replace(/T/, ' ')
-      .replace(/\..+/, ''); // Format as YYYY-MM-DD HH:MM:SS
+    // Sort stations alphabetically
+    const sortedStations = Object.keys(groupedData).sort();
 
-    // Add date and time as the first row
-    csvRows.push(`Downloaded on: ${formattedDate}`);
-    csvRows.push(columnsToPrint.join(',')); // Header row
+    let currentRow = 1;
+    sortedStations.forEach((station) => {
+      // Add station header
+      const stationHeaderRow = worksheet.addRow([station]);
+      currentRow += 1;
 
-    data.forEach((obj) => {
-      const values = columnsToFilter.map((key) => {
-        const escapedValue = ('' + obj[key]).replace(/"/g, '\\"');
-        return `"${escapedValue}"`;
+      // Apply styles to station header row
+      stationHeaderRow.eachCell((cell) => {
+        cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FF0000FF' }, // Blue background for station headers
+        };
       });
-      csvRows.push(values.join(','));
+
+      // Add column headers for the station table
+      const columnHeaderRow = worksheet.addRow(['S. No', 'Driver Name', 'Vehicle Number', 'Station']);
+      currentRow += 1;
+
+      // Apply styles to column headers row
+      columnHeaderRow.eachCell((cell) => {
+        cell.font = { bold: true, color: { argb: 'FF000000' } }; // Black color
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFFFFF00' }, // Yellow background
+        };
+      });
+
+      // Add data rows for the station
+      groupedData[station].forEach((item, index) => {
+        worksheet.addRow({
+          index: index + 1,
+          driverName: item.driverName,
+          vehicleId: item.vehicleId,
+          station: item.station,
+        });
+      });
+
+      // Increment currentRow to account for added rows and add a gap
+      currentRow += groupedData[station].length + 1;
+      worksheet.addRow([]);
+      currentRow += 1;
     });
 
-    const csvString = csvRows.join('\n');
+    // Generate buffer
+    const buffer = await workbook.xlsx.writeBuffer();
 
-    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    // Create blob and download
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-    if (navigator.msSaveBlob) {
-      // IE 10+
-      navigator.msSaveBlob(blob, 'Vehicle_Assigned_Data.csv');
-    } else {
-      const link = document.createElement('a');
-      if (link.download !== undefined) {
-        // feature detection
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', 'Vehicle_Assigned_Data.csv');
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } else {
-        console.error(
-          'Your browser does not support downloading files. Please try another browser.',
-        );
-      }
-    }
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Vehicles_Assigned_Data.xlsx';
+    link.click();
   };
 
   return (
@@ -136,8 +150,8 @@ const VehicleAssigned = () => {
               role="button"
               className="btn h-[30px] min-h-[30px] text-sm border-slate-200 hover:bg-opacity-70 dark:text-white dark:bg-slate-700 dark:border-slate-700 dark:hover:bg-opacity-70 transition duration-150 ease-in-out rounded-md"
             >
-              Export
-              <MdDownload />
+              Reports
+              {/* <MdDownload /> */}
             </div>
             <ul
               tabIndex={0}
@@ -155,9 +169,9 @@ const VehicleAssigned = () => {
               <li>
                 <button
                   className="flex justify-between items-center"
-                  onClick={() => exportToCsv(sortedData)}
+                  onClick={() => exportToExcel(sortedData)}
                 >
-                  Export as CSV
+                  Export as Excel
                   <FaFileExport />
                 </button>
               </li>

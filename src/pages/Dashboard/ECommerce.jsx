@@ -31,40 +31,13 @@ const ECommerce = () => {
   const [vehicleLocations, setVehicleLocations] = useState([]);
   const [fuelStatusData, setFuelStatusData] = useState([]);
   const [periodicStatusData, setPeriodicStatusData] = useState([]);
-  const [selectedFuelMonth, setSelectedFuelMonth] = useState(
-    new Date().getMonth() + 1,
-  );
-  const [selectedPeriodicMonth, setSelectedPeriodicMonth] = useState(
-    new Date().getMonth() + 1,
-  );
   const [vehicleModelData, setVehicleModelData] = useState([]);
   const [selectedFuelStation, setSelectedFuelStation] = useState('All');
   const [selectedPeriodicStation, setSelectedPeriodicStation] = useState('All');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
   const [modalData, setModalData] = useState(null); // Modal data state
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
-
-  const months = [
-    { value: 1, label: 'January' },
-    { value: 2, label: 'February' },
-    { value: 3, label: 'March' },
-    { value: 4, label: 'April' },
-    { value: 5, label: 'May' },
-    { value: 6, label: 'June' },
-    { value: 7, label: 'July' },
-    { value: 8, label: 'August' },
-    { value: 9, label: 'September' },
-    { value: 10, label: 'October' },
-    { value: 11, label: 'November' },
-    { value: 12, label: 'December' },
-  ];
-
-  const handleFuelMonthChange = (e) => {
-    setSelectedFuelMonth(Number(e.target.value));
-  };
-
-  const handlePeriodicMonthChange = (e) => {
-    setSelectedPeriodicMonth(Number(e.target.value));
-  };
 
   const handleFuelStationChange = (e) => {
     setSelectedFuelStation(e.target.value);
@@ -72,6 +45,14 @@ const ECommerce = () => {
 
   const handlePeriodicStationChange = (e) => {
     setSelectedPeriodicStation(e.target.value);
+  };
+
+  const handleFromDateChange = (e) => {
+    setFromDate(e.target.value);
+  };
+
+  const handleToDateChange = (e) => {
+    setToDate(e.target.value);
   };
 
   const {
@@ -123,9 +104,9 @@ const ECommerce = () => {
       fuelData.data
         .filter(
           (fuel) =>
-            new Date(fuel.created_at).getMonth() + 1 === selectedFuelMonth &&
-            (selectedFuelStation === 'All' ||
-              fuel.station === selectedFuelStation),
+            (!fromDate || new Date(fuel.created_at) >= new Date(fromDate)) &&
+            (!toDate || new Date(fuel.created_at) <= new Date(toDate)) &&
+            (selectedFuelStation === 'All' || fuel.station === selectedFuelStation),
         )
         .forEach((fuel) => {
           const status =
@@ -153,7 +134,7 @@ const ECommerce = () => {
       }));
       setFuelStatusData(formattedData);
     }
-  }, [fuelData, selectedFuelMonth, selectedFuelStation]);
+  }, [fuelData, fromDate, toDate, selectedFuelStation]);
 
   useEffect(() => {
     const initializeStatusCounts = (statuses) => {
@@ -171,10 +152,9 @@ const ECommerce = () => {
       periodicData.data
         .filter(
           (periodic) =>
-            new Date(periodic.created_at).getMonth() + 1 ===
-              selectedPeriodicMonth &&
-            (selectedPeriodicStation === 'All' ||
-              periodic.station === selectedPeriodicStation),
+            (!fromDate || new Date(periodic.created_at) >= new Date(fromDate)) &&
+            (!toDate || new Date(periodic.created_at) <= new Date(toDate)) &&
+            (selectedPeriodicStation === 'All' || periodic.station === selectedPeriodicStation),
         )
         .forEach((periodic) => {
           const status =
@@ -202,7 +182,7 @@ const ECommerce = () => {
       }));
       setPeriodicStatusData(formattedData);
     }
-  }, [periodicData, selectedPeriodicMonth, selectedPeriodicStation]);
+  }, [periodicData, fromDate, toDate, selectedPeriodicStation]);
 
   useEffect(() => {
     if (vehicleData && vehicleData.data) {
@@ -316,7 +296,7 @@ const ECommerce = () => {
       try {
         const response = await axios.get(
           'https://mytrakker.tpltrakker.com/TrakkerServices/Api/Home/GetSOSLastLocation/SOSUser1/SOSPassword1/03300607077/null',
-          { timeout: 10000 }, // 10 seconds timeout
+          { timeout: 5000 }, // 5 seconds timeout
         );
         console.log('Fetched vehicle locations:', response.data); // Debugging line
 
@@ -509,7 +489,7 @@ const ECommerce = () => {
         </CardDataStats>
       </div>
 
-      <div className="col-span-12 xl:col-span-12 h-125 rounded-sm border border-stroke bg-white p-7.5 shadow-xl dark:border-strokedark dark:bg-boxdark">
+      <div className="mt-5 col-span-12 xl:col-span-12 h-125 rounded-sm border border-stroke bg-white p-7.5 shadow-xl dark:border-strokedark dark:bg-boxdark">
         <ResponsiveContainer width="100%" height={400}>
           <div className="ml-5 mb-4">
             <h6 className="text-xl font-semibold text-black dark:text-white">
@@ -561,68 +541,146 @@ const ECommerce = () => {
         </ResponsiveContainer>
       </div>
 
-      <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <div className="col-span-12 xl:col-span-6 h-125 rounded-sm border border-stroke bg-white p-7.5 shadow-xl dark:border-strokedark dark:bg-boxdark flex flex-col">
-          <div className="ml-5 mb-4 flex justify-between">
-            <h6 className="text-xl font-semibold text-black dark:text-white">
-              Fuel Request Status
-            </h6>
-            <div className="flex space-x-2">
-              <select
-                className="border rounded p-2"
-                value={selectedFuelStation}
-                onChange={handleFuelStationChange}
-              >
-                {stationOptions.map((station, index) => (
-                  <option key={index} value={station}>
-                    {station}
-                  </option>
-                ))}
-              </select>
-              <select
-                className="border rounded p-2"
-                value={selectedFuelMonth}
-                onChange={handleFuelMonthChange}
-              >
-                {months.map((month) => (
-                  <option key={month.value} value={month.value}>
-                    {month.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+      <div className="mt-4 col-span-12 xl:col-span-12 h-125 rounded-sm border border-stroke bg-white p-7.5 shadow-xl dark:border-strokedark dark:bg-boxdark flex flex-col">
+        <div className="ml-5 mb-4 flex justify-between">
+          <h6 className="text-xl font-semibold text-black dark:text-white">
+            Fuel Request Status
+          </h6>
+          <div className="flex space-x-2">
+            <select
+              className="border rounded p-2"
+              value={selectedFuelStation}
+              onChange={handleFuelStationChange}
+            >
+              {stationOptions.map((station, index) => (
+                <option key={index} value={station}>
+                  {station}
+                </option>
+              ))}
+            </select>
+            <input
+              type="date"
+              value={fromDate}
+              onChange={handleFromDateChange}
+              className="border rounded p-2"
+            />
+            <input
+              type="date"
+              value={toDate}
+              onChange={handleToDateChange}
+              className="border rounded p-2"
+            />
           </div>
-          <div className="flex flex-1 items-center">
-            <div className="w-full">
-              <ResponsiveContainer width="100%" height={350}>
-                <PieChart>
-                  <Pie
-                    data={fuelStatusData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={80}
-                    outerRadius={120}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="value"
-                    onClick={(data, index, e) =>
-                      handlePieClick(data, index, e, 'Fuel Request Status')
-                    }
-                  >
-                    {fuelStatusData.map((entry) => (
-                      <Cell
-                        key={`cell-${entry.name}`}
-                        fill={chartColorMap[entry.name]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip content={renderCustomTooltip} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
+        </div>
+        <div className="flex flex-1 items-center">
+          <div className="w-full">
+            <ResponsiveContainer width="100%" height={350}>
+              <PieChart>
+                <Pie
+                  data={fuelStatusData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={80}
+                  outerRadius={120}
+                  fill="#8884d8"
+                  paddingAngle={5}
+                  dataKey="value"
+                  onClick={(data, index, e) =>
+                    handlePieClick(data, index, e, 'Fuel Request Status')
+                  }
+                >
+                  {fuelStatusData.map((entry) => (
+                    <Cell
+                      key={`cell-${entry.name}`}
+                      fill={chartColorMap[entry.name]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip content={renderCustomTooltip} />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
-          <div className="mt-4 flex justify-end space-x-4">
-            {['Pending', 'Approved', 'Rejected'].map((status, index) => (
+        </div>
+        <div className="mt-4 flex justify-end space-x-4">
+          {['Pending', 'Approved', 'Rejected'].map((status, index) => (
+            <div key={index} className="flex items-center space-x-2">
+              <span
+                className={`block h-3 w-3 rounded-full ${colorMap[status]}`}
+              ></span>
+              <p className="text-sm font-medium text-black dark:text-white">
+                {status}
+              </p>
+              <p className="ml-2 text-sm font-medium text-black dark:text-white">
+                {fuelStatusData.find((data) => data.name === status)?.value || 0}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-4 col-span-12 xl:col-span-12 h-125 rounded-sm border border-stroke bg-white p-7.5 shadow-xl dark:border-strokedark dark:bg-boxdark flex flex-col">
+        <div className="ml-5 mb-4 flex justify-between">
+          <h6 className="text-xl font-semibold text-black dark:text-white">
+            Periodic Request Status
+          </h6>
+          <div className="flex space-x-2">
+            <select
+              className="border rounded p-2"
+              value={selectedPeriodicStation}
+              onChange={handlePeriodicStationChange}
+            >
+              {stationOptions.map((station, index) => (
+                <option key={index} value={station}>
+                  {station}
+                </option>
+              ))}
+            </select>
+            <input
+              type="date"
+              value={fromDate}
+              onChange={handleFromDateChange}
+              className="border rounded p-2"
+            />
+            <input
+              type="date"
+              value={toDate}
+              onChange={handleToDateChange}
+              className="border rounded p-2"
+            />
+          </div>
+        </div>
+        <div className="flex flex-1 items-center">
+          <div className="w-full">
+            <ResponsiveContainer width="100%" height={350}>
+              <PieChart>
+                <Pie
+                  data={periodicStatusData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={80}
+                  outerRadius={120}
+                  fill="#8884d8"
+                  paddingAngle={5}
+                  dataKey="value"
+                  onClick={(data, index, e) =>
+                    handlePieClick(data, index, e, 'Periodic Request Status')
+                  }
+                >
+                  {periodicStatusData.map((entry) => (
+                    <Cell
+                      key={`cell-${entry.name}`}
+                      fill={chartColorMap[entry.name]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip content={renderCustomTooltip} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div className="mt-4 flex justify-end space-x-4">
+          {['Pending', 'Approved', 'Rejected', 'Completed'].map(
+            (status, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <span
                   className={`block h-3 w-3 rounded-full ${colorMap[status]}`}
@@ -631,126 +689,47 @@ const ECommerce = () => {
                   {status}
                 </p>
                 <p className="ml-2 text-sm font-medium text-black dark:text-white">
-                  {fuelStatusData.find((data) => data.name === status)?.value ||
-                    0}
+                  {periodicStatusData.find((data) => data.name === status)
+                    ?.value || 0}
                 </p>
               </div>
-            ))}
-          </div>
+            ),
+          )}
         </div>
+      </div>
 
-        <div className="col-span-12 xl:col-span-6 h-125 rounded-sm border border-stroke bg-white p-7.5 shadow-xl dark:border-strokedark dark:bg-boxdark flex flex-col">
+      <div className="mt-4 col-span-12 xl:col-span-12 h-125 rounded-sm border border-stroke bg-white p-7.5 shadow-xl dark:border-strokedark dark:bg-boxdark">
+        <ResponsiveContainer width="100%" height={400}>
           <div className="ml-5 mb-4 flex justify-between">
             <h6 className="text-xl font-semibold text-black dark:text-white">
-              Periodic Request Status
+              Vehicles by Model
             </h6>
-            <div className="flex space-x-2">
-              <select
-                className="border rounded p-2"
-                value={selectedPeriodicStation}
-                onChange={handlePeriodicStationChange}
-              >
-                {stationOptions.map((station, index) => (
-                  <option key={index} value={station}>
-                    {station}
-                  </option>
-                ))}
-              </select>
-              <select
-                className="border rounded p-2"
-                value={selectedPeriodicMonth}
-                onChange={handlePeriodicMonthChange}
-              >
-                {months.map((month) => (
-                  <option key={month.value} value={month.value}>
-                    {month.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <select
+              className="border rounded p-2"
+              value={selectedFuelStation}
+              onChange={handleFuelStationChange}
+            >
+              {stationOptions.map((station, index) => (
+                <option key={index} value={station}>
+                  {station}
+                </option>
+              ))}
+            </select>
           </div>
-          <div className="flex flex-1 items-center">
-            <div className="w-full">
-              <ResponsiveContainer width="100%" height={350}>
-                <PieChart>
-                  <Pie
-                    data={periodicStatusData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={80}
-                    outerRadius={120}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="value"
-                    onClick={(data, index, e) =>
-                      handlePieClick(data, index, e, 'Periodic Request Status')
-                    }
-                  >
-                    {periodicStatusData.map((entry) => (
-                      <Cell
-                        key={`cell-${entry.name}`}
-                        fill={chartColorMap[entry.name]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip content={renderCustomTooltip} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-          <div className="mt-4 flex justify-end space-x-4">
-            {['Pending', 'Approved', 'Rejected', 'Completed'].map(
-              (status, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <span
-                    className={`block h-3 w-3 rounded-full ${colorMap[status]}`}
-                  ></span>
-                  <p className="text-sm font-medium text-black dark:text-white">
-                    {status}
-                  </p>
-                  <p className="ml-2 text-sm font-medium text-black dark:text-white">
-                    {periodicStatusData.find((data) => data.name === status)
-                      ?.value || 0}
-                  </p>
-                </div>
-              ),
-            )}
-          </div>
-        </div>
-
-        <div className="col-span-12 xl:col-span-6 h-125 rounded-sm border border-stroke bg-white p-7.5 shadow-xl dark:border-strokedark dark:bg-boxdark">
-          <ResponsiveContainer width="100%" height={400}>
-            <div className="ml-5 mb-4 flex justify-between">
-              <h6 className="text-xl font-semibold text-black dark:text-white">
-                Vehicles by Model
-              </h6>
-              <select
-                className="border rounded p-2"
-                value={selectedFuelStation}
-                onChange={handleFuelStationChange}
-              >
-                {stationOptions.map((station, index) => (
-                  <option key={index} value={station}>
-                    {station}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <BarChart layout="vertical" data={vehicleModelData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis
-                dataKey="model"
-                type="category"
-                interval={0}
-                tick={{ fontSize: 10 }}
-              />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="count" fill="#3C50E0" name="Vehicles" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+          <BarChart layout="vertical" data={vehicleModelData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis type="number" />
+            <YAxis
+              dataKey="model"
+              type="category"
+              interval={0}
+              tick={{ fontSize: 10 }}
+            />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="count" fill="#3C50E0" name="Vehicles" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
 
       {isModalOpen && (

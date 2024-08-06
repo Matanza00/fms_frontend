@@ -17,6 +17,7 @@ import {
 import { stationOptions } from '../../constants/Data';
 import { customStyles } from '../../constants/Styles';
 import Loader from '../../common/Loader';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const EditTeam = () => {
   const { teamId } = useParams();
@@ -178,7 +179,11 @@ const EditTeam = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Edit Maintenance Team" />
+        <BreadcrumbNav
+          pageName="Edit Team Details"
+          pageNameprev="Maintenance Teams" //show the name on top heading
+          pagePrevPath="daily-maintenance/maintenance-team" // add the previous path to the navigation
+        />
         <div className="gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

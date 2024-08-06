@@ -15,6 +15,8 @@ import ReactDOM from 'react-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import { useGetAllFuelQuery } from '../../services/fuelSlice';
+
 const FuelManagement = () => {
   const { user } = useSelector((state) => state.auth);
   const [searchTerm, setSearchTerm] = useState('');
@@ -29,6 +31,11 @@ const FuelManagement = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  const { data: fuelData, error, isLoading } = useGetAllFuelQuery(companyId);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
   const handleSearch = (e) => {
     const { value } = e.target;
     setSearchTerm(value);
@@ -36,14 +43,6 @@ const FuelManagement = () => {
 
   const handleStatusChange = (e) => {
     setStatus(e);
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
   };
 
   const exportPDF = (data) => {
@@ -220,69 +219,74 @@ const FuelManagement = () => {
   };
 
   const exportFuelCardReport = async (data) => {
+    console.log('Data from exportFuelCardReport ', data);
     if (!data || data.length === 0) {
       console.error('No data available for export.');
       return;
     }
 
-    try {
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Fuel Data');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Fuel Data');
 
-      const columns = [
-        { header: 'Station', key: 'station', width: 20 },
-        { header: 'Mode Of Fueling', key: 'modeOfFueling', width: 20 },
-        { header: 'Card Number', key: 'cardNo', width: 20 },
-        { header: 'Registration Number', key: 'registrationNo', width: 20 },
-        { header: 'Fuel Type', key: 'fuelType', width: 15 },
-      ];
+    const columns = [
+      { header: 'S.No', key: 'sno', width: 10 },
+      { header: 'Station', key: 'station', width: 20 },
+      { header: 'Mode Of Fueling', key: 'modeOfFueling', width: 20 },
+      { header: 'Card Number', key: 'cardNo', width: 20 },
+      { header: 'Registration Number', key: 'registrationNo', width: 20 },
+      { header: 'Fuel Type', key: 'fuelType', width: 15 },
+    ];
+    // Style header row
 
-      worksheet.columns = columns;
+    worksheet.columns = columns;
+    // Freeze the first row
+    worksheet.views = [{ state: 'frozen', ySplit: 1 }];
 
-      const sortedData = data
-        .filter((item) => item.station)
-        .sort((a, b) => a.station.localeCompare(b.station));
+    const sortedData = data
+      .filter((item) => item.station)
+      .sort((a, b) => a.station.localeCompare(b.station));
 
-      let currentStation = '';
-      sortedData.forEach((item) => {
-        if (item.station !== currentStation) {
-          if (currentStation !== '') {
-            worksheet.addRow([]);
-          }
-          currentStation = item.station;
-          const stationRow = worksheet.addRow([`Station: ${currentStation}`]);
-          stationRow.font = { bold: true };
-          const headerRow = worksheet.addRow(columns.map((col) => col.header));
-          headerRow.eachCell((cell) => {
-            cell.fill = {
-              type: 'pattern',
-              pattern: 'solid',
-              fgColor: { argb: 'FFFF00' },
-            };
-            cell.font = { bold: true };
-          });
+    let currentStation = '';
+    let serialNumber = 1; // Initialize serial number
+    sortedData.forEach((item) => {
+      if (item.station !== currentStation) {
+        if (currentStation !== '') {
+          worksheet.addRow([]);
         }
-        worksheet.addRow({
-          station: item.station,
-          modeOfFueling: item.modeOfFueling,
-          cardNo: item.cardNo,
-          registrationNo: item.registrationNo,
-          fuelType: item.fuelType,
+        currentStation = item.station;
+        serialNumber = 1; // Reset serial number for each station
+        const stationRow = worksheet.addRow([`Station: ${currentStation}`]);
+        stationRow.font = { bold: true };
+        const headerRow = worksheet.addRow(columns.map((col) => col.header));
+        headerRow.font = { bold: true, size: 16, color: { argb: 'FFFFFF' } };
+        headerRow.eachCell((cell) => {
+          cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFFF00' },
+          };
+          cell.font = { bold: true, size: 14 };
         });
+      }
+      worksheet.addRow({
+        sno: serialNumber++, // Increment serial number
+        station: item.station,
+        modeOfFueling: item.modeOfFueling,
+        cardNo: item.cardNo,
+        registrationNo: item.registrationNo,
+        fuelType: item.fuelType,
       });
+    });
 
-      const buffer = await workbook.xlsx.writeBuffer();
-      const blob = new Blob([buffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      });
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
 
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'Fuel_Card_Tagging_Report.xlsx';
-      link.click();
-    } catch (error) {
-      console.error('Error exporting fuel card report:', error);
-    }
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Fuel_Card_Tagging_Report.xlsx';
+    link.click();
   };
 
   const exportDailyVehicleFuelingReport = async (data) => {
@@ -294,16 +298,16 @@ const FuelManagement = () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Daily Vehicle Fueling Report');
 
-    // Define columns for the table
     const columns = [
       { header: 'S.No', key: 'serialNo', width: 7 },
+      { header: 'Req ID', key: 'id', width: 10 },
       { header: 'Station', key: 'station', width: 10 },
       { header: 'Vehicle', key: 'registrationNo', width: 13 },
       { header: 'Card Number', key: 'cardNo', width: 20 },
       { header: 'Type', key: 'modeOfFueling', width: 10 },
       { header: 'Created At', key: 'created_at', width: 20 },
       { header: 'Amount', key: 'amount', width: 15 },
-      { header: 'Litre', key: 'quantityOfFuel', width: 10 },
+      { header: 'Prev. Litre', key: 'quantityOfFuel', width: 10 },
       { header: 'Rate of Fuel', key: 'rateOfFuel', width: 15 },
       {
         header: 'Current Oddo',
@@ -322,7 +326,6 @@ const FuelManagement = () => {
 
     worksheet.columns = columns;
 
-    // Style header row
     const headerRow = worksheet.getRow(1);
     headerRow.font = { bold: true, size: 14, color: { argb: 'FFFFFF' } };
     headerRow.fill = {
@@ -332,7 +335,6 @@ const FuelManagement = () => {
     };
     headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    // Freeze the first row
     worksheet.views = [{ state: 'frozen', ySplit: 1 }];
 
     const formatDate = (dateString) => {
@@ -349,7 +351,7 @@ const FuelManagement = () => {
     data.forEach((item, index) => {
       const mileage =
         item.currentOddometerReading - item.previousOddometerReading;
-      const fuelAverage = mileage / item.quantityOfFuel;
+      const fuelAverage = mileage / item.previousFuelQuantity;
       let category = '';
       if (fuelAverage >= 9) {
         category = 'A';
@@ -360,12 +362,13 @@ const FuelManagement = () => {
       }
       const row = worksheet.addRow({
         serialNo: index + 1,
+        id: item.id,
         station: item.station,
         registrationNo: item.registrationNo,
         cardNo: item.cardNo,
         created_at: formatDate(item.created_at),
         amount: item.amount,
-        quantityOfFuel: item.quantityOfFuel,
+        quantityOfFuel: item.previousFuelQuantity,
         rateOfFuel: item.rateOfFuel,
         modeOfFueling: item.modeOfFueling,
         currentOddometerReading: item.currentOddometerReading,
@@ -375,25 +378,24 @@ const FuelManagement = () => {
         category: category,
       });
 
-      // Colorize the category cell based on value
       const categoryCell = row.getCell('category');
       if (category === 'A') {
         categoryCell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: { argb: 'FF0000FF' }, // Blue color
+          fgColor: { argb: 'FF0000FF' },
         };
       } else if (category === 'B') {
         categoryCell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: { argb: 'FFFFFF00' }, // Yellow color
+          fgColor: { argb: 'FFFFFF00' },
         };
       } else if (category === 'C') {
         categoryCell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: { argb: 'FFFF0000' }, // Red color
+          fgColor: { argb: 'FFFF0000' },
         };
       }
     });
@@ -410,6 +412,7 @@ const FuelManagement = () => {
   };
 
   const exportDailyOilComparisonReport = async (data) => {
+    // need to change this
     const filteredData = data.filter((obj) => {
       const createdAt = new Date(obj.created_at);
       if (startDate && createdAt < startDate) return false;
@@ -420,7 +423,6 @@ const FuelManagement = () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Daily Oil Comparison Report');
 
-    // Define columns for the table
     const columns = [
       { header: 'Station', key: 'station', width: 20 },
       { header: 'Region Wise Total', key: 'total', width: 15 },
@@ -451,12 +453,10 @@ const FuelManagement = () => {
       groupedData[key].total += parseFloat(obj.amount);
     });
 
-    // Add data rows
     Object.keys(groupedData).forEach((key) => {
       worksheet.addRow(groupedData[key]);
     });
 
-    // Add the header row styling
     worksheet.getRow(1).eachCell((cell) => {
       cell.font = { bold: true };
       cell.fill = {
@@ -467,7 +467,6 @@ const FuelManagement = () => {
       cell.alignment = { vertical: 'middle', horizontal: 'center' };
     });
 
-    // Calculate column-wise sums and add to the last row
     const columnSums = { station: 'Date Wise Total' };
     dateRange.forEach((date) => {
       let columnSum = 0;
@@ -483,7 +482,6 @@ const FuelManagement = () => {
 
     worksheet.addRow(columnSums);
 
-    // Style the total row
     worksheet.getRow(worksheet.lastRow.number).eachCell((cell) => {
       cell.font = { bold: true };
       cell.fill = {
@@ -562,13 +560,13 @@ const FuelManagement = () => {
 
         if (averageFuelAverage < 7) {
           category = 'C';
-          fillColor = 'FFFF0000'; // Red
+          fillColor = 'FFFF0000';
         } else if (averageFuelAverage >= 7 && averageFuelAverage < 9) {
           category = 'B';
-          fillColor = 'FFFFFF00'; // Yellow
+          fillColor = 'FFFFFF00';
         } else {
           category = 'A';
-          fillColor = 'FF00FF00'; // Green
+          fillColor = 'FF00FF00';
         }
 
         const row = worksheet.addRow({
@@ -580,7 +578,6 @@ const FuelManagement = () => {
           category: category,
         });
 
-        // Apply the fill color based on the category
         row.getCell('category').fill = {
           type: 'pattern',
           pattern: 'solid',
@@ -625,9 +622,9 @@ const FuelManagement = () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Mileage Report');
 
-    // Define columns for the table
     const columns = [
       { header: 'S.No', key: 'serialNo', width: 7 },
+      { header: 'Req ID', key: 'id', width: 10 },
       { header: 'Card Number', key: 'cardNo', width: 20 },
       { header: 'Name on Card', key: 'registrationNo', width: 20 },
       { header: 'Type', key: 'modeOfFueling', width: 10 },
@@ -640,7 +637,6 @@ const FuelManagement = () => {
 
     worksheet.columns = columns;
 
-    // Style header row
     const headerRow = worksheet.getRow(1);
     headerRow.font = { bold: true, size: 14, color: { argb: 'FFFFFF' } };
     headerRow.fill = {
@@ -650,7 +646,6 @@ const FuelManagement = () => {
     };
     headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    // Freeze the first row
     worksheet.views = [{ state: 'frozen', ySplit: 1 }];
 
     const formatDate = (dateString) => {
@@ -664,7 +659,6 @@ const FuelManagement = () => {
       return `${year}-${month}-${day}, ${hours}:${minutes}:${seconds}`;
     };
 
-    // Group data by station and add to the worksheet
     const groupedData = data.reduce((acc, item) => {
       if (!acc[item.station]) {
         acc[item.station] = [];
@@ -688,7 +682,6 @@ const FuelManagement = () => {
       });
 
       stationData.forEach((item, index) => {
-        // added index here
         const mileage =
           item.currentOddometerReading - item.previousOddometerReading;
         const fuelAverage = mileage / item.quantityOfFuel;
@@ -702,6 +695,7 @@ const FuelManagement = () => {
         }
         const row = worksheet.addRow({
           serialNo: index + 1,
+          id: item.id,
           cardNo: item.cardNo,
           registrationNo: item.registrationNo,
           modeOfFueling: item.modeOfFueling,
@@ -712,25 +706,24 @@ const FuelManagement = () => {
           category: category,
         });
 
-        // Colorize the category cell based on value
         const categoryCell = row.getCell('category');
         if (category === 'A') {
           categoryCell.fill = {
             type: 'pattern',
             pattern: 'solid',
-            fgColor: { argb: 'FF00FF00' }, // green color
+            fgColor: { argb: 'FF00FF00' },
           };
         } else if (category === 'B') {
           categoryCell.fill = {
             type: 'pattern',
             pattern: 'solid',
-            fgColor: { argb: 'FF0000FF' }, // Light Blue color
+            fgColor: { argb: 'FF0000FF' },
           };
         } else if (category === 'C') {
           categoryCell.fill = {
             type: 'pattern',
             pattern: 'solid',
-            fgColor: { argb: 'FFFF0000' }, // Red color
+            fgColor: { argb: 'FFFF0000' },
           };
         }
       });
@@ -746,6 +739,11 @@ const FuelManagement = () => {
     link.download = 'Mileage_Report.xlsx';
     link.click();
   };
+
+  console.log('Data of all fuel ', fuelData.data);
+
+  console.log('Data of all fuel ', fuelData.data);
+  // console.log("Sorted " , fuelData)
 
   return (
     <DefaultLayout>
@@ -933,35 +931,35 @@ const FuelManagement = () => {
               </div>
               <div className="mt-4 flex justify-start space-x-2">
                 <button
-                  onClick={() => exportFuelCardReport(sortedData)}
+                  onClick={() => exportFuelCardReport(fuelData.data)}
                   className="mt-5 bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-opacity-90 flex items-center"
                 >
                   Fuel Card Tagging Report
                   <SiMicrosoftexcel className="ml-2" />
                 </button>
                 <button
-                  onClick={() => exportDailyVehicleFuelingReport(sortedData)}
+                  onClick={() => exportDailyVehicleFuelingReport(fuelData.data)}
                   className="mt-5 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-opacity-90 flex items-center"
                 >
                   Daily Vehicle Fueling Report
                   <SiMicrosoftexcel className="ml-2" />
                 </button>
                 <button
-                  onClick={() => exportDailyOilComparisonReport(sortedData)}
+                  onClick={() => exportDailyOilComparisonReport(fuelData.data)}
                   className="mt-5 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-opacity-90 flex items-center"
                 >
                   Daily Oil Comparison Report
                   <SiMicrosoftexcel className="ml-2" />
                 </button>
                 <button
-                  onClick={() => exportMileageReport(sortedData)}
+                  onClick={() => exportMileageReport(fuelData.data)}
                   className="mt-5 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-opacity-90 flex items-center"
                 >
                   Mileage Report
                   <SiMicrosoftexcel className="ml-2" />
                 </button>
                 <button
-                  onClick={() => exportCategoryWiseAverage(sortedData)}
+                  onClick={() => exportCategoryWiseAverage(fuelData.data)}
                   className="mt-5 bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-opacity-90 flex items-center"
                 >
                   Category Wise Average
@@ -974,4 +972,5 @@ const FuelManagement = () => {
     </DefaultLayout>
   );
 };
+
 export default FuelManagement;

@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+} from 'recharts';
 import DefaultLayout from '../../../layout/DefaultLayout';
 import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
 import { useGetPeriodicByCompanyIdQuery } from '../../../services/periodicSlice';
+import BreadcrumbNav from '../../../components/Breadcrumbs/BreadcrumbNav';
 
 const Modal = ({ data, title, categoryField }) => {
   const formatText = (text) => {
@@ -45,12 +58,20 @@ const Modal = ({ data, title, categoryField }) => {
                 <td className="border px-4 py-2">{vehicle.driverName}</td>
                 <td className="border px-4 py-2">{vehicle.quantity}</td>
                 <td className="border px-4 py-2">{vehicle.station}</td>
-                <td className="border px-4 py-2">{formatText(vehicle.requestType)}</td>
+                <td className="border px-4 py-2">
+                  {formatText(vehicle.requestType)}
+                </td>
                 <td className="border px-4 py-2">{vehicle.amount}</td>
                 <td className="border px-4 py-2">{vehicle.aplCardNo}</td>
-                <td className="border px-4 py-2">{formatDate(vehicle.created_at)}</td>
-                <td className="border px-4 py-2">{formatDate(vehicle.completionDate)}</td>
-                <td className="border px-4 py-2">{formatText(vehicle[categoryField])}</td>
+                <td className="border px-4 py-2">
+                  {formatDate(vehicle.created_at)}
+                </td>
+                <td className="border px-4 py-2">
+                  {formatDate(vehicle.completionDate)}
+                </td>
+                <td className="border px-4 py-2">
+                  {formatText(vehicle[categoryField])}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -67,20 +88,27 @@ const Modal = ({ data, title, categoryField }) => {
 
 function Dashboards() {
   const companyId = 25; // Replace with your actual company ID
-  const { data: periodicData, error: periodicError, isLoading: periodicLoading } = useGetPeriodicByCompanyIdQuery({
+  const {
+    data: periodicData,
+    error: periodicError,
+    isLoading: periodicLoading,
+  } = useGetPeriodicByCompanyIdQuery({
     companyId,
     page: 1,
     limit: 1000,
-    searchTerm: ''
+    searchTerm: '',
   });
 
   const [chartData, setChartData] = useState([]);
   const [jobData, setJobData] = useState([]);
   const [stations, setStations] = useState([]);
   const [statuses, setStatuses] = useState([]);
-  const [selectedStationForRequestType, setSelectedStationForRequestType] = useState('All');
-  const [selectedStationForJobType, setSelectedStationForJobType] = useState('All');
-  const [selectedStatusForJobType, setSelectedStatusForJobType] = useState('All');
+  const [selectedStationForRequestType, setSelectedStationForRequestType] =
+    useState('All');
+  const [selectedStationForJobType, setSelectedStationForJobType] =
+    useState('All');
+  const [selectedStatusForJobType, setSelectedStatusForJobType] =
+    useState('All');
   const [modalData, setModalData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -88,10 +116,16 @@ function Dashboards() {
 
   useEffect(() => {
     if (periodicData && periodicData.data) {
-      const uniqueStations = ['All', ...new Set(periodicData.data.map(item => item.station))];
+      const uniqueStations = [
+        'All',
+        ...new Set(periodicData.data.map((item) => item.station)),
+      ];
       setStations(uniqueStations);
 
-      const uniqueStatuses = ['All', ...new Set(periodicData.data.map(item => item.status))];
+      const uniqueStatuses = [
+        'All',
+        ...new Set(periodicData.data.map((item) => item.status)),
+      ];
       setStatuses(uniqueStatuses);
     }
   }, [periodicData]);
@@ -99,12 +133,19 @@ function Dashboards() {
   useEffect(() => {
     if (periodicData && periodicData.data) {
       const filterDataByStation = (data, station) => {
-        return station === 'All' ? data : data.filter(item => item.station === station);
+        return station === 'All'
+          ? data
+          : data.filter((item) => item.station === station);
       };
 
-      const filteredRequestTypeData = filterDataByStation(periodicData.data, selectedStationForRequestType);
+      const filteredRequestTypeData = filterDataByStation(
+        periodicData.data,
+        selectedStationForRequestType,
+      );
       const statusCounts = filteredRequestTypeData.reduce((acc, periodic) => {
-        const status = periodic.status ? (periodic.status.charAt(0).toUpperCase() + periodic.status.slice(1)) : 'Unknown';
+        const status = periodic.status
+          ? periodic.status.charAt(0).toUpperCase() + periodic.status.slice(1)
+          : 'Unknown';
         if (!acc[status]) {
           acc[status] = { count: 0, vehicles: [] };
         }
@@ -124,18 +165,30 @@ function Dashboards() {
         return acc;
       }, {});
 
-      const formattedRequestTypeData = Object.entries(statusCounts).map(([status, { count, vehicles }]) => ({
-        name: status,
-        value: count,
-        vehicles,
-      }));
+      const formattedRequestTypeData = Object.entries(statusCounts).map(
+        ([status, { count, vehicles }]) => ({
+          name: status,
+          value: count,
+          vehicles,
+        }),
+      );
 
       setChartData(formattedRequestTypeData);
 
-      const filteredJobTypeData = filterDataByStation(periodicData.data, selectedStationForJobType);
+      const filteredJobTypeData = filterDataByStation(
+        periodicData.data,
+        selectedStationForJobType,
+      );
       const jobCounts = filteredJobTypeData.reduce((acc, periodic) => {
-        if (selectedStatusForJobType === 'All' || periodic.status === selectedStatusForJobType) {
-          const job = periodic.periodicType && periodic.periodicType.job ? (periodic.periodicType.job.charAt(0).toUpperCase() + periodic.periodicType.job.slice(1)) : 'Unknown';
+        if (
+          selectedStatusForJobType === 'All' ||
+          periodic.status === selectedStatusForJobType
+        ) {
+          const job =
+            periodic.periodicType && periodic.periodicType.job
+              ? periodic.periodicType.job.charAt(0).toUpperCase() +
+                periodic.periodicType.job.slice(1)
+              : 'Unknown';
           if (!acc[job]) {
             acc[job] = { count: 0, vehicles: [] };
           }
@@ -156,15 +209,22 @@ function Dashboards() {
         return acc;
       }, {});
 
-      const formattedJobTypeData = Object.entries(jobCounts).map(([job, { count, vehicles }]) => ({
-        name: job,
-        value: count,
-        vehicles,
-      }));
+      const formattedJobTypeData = Object.entries(jobCounts).map(
+        ([job, { count, vehicles }]) => ({
+          name: job,
+          value: count,
+          vehicles,
+        }),
+      );
 
       setJobData(formattedJobTypeData);
     }
-  }, [periodicData, selectedStationForRequestType, selectedStationForJobType, selectedStatusForJobType]);
+  }, [
+    periodicData,
+    selectedStationForRequestType,
+    selectedStationForJobType,
+    selectedStatusForJobType,
+  ]);
 
   const handleStationChangeForRequestType = (e) => {
     setSelectedStationForRequestType(e.target.value);
@@ -179,10 +239,10 @@ function Dashboards() {
   };
 
   const chartColorMap = {
-    Rejected: '#FF0000',    // Red
-    Completed: '#00FF00',  // Green
-    Pending: '#FFD700',    // Yellow
-    Approved: '#0000FF',   // Blue
+    Rejected: '#FF0000', // Red
+    Completed: '#00FF00', // Green
+    Pending: '#FFD700', // Yellow
+    Approved: '#0000FF', // Blue
   };
 
   const colorMap = {
@@ -208,7 +268,10 @@ function Dashboards() {
           <p className="label font-semibold">{`${name} : ${value}`}</p>
           <div className="mt-2">
             {vehicles.map((vehicle, index) => (
-              <p key={index} className="text-sm">{`${index + 1}. ${vehicle.registrationNo}`}</p>
+              <p
+                key={index}
+                className="text-sm"
+              >{`${index + 1}. ${vehicle.registrationNo}`}</p>
             ))}
           </div>
         </div>
@@ -219,16 +282,20 @@ function Dashboards() {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Periodic Dashboard" />
+      <BreadcrumbNav
+        pageName="Periodic Dashboard"
+        pageNameprev="Periodic" //show the name on top heading
+        pagePrevPath="periodic" // add the previous path to the navigation
+      />
 
       <div className="flex flex-col items-center mt-10 bg-white rounded-lg shadow-lg p-5 w-full">
         <div className="flex flex-col lg:flex-row w-full justify-between gap-6">
           <div className="w-full lg:w-1/2 bg-white rounded-lg shadow-lg p-5">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Periodic Request Type</h2>
-              <select 
-                className="border rounded p-2" 
-                value={selectedStationForRequestType} 
+              <select
+                className="border rounded p-2"
+                value={selectedStationForRequestType}
                 onChange={handleStationChangeForRequestType}
               >
                 {stations.map((station, index) => (
@@ -249,10 +316,19 @@ function Dashboards() {
                   fill="#8884d8"
                   paddingAngle={5}
                   dataKey="value"
-                  onClick={(data, index) => handlePieClick(data.payload, 'Periodic Request Type', 'status')}
+                  onClick={(data, index) =>
+                    handlePieClick(
+                      data.payload,
+                      'Periodic Request Type',
+                      'status',
+                    )
+                  }
                 >
                   {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={chartColorMap[entry.name] || '#8884d8'} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={chartColorMap[entry.name] || '#8884d8'}
+                    />
                   ))}
                 </Pie>
                 <Tooltip content={renderCustomTooltip} />
@@ -262,10 +338,10 @@ function Dashboards() {
             <div className="mt-4 flex flex-wrap justify-center space-x-4">
               {chartData.map((entry, index) => (
                 <div key={index} className="flex items-center space-x-2">
-                  <span className={`block h-3 w-3 rounded-full ${colorMap[entry.name]}`}></span>
-                  <p className="text-sm font-medium text-black">
-                    {entry.name}
-                  </p>
+                  <span
+                    className={`block h-3 w-3 rounded-full ${colorMap[entry.name]}`}
+                  ></span>
+                  <p className="text-sm font-medium text-black">{entry.name}</p>
                   <p className="ml-2 text-sm font-medium text-black">
                     {entry.value}
                   </p>
@@ -278,9 +354,9 @@ function Dashboards() {
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Periodic Job Type</h2>
               <div className="flex space-x-4">
-                <select 
-                  className="border rounded p-2" 
-                  value={selectedStationForJobType} 
+                <select
+                  className="border rounded p-2"
+                  value={selectedStationForJobType}
                   onChange={handleStationChangeForJobType}
                 >
                   {stations.map((station, index) => (
@@ -289,9 +365,9 @@ function Dashboards() {
                     </option>
                   ))}
                 </select>
-                <select 
-                  className="border rounded p-2" 
-                  value={selectedStatusForJobType} 
+                <select
+                  className="border rounded p-2"
+                  value={selectedStatusForJobType}
                   onChange={handleStatusChangeForJobType}
                 >
                   {statuses.map((status, index) => (
@@ -305,18 +381,38 @@ function Dashboards() {
             <ResponsiveContainer width="100%" height={400}>
               <BarChart data={jobData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ angle: jobData.length > 5 ? -45 : 0, textAnchor: jobData.length > 5 ? 'end' : 'middle' }} />
+                <XAxis
+                  dataKey="name"
+                  tick={{
+                    angle: jobData.length > 5 ? -45 : 0,
+                    textAnchor: jobData.length > 5 ? 'end' : 'middle',
+                  }}
+                />
                 <YAxis />
                 <Tooltip content={renderCustomTooltip} />
                 <Legend />
-                <Bar dataKey="value" fill="#82ca9d" onClick={(data, index) => handlePieClick(data.payload, 'Periodic Job Type', 'requestType')} />
+                <Bar
+                  dataKey="value"
+                  fill="#82ca9d"
+                  onClick={(data, index) =>
+                    handlePieClick(
+                      data.payload,
+                      'Periodic Job Type',
+                      'requestType',
+                    )
+                  }
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
       </div>
 
-      <Modal data={modalData} title={modalTitle} categoryField={modalCategoryField} />
+      <Modal
+        data={modalData}
+        title={modalTitle}
+        categoryField={modalCategoryField}
+      />
     </DefaultLayout>
   );
 }

@@ -4,6 +4,8 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { useLocation } from 'react-router-dom';
 import { useGetChecklistDataQuery } from '../../services/dailySlice';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
+import { useNavigate, Link } from 'react-router-dom';
 
 const countNotOkItems = (booleanFields, checklist) => {
   return booleanFields.reduce((acc, fieldName) => {
@@ -11,11 +13,13 @@ const countNotOkItems = (booleanFields, checklist) => {
   }, 0);
 };
 const DailyView = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { registrationNo } = location.state || {};
   const { data, isLoading, error } = useGetChecklistDataQuery({
     registrationNo,
   });
+  // console.log(data);
 
   const booleanFields = [
     'vehicleInspection',
@@ -81,10 +85,15 @@ const DailyView = () => {
 
   const totalNotOkItems = countNotOkItems(booleanFields, checklist);
   console.log('totalNotOkItems', totalNotOkItems);
+  console.log('data.data', data?.data?.status);
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Daily Maintenance View" />
+      <BreadcrumbNav
+        pageName="Daily Maintenance View"
+        pageNameprev="Daily Maintenance" //show the name on top heading
+        pagePrevPath="daily-maintenance" // add the previous path to the navigation
+      />
       <div className="mx-auto max-w-4xl">
         <div className="gap-8">
           <div className="col-span-5 xl:col-span-3">
@@ -137,6 +146,58 @@ const DailyView = () => {
                     ))}
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className="mr-5 mt-2">
+              <div className="flex justify-end gap-4.5">
+                <button
+                  className="flex justify-center rounded border border-stroke py-2 px-6 font-medium  text-white bg-primary"
+                  type="button"
+                  onClick={() =>
+                    navigate(`/daily-maintenance/process/${registrationNo}`, {
+                      state: {
+                        registrationNo: registrationNo,
+                        status: data.data.status,
+                      },
+                    })
+                  }
+                >
+                  Process Form
+                </button>
+                {data?.data?.dailyServices.length > 0 &&
+                  data?.data?.status == 'APPROVED' && (
+                    <button
+                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium  text-white bg-primary"
+                      type="button"
+                      onClick={() =>
+                        navigate(
+                          `/daily-maintenance/process/view/${registrationNo}`,
+                          {
+                            state: {
+                              registrationNo: registrationNo,
+                              status: data.data.status,
+                            },
+                          },
+                        )
+                      }
+                    >
+                      View Process Form
+                    </button>
+                  )}
+                {/* <button
+                  className="rounded border border-stroke py-1 px-4 font-medium text-black dark:border-strokedark dark:text-white transition duration-150 ease-in-out hover:border-gray dark:hover:border-white"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    navigate('/daily-maintenance/view', {
+                      state: {
+                        registrationNo: e.vehicle.registrationNo,
+                        status: e.vehicle.status,
+                      },
+                    });
+                  }}
+                >
+                  View
+                </button> */}
               </div>
             </div>
           </div>

@@ -75,15 +75,16 @@ export const addFuelRequestSchema = {
   currentFuelingDate: '',
   previousOddometerReading: '',
   // perviousFuelingDate: '',
-  quantityOfFuel: '0',
-  previousFuelQuantity: '0',
-  rateOfFuel: '0',
-  amount: '0',
+  quantityOfFuel: '',
+  previousFuelQuantity: '',
+  rateOfFuel: '',
+  amount: '',
   fuelAverage: '',
   fuelReceipt: '',
   odometerImg: '',
   requestType: '',
   fuelType: '',
+  lastCreatedAt: '',
 };
 
 export const respondFuelRequestSchema = {
@@ -115,7 +116,7 @@ export const addPeriodicRequestSchema = {
 export const respondPeriodicRequestSchema = {
   status: '',
 };
-
+// Add Schema for Daily Process form in the below data structure
 export const addDailyRequestSchema = {
   vehicleInspection: { value: '', reason: '' },
   engineOil: { value: '', reason: '' },
@@ -140,13 +141,13 @@ export const addDailyRequestSchema = {
   fireExtinguisher: { value: '', reason: '' },
   reflectiveTriangles: { value: '', reason: '' },
   fuelLevel: { value: '', reason: '' },
-  totalFaults: '',
+  // totalFaults: 0,
 };
 
-export const respondDailyRequestSchema = {
-  id: '',
-  status: '',
-};
+// export const respondDailyRequestSchema = {
+//   id: '',
+//   status: '',
+// };
 
 export const parameterPrioritySchema = {
   description: 'Item description',
@@ -164,37 +165,63 @@ export const addParameterSchema = {
     { label: '', minKm: '', maxKm: '', minMonths: '', maxMonths: '' },
   ],
 };
+export const addDailyRequestProcessSchema = {
+  station: '',
+  registrationNo: '',
+  make: '',
+  meterReading: '',
+  driverName: '',
+  gbmsNo: '',
+  aplCardNo: '',
+  ce: '',
+  rm_omorName: '',
+  dailySupervisor: '',
+  dailyRepairRequestImgs: [],
+  dailyRepairStatementVideos: [],
+  dailyRepairCompletionImgs: [],
+  dailyReceiptImgs: [],
+  dailyServices: [
+    {
+      vendorType: 'Indoor',
+      indoorVendorName: '',
+      outdoorVendorName: '',
+      outdoorVendorReason: '',
+      description: '',
+      repairCost: '',
+      serviceType: '',
+    },
+  ],
+};
 
 export const addEmergencyRequestSchema = {
   station: '',
   registrationNo: '',
   make: '',
-
   meterReading: '',
   driverName: '',
   gbmsNo: '',
   aplCardNo: '',
-  repairCost: '',
   ce: '',
   rm_omorName: '',
-
   emergencySupervisor: '',
-  vendorType: 'Indoor',
-  indoorVendorName: '',
-  outdoorVendorName: '',
-  outdoorVendorReason: '',
-  emergencyJob: '',
-
-  description: '',
-  // remarks: '',
-  // extras: '',
-
-  emergencyRepairRequestImg: [],
-  emergencyRepairStatementVideo: '',
-
-  emergencyRepairCompletionImg: '',
-  emergencyReceiptImg: '',
+  emergencyRepairRequestImgs: [],
+  emergencyRepairStatementVideos: [],
+  emergencyRepairCompletionImgs: [],
+  emergencyReceiptImgs: [],
+  services: [
+    {
+      vendorType: 'Indoor',
+      indoorVendorName: '',
+      outdoorVendorName: '',
+      outdoorVendorReason: '',
+      // emergencyJob: '',
+      description: '',
+      repairCost: '',
+      serviceType: '',
+    },
+  ],
 };
+
 export const respondEmergencyRequestSchema = {
   status: '',
 };

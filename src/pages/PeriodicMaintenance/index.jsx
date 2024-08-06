@@ -14,6 +14,8 @@ import ExcelJS from 'exceljs';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import { useGetAllPeriodicMaintenanceQuery } from '../../services/periodicSlice';
+
 const PeriodicMaintenance = () => {
   const { user } = useSelector((state) => state.auth);
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,6 +26,12 @@ const PeriodicMaintenance = () => {
 
   let adminRole = user?.Role?.roleName === 'companyAdmin';
   let showButton = user?.Role?.roleName === 'regionalAdmin';
+
+  const {
+    data: vehicle,
+    error,
+    isLoading,
+  } = useGetAllPeriodicMaintenanceQuery();
 
   const handleSearch = (e) => {
     const { value } = e.target;
@@ -202,7 +210,9 @@ const PeriodicMaintenance = () => {
     worksheet.getColumn('created_at').numFmt = 'dd-mm-yyyy';
 
     workbook.xlsx.writeBuffer().then((buffer) => {
-      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const blob = new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = 'Daily_Periodic_Report.xlsx';
@@ -265,7 +275,9 @@ const PeriodicMaintenance = () => {
     worksheet.getColumn('created_at').numFmt = 'dd-mm-yyyy';
 
     workbook.xlsx.writeBuffer().then((buffer) => {
-      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const blob = new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = 'Completed_Status_Periodic_Report.xlsx';
@@ -347,7 +359,7 @@ const PeriodicMaintenance = () => {
                 <li>
                   <button
                     className="flex justify-between items-center"
-                    onClick={() => exportPDF(sortedData)}
+                    onClick={() => exportPDF(vehicle.data)}
                   >
                     Export as PDF
                     <FaFileExport />
@@ -356,7 +368,7 @@ const PeriodicMaintenance = () => {
                 <li>
                   <button
                     className="flex justify-between items-center"
-                    onClick={() => exportToCsv(sortedData)}
+                    onClick={() => exportToCsv(vehicle.data)}
                   >
                     Export as CSV
                     <FaFileExport />
@@ -371,7 +383,9 @@ const PeriodicMaintenance = () => {
                 className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary mx-2 py-1 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:mx-2 lg:px-3"
               >
                 <IoMdAddCircle size={18} />
-                <span className="text-sm">Add Periodic Maintenance Request</span>
+                <span className="text-sm">
+                  Add Periodic Maintenance Request
+                </span>
               </Link>
             )}
           </div>
@@ -383,7 +397,7 @@ const PeriodicMaintenance = () => {
         searchTerm={searchTerm}
       />
 
-      {isModalOpen && (
+      {isModalOpen &&
         ReactDOM.createPortal(
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
             <div className="bg-white dark:bg-boxdark rounded-lg shadow-lg p-6 relative">
@@ -393,10 +407,14 @@ const PeriodicMaintenance = () => {
               >
                 &times;
               </button>
-              <h2 className="text-lg font-medium text-gray-900 dark:text-gray-200 mb-4">Reports</h2>
+              <h2 className="text-lg font-medium text-gray-900 dark:text-gray-200 mb-4">
+                Reports
+              </h2>
               <div className="mb-4 flex space-x-4">
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300">From:</label>
+                  <label className="block text-gray-700 dark:text-gray-300">
+                    From:
+                  </label>
                   <DatePicker
                     selected={startDate}
                     onChange={(date) => setStartDate(date)}
@@ -407,7 +425,9 @@ const PeriodicMaintenance = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300">To:</label>
+                  <label className="block text-gray-700 dark:text-gray-300">
+                    To:
+                  </label>
                   <DatePicker
                     selected={endDate}
                     onChange={(date) => setEndDate(date)}
@@ -418,25 +438,26 @@ const PeriodicMaintenance = () => {
                   />
                 </div>
               </div>
-              <div className='mt-7'>
-              <button
-                className="inline-flex items-center justify-center gap-1.5 rounded-md bg-yellow-500 py-1 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-3 mb-4"
-                onClick={() => exportToExcel(sortedData)}
-              >
-                <span className="text-sm">Periodic Maintenance Report</span>
-              </button>
-              <button
-                className="ml-5 inline-flex items-center justify-center gap-1.5 rounded-md bg-yellow-500 py-1 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-3"
-                onClick={() => exportCustomToExcel(sortedData)}
-              >
-                <span className="text-sm">Completed Status Periodic Report</span>
-              </button>
-            </div>
+              <div className="mt-7">
+                <button
+                  className="inline-flex items-center justify-center gap-1.5 rounded-md bg-yellow-500 py-1 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-3 mb-4"
+                  onClick={() => exportToExcel(sortedData)}
+                >
+                  <span className="text-sm">Periodic Maintenance Report</span>
+                </button>
+                <button
+                  className="ml-5 inline-flex items-center justify-center gap-1.5 rounded-md bg-yellow-500 py-1 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-3"
+                  onClick={() => exportCustomToExcel(sortedData)}
+                >
+                  <span className="text-sm">
+                    Completed Status Periodic Report
+                  </span>
+                </button>
+              </div>
             </div>
           </div>,
-          document.body
-        )
-      )}
+          document.body,
+        )}
     </DefaultLayout>
   );
 };

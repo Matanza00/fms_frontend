@@ -25,13 +25,11 @@ const FuelApprovalTable = ({
   searchTerm,
   setSortedDataIndex,
   statusFilter,
-  startDate,
-  endDate,
-  setStartDate,
-  setEndDate,
 }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const navigate = useNavigate();
   const { showErrorToast, showSuccessToast } = useToast();
 
@@ -42,8 +40,6 @@ const FuelApprovalTable = ({
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
   const tableRef = useRef();
-  const [filterType, setFilterType] = useState('date');
-  const [filterDate, setFilterDate] = useState(null);
   const [statusFilterState, setStatusFilterState] = useState(null);
   const [fuelTypeFilter, setFuelTypeFilter] = useState(null);
   const [stationFilter, setStationFilter] = useState(null);
@@ -101,8 +97,11 @@ const FuelApprovalTable = ({
         }
       });
 
-      if (filterDate) {
-        d = filterDataByDate(filterType, filterDate, d);
+      if (startDate && endDate) {
+        d = d.filter((item) => {
+          const itemDate = new Date(item.created_at);
+          return itemDate >= startDate && itemDate <= endDate;
+        });
       }
 
       if (statusFilterState) {
@@ -142,8 +141,8 @@ const FuelApprovalTable = ({
     fuelData,
     sortBy,
     sortOrder,
-    filterType,
-    filterDate,
+    startDate,
+    endDate,
     statusFilterState,
     fuelTypeFilter,
     stationFilter,
@@ -174,11 +173,6 @@ const FuelApprovalTable = ({
     }
   };
   console.log('Previous litre', updateFuelRequest);
-
-  const handleDateChange = (date, type) => {
-    setFilterType(type);
-    setFilterDate(date);
-  };
 
   const handleRowSelection = (id) => {
     if (selectedRows.includes(id)) {
@@ -212,38 +206,6 @@ const FuelApprovalTable = ({
     }
   };
 
-  const filterDataByDate = (type, date, data) => {
-    let filtered = [...data];
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    if (type === 'date') {
-      filtered = filtered.filter((item) => {
-        const itemDate = new Date(item.created_at);
-        return (
-          itemDate.getDate() === day &&
-          itemDate.getMonth() + 1 === month &&
-          itemDate.getFullYear() === year
-        );
-      });
-    } else if (type === 'month') {
-      filtered = filtered.filter((item) => {
-        const itemDate = new Date(item.created_at);
-        return (
-          itemDate.getMonth() + 1 === month && itemDate.getFullYear() === year
-        );
-      });
-    } else if (type === 'year') {
-      filtered = filtered.filter((item) => {
-        const itemDate = new Date(item.created_at);
-        return itemDate.getFullYear() === year;
-      });
-    }
-
-    return filtered;
-  };
-
   let adminRole =
     user?.Role?.roleName === 'fuelManager' ||
     user?.Role?.roleName === 'companyAdmin';
@@ -272,31 +234,20 @@ const FuelApprovalTable = ({
         <div className="flex flex-wrap space-x-4">
           <div className="flex-1 min-w-[150px]">
             <DatePicker
-              selected={filterDate}
-              onChange={(date) => handleDateChange(date, 'date')}
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
               dateFormat="yyyy-MM-dd"
               className="p-2 border rounded w-full"
-              placeholderText="Select Date"
+              placeholderText="Select From Date"
             />
           </div>
           <div className="flex-1 min-w-[150px]">
             <DatePicker
-              selected={filterDate}
-              onChange={(date) => handleDateChange(date, 'month')}
-              dateFormat="MM/yyyy"
-              showMonthYearPicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              dateFormat="yyyy-MM-dd"
               className="p-2 border rounded w-full"
-              placeholderText="Select Month"
-            />
-          </div>
-          <div className="flex-1 min-w-[150px]">
-            <DatePicker
-              selected={filterDate}
-              onChange={(date) => handleDateChange(date, 'year')}
-              dateFormat="yyyy"
-              showYearPicker
-              className="p-2 border rounded w-full"
-              placeholderText="Select Year"
+              placeholderText="Select To Date"
             />
           </div>
           <div className="flex-1 min-w-[150px]">

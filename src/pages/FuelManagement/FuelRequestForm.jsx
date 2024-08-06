@@ -15,9 +15,12 @@ import { useGetOneVehicleDetailsQuery } from '../../services/periodicSlice';
 import {
   useAddFuelRequestMutation,
   useGetFuelCardNoQuery,
+  useGetFuelRequestQuery,
 } from '../../services/fuelSlice';
 import { modeOfFueling, requestType } from '../../constants/Data';
 import { customStyles } from '../../constants/Styles';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
+import { formatDateAndTime } from '../../utils/helpers';
 
 const FuelRequestForm = () => {
   const navigate = useNavigate();
@@ -37,6 +40,8 @@ const FuelRequestForm = () => {
     user?.companyId,
   );
   const [fuelReceipImgUrl, setfuelReceipImgUrl] = useState('');
+  const [allVehicle, setAllVehicle] = useState([]);
+
   const [AddFuelRequest, { isLoading }] = useAddFuelRequestMutation();
   const {
     data: vehicles,
@@ -46,14 +51,14 @@ const FuelRequestForm = () => {
     companyId: user?.companyId,
     station: formValues?.station,
   });
+  console.log('New Vehicles', vehicles?.data);
+
   const {
     data: tagDriverByVehicle,
     isError: isDriverTaggedError,
     error: tagDriverError,
     refetch: refetchTagDrivers,
   } = useGetTagDriversFromVehicleQuery(formValues?.registrationNo);
-
-  console.log('Tag driver 1', tagDriverByVehicle);
 
   const {
     data: vehicleDetails,
@@ -66,6 +71,7 @@ const FuelRequestForm = () => {
     vehicleId: formValues.registrationNo,
     cardType: formValues.modeOfFueling,
   });
+  console.log('cardNo', cardNo);
 
   const vehicleLoadOptions = (inputValue, callback) => {
     if (!inputValue) {
@@ -84,6 +90,16 @@ const FuelRequestForm = () => {
     }
   };
 
+  useEffect(() => {
+    if (vehicles?.data?.length > 0) {
+      const filteredOptions = vehicles?.data.map((vehicle) => ({
+        value: vehicle.id,
+        label: vehicle.registrationNo,
+      }));
+      setAllVehicle(filteredOptions);
+    }
+  }, [vehicles?.data]);
+
   const handleNormalSelectChange = (selectedOption, name) => {
     setFormValues({
       ...formValues,
@@ -92,6 +108,31 @@ const FuelRequestForm = () => {
   };
 
   const handleSelectChange = (fieldName, selectedOption) => {
+    if (fieldName == 'registrationNo') {
+      setFormValues((prevState) => ({
+        ...prevState,
+        registrationNo: '',
+        cardNo: '',
+        driverName: '',
+        gbmsNo: '',
+        modeOfFueling: '',
+        currentOddometerReading: '', //manual reading
+        currentOddometerReadingAuto: '',
+        // currentOddometerReadingManual: '',
+        previousOddometerReading: '',
+        // perviousFuelingDate: '',
+        quantityOfFuel: '',
+        previousFuelQuantity: '',
+        rateOfFuel: '',
+        amount: '',
+        fuelAverage: '',
+        fuelReceipt: '',
+        odometerImg: '',
+        requestType: '',
+        fuelType: '',
+        lastCreatedAt: '',
+      }));
+    }
     setFormValues((prevState) => ({
       ...prevState,
       [fieldName]: selectedOption.label,
@@ -204,7 +245,9 @@ const FuelRequestForm = () => {
       previousOddometerReading:
         tagDriverByVehicle?.data?.lastFuelChangedOddoReading,
       previousFuelQuantity: tagDriverByVehicle?.data?.lastFuelChangedQuantity,
+      lastCreatedAt: tagDriverByVehicle?.data?.lastCreatedAt,
       fuelAverage: _average,
+      //
     });
   }, [tagDriverByVehicle]);
 
@@ -264,11 +307,17 @@ const FuelRequestForm = () => {
       showErrorToast(tagDriverError?.data?.message);
     }
   }
+  console.log('formValues?.driverName', formValues?.driverName);
+  console.log('formValues?.', formValues);
 
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Add Fuel Request" />
+        <BreadcrumbNav
+          pageName="Add Fuel Request"
+          pageNameprev="Fuel Management" //show the name on top heading
+          pagePrevPath="fuel-management" // add the previous path to the navigation
+        />
 
         <div className=" gap-8">
           <div className="col-span-5 xl:col-span-3">
@@ -308,7 +357,7 @@ const FuelRequestForm = () => {
                       Vehicle Number
                     </label>
                     <div className="relative">
-                      <AsyncSelect
+                      {/* <AsyncSelect
                         styles={customStyles}
                         className="w-full rounded border border-stroke bg-gray h-[50px] text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         loadOptions={vehicleLoadOptions}
@@ -326,6 +375,25 @@ const FuelRequestForm = () => {
                         isLoading={vehicleLoading}
                         isDisabled={vehicleLoading}
                         placeholder="Select a Vehicle..."
+                      /> */}
+
+                      <Select
+                        styles={customStyles}
+                        className="w-full rounded border border-stroke bg-gray h-[50px] text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        options={allVehicle}
+                        value={
+                          formValues?.registrationNo
+                            ? {
+                                value: formValues?.registrationNo,
+                                label: formValues?.registrationNo,
+                              }
+                            : null
+                        }
+                        onChange={(selectedOption) => {
+                          console.log('selected option: ' + selectedOption);
+                          handleSelectChange('registrationNo', selectedOption);
+                        }}
+                        placeholder="Select Vehicle"
                       />
                     </div>
                   </div>
@@ -459,7 +527,7 @@ const FuelRequestForm = () => {
                         id="driverName"
                         placeholder="Enter Driver Name"
                         onChange={handleChangeValue}
-                        value={formValues?.driverName}
+                        value={formValues.driverName || ''}
                         disabled
                       />
                     </div>
@@ -730,7 +798,7 @@ const FuelRequestForm = () => {
                       </div>
                     </div>
 
-                    <div className="w-full sm:w-1/2 md:w-1/3">
+                    {/* <div className="w-full sm:w-1/2 md:w-1/3">
                       <label
                         className="mb-3 block text-md font-medium text-black dark:text-white"
                         htmlFor="previousOddometerReading"
@@ -744,6 +812,27 @@ const FuelRequestForm = () => {
                           name="previousOddometerReading"
                           id="previousOddometerReading"
                           placeholder="Previous Odometer Reading"
+                          onChange={handleChangeValue}
+                          value={formValues?.previousOddometerReading}
+                          disabled
+                        />
+                      </div>
+                    </div> */}
+                    <div className=" sm:w-1/2 md:w-1/3 lg:1/4">
+                      <label
+                        className="mb-3 block text-md font-medium text-black dark:text-white"
+                        htmlFor="previousOddometerReading"
+                      >
+                        Previous Odometer Reading
+                      </label>
+                      <div className="relative">
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary uneditable"
+                          type="text"
+                          name="previousOddometerReading"
+                          id="previousOddometerReading"
+                          placeholder="50,000 km"
+                          onChange={handleChangeValue}
                           value={formValues?.previousOddometerReading}
                           disabled
                         />
@@ -768,6 +857,27 @@ const FuelRequestForm = () => {
                             formValues?.currentOddometerReading -
                             formValues?.previousOddometerReading
                           }
+                          disabled
+                        />
+                      </div>
+                    </div>
+
+                    <div className=" sm:w-1/2 md:w-1/3 lg:1/4">
+                      <label
+                        className="mb-3 block text-md font-medium text-black dark:text-white"
+                        htmlFor="previousOddometerReading"
+                      >
+                        Last Fueling Date
+                      </label>
+                      <div className="relative">
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary uneditable"
+                          type="text"
+                          name="previousOddometerReading"
+                          id="previousOddometerReading"
+                          placeholder="Date & Time"
+                          onChange={handleChangeValue}
+                          value={formatDateAndTime(formValues?.lastCreatedAt)}
                           disabled
                         />
                       </div>

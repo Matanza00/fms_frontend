@@ -14,6 +14,7 @@ import { stationOptions } from '../../constants/Data';
 import { customStyles } from '../../constants/Styles';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BiSolidPhoneIncoming } from 'react-icons/bi';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const UserAddForm = () => {
   const navigate = useNavigate();
@@ -76,7 +77,11 @@ const UserAddForm = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Add User" />
+        <BreadcrumbNav
+          pageName="Add User"
+          pageNameprev="Users" //show the name on top heading
+          pagePrevPath="users" // add the previous path to the navigation
+        />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">

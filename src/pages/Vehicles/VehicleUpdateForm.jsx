@@ -26,6 +26,7 @@ import {
   door,
 } from '../../constants/Data';
 import { customStyles } from '../../constants/Styles';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const VehicleForm = () => {
   const navigate = useNavigate();
@@ -96,7 +97,11 @@ const VehicleForm = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Update Vehicle" />
+        <BreadcrumbNav
+          pageName="Update Vehicle"
+          pageNameprev="Vehicles" //show the name on top heading
+          pagePrevPath="vehicles" // add the previous path to the navigation
+        />
 
         <div className=" gap-8">
           <div className="col-span-5 xl:col-span-3">

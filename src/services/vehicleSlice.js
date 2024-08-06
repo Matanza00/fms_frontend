@@ -23,7 +23,7 @@ export const vehicleSlice = apiSlice.injectEndpoints({
     }),
     // Get One Vehicle
     GetVehicle: builder.query({
-      query: (id) => `/vehicles/${id}`,
+      query: (id) => `/vehicles/reg/${id}`,
       providesTags: ['Vehicle'],
     }),
     GetVehicleFromRegistrationNo: builder.query({

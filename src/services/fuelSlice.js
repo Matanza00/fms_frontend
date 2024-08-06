@@ -70,6 +70,11 @@ export const fuelSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Fuel'],
     }),
+
+    GetAllFuel: builder.query({
+      query: (companyId) => `/fuel/company/complete/${companyId}`,
+      providesTags: ['Fuel'],
+    }),
   }),
 });
 
@@ -81,4 +86,5 @@ export const {
   useAddFuelRequestMutation,
   useUpdateFuelRequestMutation,
   useDeleteFuelRequestMutation,
+  useGetAllFuelQuery,
 } = fuelSlice;

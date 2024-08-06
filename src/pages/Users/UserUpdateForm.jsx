@@ -18,6 +18,7 @@ import { customStyles } from '../../constants/Styles';
 import { stationOptions } from '../../constants/Data';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BiSolidPhoneIncoming } from 'react-icons/bi';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const UserUpdateForm = () => {
   const { id } = useParams();
@@ -91,7 +92,11 @@ const UserUpdateForm = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Edit User" />
+        <BreadcrumbNav
+          pageName="Edit User"
+          pageNameprev="Users" //show the name on top heading
+          pagePrevPath="users" // add the previous path to the navigation
+        />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">

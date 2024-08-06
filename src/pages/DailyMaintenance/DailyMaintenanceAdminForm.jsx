@@ -4,10 +4,18 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { useSelector } from 'react-redux';
 import useToast from '../../hooks/useToast';
-import { useGetAllDailyReportsQuery } from '../../services/dailySlice';
+import {
+  useGetAllDailyReportsQuery,
+  useUpdateDailyRequestMutation,
+  useGetChecklistDataQuery,
+  useUpdateDailyStatusMutation,
+} from '../../services/dailySlice';
 
 import { useGetVehicleInfoQuery } from '../../services/vehicleSlice'; // Import the vehicleSlice query
 import { useGetAllMaintenanceTeamsQuery } from '../../services/maintenanceTeamSlice';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
+import { formatDateAndTime } from '../../utils/helpers';
+import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 
 const DailyMaintenanceAdminForm = () => {
   const navigate = useNavigate();
@@ -24,11 +32,15 @@ const DailyMaintenanceAdminForm = () => {
     useGetAllDailyReportsQuery({
       station: station?.value,
     });
+  const { data: dailyStatus, isLoading: DailyLoading } =
+    useGetChecklistDataQuery();
+  console.log('dailyStatus', dailyStatus);
 
   const [vehicles, setVehicles] = useState([]);
   const [selectedCount, setSelectedCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [UpdateDailyStatus] = useUpdateDailyStatusMutation();
 
   useEffect(() => {
     if (dailyData && dailyData.data && vehicleData) {
@@ -39,6 +51,8 @@ const DailyMaintenanceAdminForm = () => {
             vehicle.registrationNo === dailyItem.vehicle.registrationNo,
         ),
       );
+      console.log('first', filteredData);
+      console.log('Daily', dailyData);
       setVehicles(filteredData);
     }
   }, [dailyData, vehicleData]);
@@ -51,6 +65,18 @@ const DailyMaintenanceAdminForm = () => {
     setSelectedCount(totalSelected);
   }, [vehicles]);
 
+  const handleStatusUpdate = async (id, value) => {
+    try {
+      let _data = { status: value };
+      await UpdateDailyStatus({ id: id, formData: _data }).unwrap();
+      // refetch();
+      showSuccessToast('Fuel Status Updated !');
+    } catch (err) {
+      console.log(err);
+      showErrorToast('An error has occurred while Updating Status');
+    }
+  };
+
   const handleVehicleClick = (vehicle) => {
     navigate('/daily-maintenance/checklist', {
       state: {
@@ -60,11 +86,25 @@ const DailyMaintenanceAdminForm = () => {
     });
   };
 
+  let adminRole =
+    user?.Role?.roleName === 'Maintenance Admin' ||
+    user?.Role?.roleName === 'companyAdmin';
+
+  const statusOptions = [
+    { value: '', label: 'All' },
+    { value: 'APPROVED', label: 'APPROVED' },
+    { value: 'REJECTED', label: 'REJECTED' },
+    { value: 'PENDING', label: 'PENDING' },
+  ];
+  console.log('vehicles', vehicles);
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
-        <Breadcrumb pageName="Daily Maintenance Form" />
-
+        <BreadcrumbNav
+          pageName="Daily Maintenance Form"
+          pageNameprev="Daily Maintenance" //show the name on top heading
+          pagePrevPath="daily-maintenance" // add the previous path to the navigation
+        />
         <div className="gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -95,6 +135,17 @@ const DailyMaintenanceAdminForm = () => {
                           <th className="border-b py-2 text-left">
                             Percentage Inspected
                           </th>
+                          <th className="border-b py-2 text-left">
+                            Created at
+                          </th>
+                          <th className="border-b py-2 text-left">
+                            Approval Status
+                          </th>
+                          {adminRole && (
+                            <th className="border-b py-2 text-left">
+                              Update Status
+                            </th>
+                          )}
                           <th className="border-b py-2 text-left">Actions</th>
                         </tr>
                       </thead>
@@ -111,6 +162,51 @@ const DailyMaintenanceAdminForm = () => {
                             <td className="border-b py-2">
                               {e?.completionPercentage?.toFixed(2)}%
                             </td>
+                            <td className="border-b py-2">
+                              {formatDateAndTime(e?.vehicle?.created_at)}
+                            </td>
+                            <td className="border-b py-2">{e?.status}</td>
+
+                            {adminRole && (
+                              <td className="border-b py-2">
+                                <div className="flex items-center justify-center space-x-3.5">
+                                  <details
+                                    className="dropdown dropdown-bottom"
+                                    onClick={(event) => event.stopPropagation()}
+                                  >
+                                    <summary className="m-1 btn h-[30px] min-h-[30px] text-sm dark:text-white dark:bg-slate-700 dark:border-slate-700 dark:hover:bg-opacity-70 transition duration-150 ease-in-out rounded-md">
+                                      <HiOutlineDotsHorizontal />
+                                    </summary>
+                                    <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-24 text-black">
+                                      <li
+                                        onClick={(event) => {
+                                          event.stopPropagation();
+                                          handleStatusUpdate(e?.id, 'APPROVED');
+                                        }}
+                                      >
+                                        <a>Approve</a>
+                                      </li>
+                                      <li
+                                        onClick={(event) => {
+                                          event.stopPropagation();
+                                          handleStatusUpdate(e?.id, 'REJECTED');
+                                        }}
+                                      >
+                                        <a>Reject</a>
+                                      </li>
+                                      <li
+                                        onClick={(event) => {
+                                          event.stopPropagation();
+                                          handleStatusUpdate(e?.id, 'PENDING');
+                                        }}
+                                      >
+                                        <a>Pending</a>
+                                      </li>
+                                    </ul>
+                                  </details>
+                                </div>
+                              </td>
+                            )}
                             <td className="border-b py-2">
                               {e?.completionPercentage > 0 && (
                                 <button
