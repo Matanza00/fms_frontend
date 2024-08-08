@@ -375,7 +375,9 @@ const VehicleTable = ({ searchTerm, setSortedDataIndex }) => {
                       </button>
                       {adminRole && (
                         <button
-                          onClick={() => navigate(`update/${e?.registrationNo}`)}
+                          onClick={() =>
+                            navigate(`update/${e?.registrationNo}`)
+                          }
                           className="hover:text-primary"
                         >
                           <CiEdit style={{ fontSize: '20px' }} />

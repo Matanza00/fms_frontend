@@ -171,9 +171,14 @@ const PeriodicApprovalTable = ({ searchTerm, setSortedDataIndex }) => {
     useUpdatePeriodicRequestMutation();
 
   const handleStatusUpdate = async (id, value) => {
+    const formData = {
+      ...formValues,
+      id: parseInt(id), // Ensure ID is included in the payload and is an integer
+      status: value, // Ensure status is included in the payload
+    };
+
     try {
-      let _data = { status: value };
-      await UpdatePeriodicRequest({ id: id, formData: _data }).unwrap();
+      await UpdatePeriodicRequest({ id, formData }).unwrap();
       refetch();
       showSuccessToast('Periodic Status Updated!');
     } catch (err) {
@@ -416,6 +421,26 @@ const PeriodicApprovalTable = ({ searchTerm, setSortedDataIndex }) => {
                   </th>
                 )}
                 <th
+                  className="flex-1 py-4 px-4 text-black dark:text-white cursor-pointer abc"
+                  onClick={() => handleSort('id')}
+                  style={{ minWidth: '140px' }}
+                >
+                  <span className="flex items-center">
+                    Request ID{' '}
+                    <span className="ml-1">
+                      {sortBy === 'id' ? (
+                        sortOrder === 'asc' ? (
+                          <FaSortUp />
+                        ) : (
+                          <FaSortDown />
+                        )
+                      ) : (
+                        <FaSort />
+                      )}
+                    </span>
+                  </span>
+                </th>
+                <th
                   className="w-auto flex-1 py-4 px-4 text-black dark:text-white cursor-pointer"
                   onClick={() => handleSort('registrationNo')}
                 >
@@ -559,6 +584,11 @@ const PeriodicApprovalTable = ({ searchTerm, setSortedDataIndex }) => {
                         />
                       </td>
                     )}
+                    <td className="border-b border-[#eee] py-4 px-10 dark:border-strokedark">
+                      <p className="font-medium text-black dark:text-white">
+                        {e?.id}
+                      </p>
+                    </td>
                     <td className="border-b border-[#eee] py-4 px-4 dark:border-strokedark">
                       <p className="font-medium text-black dark:text-white">
                         {e?.registrationNo}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import UploadWidget from '../../components/UploadWidget';
 import { useNavigate, useParams } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { useSelector } from 'react-redux';
 import { addFuelRequestSchema } from '../../utils/schemas';
@@ -11,7 +11,6 @@ import Select from 'react-select';
 import { useGetVehicleByCompanyIdQuery } from '../../services/vehicleSlice';
 import { useGetTagDriversFromVehicleQuery } from '../../services/tagDriverSlice';
 import { useGetOneVehicleDetailsQuery } from '../../services/periodicSlice';
-
 import {
   useGetFuelCardNoQuery,
   useGetFuelRequestQuery,
@@ -23,7 +22,6 @@ import {
   requestType,
 } from '../../constants/Data';
 import { customStyles } from '../../constants/Styles';
-import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 import { formatDateAndTime } from '../../utils/helpers';
 
 const UpdateFuelRequestForm = () => {
@@ -37,6 +35,7 @@ const UpdateFuelRequestForm = () => {
   const { user } = useSelector((state) => state.auth);
   const [fuelReceipImgUrl, setfuelReceipImgUrl] = useState('');
   const [odometerImgUrl, setOdometerImgUrl] = useState('');
+  const [isCompleteButtonVisible, setIsCompleteButtonVisible] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
 
   const [UpdateFuelRequest, { isLoading }] = useUpdateFuelRequestMutation();
@@ -59,20 +58,14 @@ const UpdateFuelRequestForm = () => {
     vehicleId: formValues.registrationNo,
     cardType: formValues.modeOfFueling,
   });
-  const vehicleLoadOptions = (inputValue, callback) => {
-    if (!inputValue) {
-      callback([]);
-      return;
-    }
 
-    if (vehicles && vehicles.data) {
-      const filteredOptions = vehicles.data.map((vehicle) => ({
-        value: vehicle.id,
-        label: vehicle.registrationNo,
-      }));
-      callback(filteredOptions);
+  useEffect(() => {
+    if (fuelReceipImgUrl && odometerImgUrl) {
+      setIsCompleteButtonVisible(true);
+    } else {
+      setIsCompleteButtonVisible(false);
     }
-  };
+  }, [fuelReceipImgUrl, odometerImgUrl]);
 
   const handleNormalSelectChange = (selectedOption, name) => {
     setFormValues({
@@ -98,14 +91,10 @@ const UpdateFuelRequestForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // console.log('fuelReceipImgUrl', fuelReceipImgUrl);
-
     const formData = {
       ...formValues,
-      fuelReceipt: fuelReceipImgUrl,
-      odometerImg: odometerImgUrl,
-
+      fuelReceipt: fuelReceipImgUrl || formValues.fuelReceipt,
+      odometerImg: odometerImgUrl || formValues.odometerImg,
       companyId: parseInt(user?.companyId),
     };
     try {
@@ -118,6 +107,24 @@ const UpdateFuelRequestForm = () => {
     } catch (err) {
       console.log(err);
       showErrorToast('An error has occurred while updating fuel request');
+    }
+  };
+
+  const handleComplete = async () => {
+    try {
+      await UpdateFuelRequest({
+        id,
+        formData: {
+          status: 'completed',
+          fuelReceipt: fuelReceipImgUrl || formValues.fuelReceipt,
+          odometerImg: odometerImgUrl || formValues.odometerImg,
+        },
+      }).unwrap();
+      showSuccessToast('Status updated to Completed!');
+      navigate(-1);
+    } catch (err) {
+      console.log(err);
+      showErrorToast('An error has occurred while updating status');
     }
   };
 
@@ -134,28 +141,14 @@ const UpdateFuelRequestForm = () => {
         gbmsNo: tagDriverByVehicle.data.driverId,
         fuelType: tagDriverByVehicle.data.vehicle?.fuelType,
         make: tagDriverByVehicle.data.vehicle?.make,
-        // previousFuelQuantity: tagDriverByVehicle.data.lastFuelChangedQuantity,
         previousOddometerReading:
           tagDriverByVehicle.data.lastFuelChangedOddoReading,
       }));
     }
   }, [tagDriverByVehicle]);
 
-  // useEffect(() => {
-  //   if (fuelData && fuelData.data) {
-  //     const fuelingDate = fuelData.data.currentFuelingDate
-  //       ? new Date(fuelData.data.currentFuelingDate).toISOString().split('T')[0]
-  //       : '';
-  //     setFormValues((prevValues) => ({
-  //       ...prevValues,
-  //       ...fuelData.data,
-  //       currentFuelingDate: fuelingDate,
-
-  //     }));
-  //   }
-  // }, [fuelData]);
   useEffect(() => {
-    if (fuelData && fuelData.data && initialLoad) {
+    if (fuelData && fuelData.data) {
       const fuelingDate = fuelData.data.currentFuelingDate
         ? new Date(fuelData.data.currentFuelingDate).toISOString().split('T')[0]
         : '';
@@ -164,9 +157,11 @@ const UpdateFuelRequestForm = () => {
         ...fuelData.data,
         currentFuelingDate: fuelingDate,
       }));
+      setfuelReceipImgUrl(fuelData.data.fuelReceipt);
+      setOdometerImgUrl(fuelData.data.odometerImg);
       setInitialLoad(false);
     }
-  }, [fuelData, initialLoad]);
+  }, [fuelData]);
 
   useEffect(() => {
     if (
@@ -241,15 +236,13 @@ const UpdateFuelRequestForm = () => {
 
   console.log('old Data: ', formValues);
 
-  //checking
-
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-600">
         <BreadcrumbNav
           pageName="Update Fuel Request"
-          pageNameprev="Fuel Management" //show the name on top heading
-          pagePrevPath="fuel-management" // add the previous path to the navigation
+          pageNameprev="Fuel Management"
+          pagePrevPath="fuel-management"
         />
         <div className=" gap-8">
           <div className="col-span-5 xl:col-span-3">
@@ -260,7 +253,6 @@ const UpdateFuelRequestForm = () => {
                 </h3>
               </div>
               <div className="p-7">
-                {/*********************** INPUT FIELDS *************************************/}
                 <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                   <div className="w-full sm:w-1/2 md:w-1/3">
                     <label
@@ -315,14 +307,12 @@ const UpdateFuelRequestForm = () => {
                         id="current_odo_auto"
                         placeholder="Odometer Reading"
                         onChange={handleChangeValue}
-                        // value={vehicleDetails?.data?.oddometerReading}
                         value={formValues?.currentOddometerReadingAuto}
                         disabled
                       />
                     </div>
                   </div>
 
-                  {/* Odometer Malfunction Radio Button */}
                   <div className="w-full sm:w-1/2 md:w-1/3">
                     <label className="block text-md font-medium text-black dark:text-white">
                       Odometer Malfunctioned?
@@ -351,7 +341,7 @@ const UpdateFuelRequestForm = () => {
                     </div>
                   </div>
                 </div>
-                {/*********************** DROP DOWNS *************************************/}
+
                 <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                   <div className=" sm:w-1/2 md:w-1/3 lg:1/4">
                     <label
@@ -475,8 +465,7 @@ const UpdateFuelRequestForm = () => {
                         id="currentFuelingDate"
                         onChange={handleChangeValue}
                         value={formValues.currentFuelingDate}
-                        min={new Date().toISOString().split('T')[0]} // Set minimum date to today
-                        // disabled={fuelData?.data?.status === 'approved'}
+                        min={new Date().toISOString().split('T')[0]}
                       />
                     </div>
                   </div>
@@ -683,10 +672,10 @@ const UpdateFuelRequestForm = () => {
                         setImgUrl={setfuelReceipImgUrl}
                         id="fuelReceipImgUrlUploadWidget" // Unique identifier for this instance
                       />
-                      {fuelReceipImgUrl && (
+                      {(fuelReceipImgUrl || formValues.fuelReceipt) && (
                         <div className=" flex justify-center items-center border border-blue-200 p-4 bg-slate-200">
                           <img
-                            src={fuelReceipImgUrl}
+                            src={fuelReceipImgUrl || formValues.fuelReceipt}
                             alt="Fuel Receipt"
                             className="object-contain h-48 w-48"
                           />
@@ -707,10 +696,10 @@ const UpdateFuelRequestForm = () => {
                         setImgUrl={setOdometerImgUrl}
                         id="odometerImgUrlUploadWidget" // Unique identifier for this instance
                       />
-                      {odometerImgUrl && (
+                      {(odometerImgUrl || formValues.odometerImg) && (
                         <div className=" flex justify-center items-center border border-blue-200 p-4 bg-slate-200">
                           <img
-                            src={odometerImgUrl}
+                            src={odometerImgUrl || formValues.odometerImg}
                             alt="Odometer Image"
                             className="object-contain h-48 w-48"
                           />
@@ -764,22 +753,11 @@ const UpdateFuelRequestForm = () => {
                             type="text"
                             name="previousOddometerReading"
                             id="previousOddometerReading"
-                            placeholder="50,000 km"
-                            onChange={handleChangeValue}
-                            value={fuelData?.data?.previousOddometerReading}
-                            disabled
-                          />
-                        </div>
-                        {/* <input
-                            className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary uneditable"
-                            type="text"
-                            name="previousOddometerReading"
-                            id="previousOddometerReading"
                             placeholder="Previous Odometer Reading"
                             value={formValues?.previousOddometerReading}
                             disabled
                           />
-                        </div> */}
+                        </div>
                       </div>
 
                       <div className="w-full sm:w-1/2 md:w-1/3">
@@ -844,14 +822,27 @@ const UpdateFuelRequestForm = () => {
                           isLoading={isLoading}
                         />
                       ) : (
-                        <button
-                          className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                          type="submit"
-                          disabled={isDriverTaggedError}
-                          onClick={handleSubmit}
-                        >
-                          Update
-                        </button>
+                        <>
+                          {!isCompleteButtonVisible && (
+                            <button
+                              className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                              type="submit"
+                              disabled={isDriverTaggedError}
+                              onClick={handleSubmit}
+                            >
+                              Update
+                            </button>
+                          )}
+                          {isCompleteButtonVisible && (
+                            <button
+                              className="flex justify-center rounded bg-green-500 py-2 px-6 font-medium text-white hover:bg-opacity-90"
+                              type="button"
+                              onClick={handleComplete}
+                            >
+                              Complete
+                            </button>
+                          )}
+                        </>
                       )}
                     </>
                   </div>

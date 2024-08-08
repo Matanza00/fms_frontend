@@ -1,3 +1,4 @@
+// ECommerce.js
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -25,9 +26,12 @@ import CardDataStats from '../../components/CardDataStats';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { FaShippingFast } from 'react-icons/fa';
 import { TbTruckOff } from 'react-icons/tb';
+import VehicleMap from './Map';
+import { useSelector } from 'react-redux';
 
 const ECommerce = () => {
   const companyId = 25; // Replace with your actual company ID
+  const { user } = useSelector((state) => state.auth);
   const [vehicleLocations, setVehicleLocations] = useState([]);
   const [fuelStatusData, setFuelStatusData] = useState([]);
   const [periodicStatusData, setPeriodicStatusData] = useState([]);
@@ -38,6 +42,9 @@ const ECommerce = () => {
   const [toDate, setToDate] = useState('');
   const [modalData, setModalData] = useState(null); // Modal data state
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
+  const [selectedStation, setSelectedStation] = useState(user?.station);
+  const userStation = user?.station;
+  const userRole = user?.role; // Get the user role
 
   const handleFuelStationChange = (e) => {
     setSelectedFuelStation(e.target.value);
@@ -96,7 +103,7 @@ const ECommerce = () => {
       }, {});
     };
 
-    const statusList = ['Pending', 'Approved', 'Rejected'];
+    const statusList = ['Pending', 'Approved', 'Rejected', 'Completed'];
 
     if (fuelData && fuelData.data) {
       const statusCounts = initializeStatusCounts(statusList);
@@ -106,7 +113,8 @@ const ECommerce = () => {
           (fuel) =>
             (!fromDate || new Date(fuel.created_at) >= new Date(fromDate)) &&
             (!toDate || new Date(fuel.created_at) <= new Date(toDate)) &&
-            (selectedFuelStation === 'All' || fuel.station === selectedFuelStation),
+            (selectedFuelStation === 'All' ||
+              fuel.station === selectedFuelStation),
         )
         .forEach((fuel) => {
           const status =
@@ -152,9 +160,11 @@ const ECommerce = () => {
       periodicData.data
         .filter(
           (periodic) =>
-            (!fromDate || new Date(periodic.created_at) >= new Date(fromDate)) &&
+            (!fromDate ||
+              new Date(periodic.created_at) >= new Date(fromDate)) &&
             (!toDate || new Date(periodic.created_at) <= new Date(toDate)) &&
-            (selectedPeriodicStation === 'All' || periodic.station === selectedPeriodicStation),
+            (selectedPeriodicStation === 'All' ||
+              periodic.station === selectedPeriodicStation),
         )
         .forEach((periodic) => {
           const status =
@@ -290,33 +300,6 @@ const ECommerce = () => {
   // Calculate available vehicles
   const availableVehicles = totalVehicles - totalTaggedDrivers;
 
-  // Fetch live vehicle locations
-  useEffect(() => {
-    const fetchLiveVehicleLocations = async () => {
-      try {
-        const response = await axios.get(
-          'https://mytrakker.tpltrakker.com/TrakkerServices/Api/Home/GetSOSLastLocation/SOSUser1/SOSPassword1/03300607077/null',
-          { timeout: 5000 }, // 5 seconds timeout
-        );
-        console.log('Fetched vehicle locations:', response.data); // Debugging line
-
-        // Ensure response data is an array
-        if (Array.isArray(response.data)) {
-          setVehicleLocations(response.data);
-        } else {
-          console.error('Unexpected response data format:', response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching vehicle locations:', error);
-      }
-    };
-
-    fetchLiveVehicleLocations();
-    const intervalId = setInterval(fetchLiveVehicleLocations, 60000); // Update every minute
-
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  }, []);
-
   const customMarker = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
     iconSize: [25, 41],
@@ -427,6 +410,7 @@ const ECommerce = () => {
   return (
     <DefaultLayout>
       <div>Dashboard</div>
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats
           title="Total Drivers"
@@ -488,7 +472,6 @@ const ECommerce = () => {
           <TbTruckOff className="text-primary size-6" />
         </CardDataStats>
       </div>
-
       <div className="mt-5 col-span-12 xl:col-span-12 h-125 rounded-sm border border-stroke bg-white p-7.5 shadow-xl dark:border-strokedark dark:bg-boxdark">
         <ResponsiveContainer width="100%" height={400}>
           <div className="ml-5 mb-4">
@@ -496,48 +479,12 @@ const ECommerce = () => {
               Live Vehicle Tracking
             </h6>
           </div>
-          <MapContainer
-            center={[30.3753, 69.3451]}
-            zoom={5}
-            style={{ height: '400px', width: '100%' }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            {vehicleLocations.map((vehicle) => {
-              const latitude = parseFloat(vehicle.Lat);
-              const longitude = parseFloat(vehicle.Lng);
-
-              // Validate latitude and longitude
-              if (!isNaN(latitude) && !isNaN(longitude)) {
-                return (
-                  <Marker
-                    key={vehicle.RegNo}
-                    position={[latitude, longitude]}
-                    icon={customMarker}
-                  >
-                    <Popup>
-                      <strong>{vehicle.RegNo}</strong>
-                      <br />
-                      {vehicle.VrnMake} {vehicle.VrnModle}
-                      <br />
-                      Odometer: {vehicle.CurrentOdo} km
-                      <br />
-                      Last Update:{' '}
-                      {new Date(vehicle.GpsDateTime).toLocaleString()}
-                    </Popup>
-                  </Marker>
-                );
-              } else {
-                console.warn(
-                  `Invalid coordinates for vehicle ${vehicle.RegNo}:`,
-                  vehicle,
-                );
-                return null;
-              }
-            })}
-          </MapContainer>
+          <VehicleMap
+            selectedStation={selectedStation}
+            userStation={userStation}
+            userRole={userRole}
+            vehicleData={vehicleData?.data || []}
+          />
         </ResponsiveContainer>
       </div>
 
@@ -602,7 +549,7 @@ const ECommerce = () => {
           </div>
         </div>
         <div className="mt-4 flex justify-end space-x-4">
-          {['Pending', 'Approved', 'Rejected'].map((status, index) => (
+          {['Pending', 'Approved', 'Rejected', 'Completed'].map((status, index) => (
             <div key={index} className="flex items-center space-x-2">
               <span
                 className={`block h-3 w-3 rounded-full ${colorMap[status]}`}
@@ -611,7 +558,8 @@ const ECommerce = () => {
                 {status}
               </p>
               <p className="ml-2 text-sm font-medium text-black dark:text-white">
-                {fuelStatusData.find((data) => data.name === status)?.value || 0}
+                {fuelStatusData.find((data) => data.name === status)?.value ||
+                  0}
               </p>
             </div>
           ))}

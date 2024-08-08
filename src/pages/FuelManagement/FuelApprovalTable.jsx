@@ -219,6 +219,7 @@ const FuelApprovalTable = ({
     { value: 'APPROVED', label: 'APPROVED' },
     { value: 'REJECTED', label: 'REJECTED' },
     { value: 'PENDING', label: 'PENDING' },
+    { value: 'COMPLETED', label: 'COMPLETED' },
   ];
 
   const fuelTypeOptions = [
@@ -227,6 +228,7 @@ const FuelApprovalTable = ({
     { value: 'diesel', label: 'Diesel' },
     { value: 'cng', label: 'CNG' },
   ];
+  console.log('formValues', fuelData?.data?.['0']?.status);
 
   return (
     <>
@@ -666,14 +668,16 @@ const FuelApprovalTable = ({
                             >
                               <IoEyeOutline style={{ fontSize: '20px' }} />
                             </button>
-                            <button
-                              onClick={() =>
-                                navigate(`update-fuel-request/${e?.id}`)
-                              }
-                              className="hover:text-primary"
-                            >
-                              <CiEdit style={{ fontSize: '20px' }} />
-                            </button>
+                            {e?.status !== 'completed' && (
+                              <button
+                                onClick={() =>
+                                  navigate(`update-fuel-request/${e?.id}`)
+                                }
+                                className="hover:text-primary"
+                              >
+                                <CiEdit style={{ fontSize: '20px' }} />
+                              </button>
+                            )}
                             {adminRole && (
                               <button
                                 onClick={() => {

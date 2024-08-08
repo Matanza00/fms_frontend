@@ -168,31 +168,74 @@ const PeriodicMaintenance = () => {
 
     // Define the header row
     worksheet.columns = [
+      { header: 'Serial No.', key: 'serial', width: 10 },
       { header: 'Month', key: 'month', width: 15 },
       { header: 'Created At', key: 'created_at', width: 20 },
       { header: 'ID', key: 'id', width: 10 },
       { header: 'Station', key: 'station', width: 15 },
       { header: 'Registration No.', key: 'registrationNo', width: 20 },
       { header: 'Status', key: 'status', width: 15 },
+      { header: 'Completion Date', key: 'completionDate', width: 15 },
       { header: 'Job', key: 'job', width: 20 },
+      { header: 'Running Difference', key: 'runningDifference', width: 20 },
       { header: 'Amount', key: 'amount', width: 15 },
     ];
 
     // Add a row for each item in the data array
-    filteredData.forEach((obj) => {
+    filteredData.forEach((obj, index) => {
       const createdAt = new Date(obj.created_at);
+      const completionDate = obj.completionDate ? new Date(obj.completionDate) : null;
       const month = createdAt.toLocaleString('default', { month: 'long' });
       const year = createdAt.getFullYear();
-      worksheet.addRow({
+      const row = worksheet.addRow({
+        serial: index + 1,
         month: `${month} ${year}`,
         created_at: createdAt,
         id: obj.id,
         station: obj.station,
         registrationNo: obj.registrationNo,
         status: obj.status,
+        completionDate: completionDate,
         job: obj.periodicType?.job,
+        runningDifference: obj.runningDifference,
         amount: obj.amount,
       });
+
+      // Color the "Completion Date" cell if data is present
+      if (completionDate) {
+        row.getCell('completionDate').fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFCCFFCC' }, // Light green color
+        };
+      }
+    });
+
+    // Define colors for different months
+    const monthColors = {
+      January: 'FFCCCCFF',
+      February: 'FFCCFFFF',
+      March: 'FFCCFFCC',
+      April: 'FFFFFFCC',
+      May: 'FFFFCCCC',
+      June: 'FFFFCCFF',
+      July: 'FFCCFFFF',
+      August: 'FFCCFF99',
+      September: 'FFFF99CC',
+      October: 'FFCC99FF',
+      November: 'FF99FFCC',
+      December: 'FF99CCFF',
+    };
+
+    // Apply colors to "Month" column
+    worksheet.getColumn('month').eachCell((cell, rowNumber) => {
+      if (rowNumber === 1) return; // Skip header row
+      const monthName = cell.value.split(' ')[0];
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: monthColors[monthName] },
+      };
     });
 
     // Style the header row
@@ -206,8 +249,9 @@ const PeriodicMaintenance = () => {
       cell.alignment = { vertical: 'middle', horizontal: 'center' };
     });
 
-    // Format the "Created At" column
+    // Format the "Created At" and "Completion Date" columns
     worksheet.getColumn('created_at').numFmt = 'dd-mm-yyyy';
+    worksheet.getColumn('completionDate').numFmt = 'dd-mm-yyyy';
 
     workbook.xlsx.writeBuffer().then((buffer) => {
       const blob = new Blob([buffer], {
@@ -233,31 +277,74 @@ const PeriodicMaintenance = () => {
 
     // Define the header row
     worksheet.columns = [
+      { header: 'Serial No.', key: 'serial', width: 10 },
       { header: 'Month', key: 'month', width: 15 },
       { header: 'Created At', key: 'created_at', width: 20 },
       { header: 'ID', key: 'id', width: 10 },
       { header: 'Station', key: 'station', width: 15 },
       { header: 'Registration No.', key: 'registrationNo', width: 20 },
       { header: 'Status', key: 'status', width: 15 },
+      { header: 'Completion Date', key: 'completionDate', width: 15 },
       { header: 'Job', key: 'job', width: 20 },
+      { header: 'Running Difference', key: 'runningDifference', width: 20 },
       { header: 'Amount', key: 'amount', width: 15 },
     ];
 
     // Add a row for each item in the data array
-    filteredData.forEach((obj) => {
+    filteredData.forEach((obj, index) => {
       const createdAt = new Date(obj.created_at);
+      const completionDate = obj.completionDate ? new Date(obj.completionDate) : null;
       const month = createdAt.toLocaleString('default', { month: 'long' });
       const year = createdAt.getFullYear();
-      worksheet.addRow({
+      const row = worksheet.addRow({
+        serial: index + 1,
         month: `${month} ${year}`,
         created_at: createdAt,
         id: obj.id,
         station: obj.station,
         registrationNo: obj.registrationNo,
         status: obj.status,
+        completionDate: completionDate,
         job: obj.periodicType?.job,
+        runningDifference: obj.runningDifference,
         amount: obj.amount,
       });
+
+      // Color the "Completion Date" cell if data is present
+      if (completionDate) {
+        row.getCell('completionDate').fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFCCFFCC' }, // Light green color
+        };
+      }
+    });
+
+    // Define colors for different months
+    const monthColors = {
+      January: 'FFCCCCFF',
+      February: 'FFCCFFFF',
+      March: 'FFCCFFCC',
+      April: 'FFFFFFCC',
+      May: 'FFFFCCCC',
+      June: 'FFFFCCFF',
+      July: 'FFCCFFFF',
+      August: 'FFCCFF99',
+      September: 'FFFF99CC',
+      October: 'FFCC99FF',
+      November: 'FF99FFCC',
+      December: 'FF99CCFF',
+    };
+
+    // Apply colors to "Month" column
+    worksheet.getColumn('month').eachCell((cell, rowNumber) => {
+      if (rowNumber === 1) return; // Skip header row
+      const monthName = cell.value.split(' ')[0];
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: monthColors[monthName] },
+      };
     });
 
     // Style the header row
@@ -271,8 +358,9 @@ const PeriodicMaintenance = () => {
       cell.alignment = { vertical: 'middle', horizontal: 'center' };
     });
 
-    // Format the "Created At" column
+    // Format the "Created At" and "Completion Date" columns
     worksheet.getColumn('created_at').numFmt = 'dd-mm-yyyy';
+    worksheet.getColumn('completionDate').numFmt = 'dd-mm-yyyy';
 
     workbook.xlsx.writeBuffer().then((buffer) => {
       const blob = new Blob([buffer], {
@@ -302,7 +390,7 @@ const PeriodicMaintenance = () => {
 
         <div className="ml-7 mr-auto pt-2 relative text-gray-600 w-90">
           <input
-            className="rounded-full border border-slate-300 bg-white h-10 px-5 pr-16 text-md focus:outline-none focus:border-slate-400 w-full dark:border-slate-600 dark:bg-boxdark dark:text-slate-300 dark:focus:border-slate-400"
+            className="rounded-full border border-slate-300 bg-white h-12 px-5 pr-16 text-md focus:outline-none focus:border-slate-400 w-full dark:border-slate-600 dark:bg-boxdark dark:text-slate-300 dark:focus:border-slate-400"
             type="text"
             name="search"
             placeholder="Search"
@@ -318,20 +406,20 @@ const PeriodicMaintenance = () => {
           <div className="flex items-end gap-2">
             <Link
               to="reports"
-              className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary mx-2 py-1 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:mx-2 lg:px-3"
+              className="btn h-[30px] min-h-[30px] text-sm border-slate-200 hover:bg-opacity-70 dark:text-white dark:bg-slate-700 dark:border-slate-700 dark:hover:bg-opacity-70 transition duration-150 ease-in-out rounded-md"
             >
               <span className="text-sm">Status</span>
             </Link>
             <button
               onClick={openModal}
-              className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary mx-2 py-1 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:mx-2 lg:px-3"
+              className="btn h-[30px] min-h-[30px] text-sm border-slate-200 hover:bg-opacity-70 dark:text-white dark:bg-slate-700 dark:border-slate-700 dark:hover:bg-opacity-70 transition duration-150 ease-in-out rounded-md"
             >
               <span className="text-sm">Reports</span>
             </button>
             {adminRole && (
               <Link
                 to="parameters"
-                className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary mx-2 py-1 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:mx-2 lg:px-3"
+                className="btn h-[30px] min-h-[30px] text-sm border-slate-200 hover:bg-opacity-70 dark:text-white dark:bg-slate-700 dark:border-slate-700 dark:hover:bg-opacity-70 transition duration-150 ease-in-out rounded-md"
               >
                 <span className="text-sm">Parameters</span>
               </Link>
@@ -380,7 +468,7 @@ const PeriodicMaintenance = () => {
             {showButton && (
               <Link
                 to="form"
-                className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary mx-2 py-1 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:mx-2 lg:px-3"
+                className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary mx-2 py-2 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:mx-2 lg:px-3"
               >
                 <IoMdAddCircle size={18} />
                 <span className="text-sm">
@@ -400,18 +488,18 @@ const PeriodicMaintenance = () => {
       {isModalOpen &&
         ReactDOM.createPortal(
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-            <div className="bg-white dark:bg-boxdark rounded-lg shadow-lg p-6 relative">
+            <div className="bg-white dark:bg-boxdark rounded-lg shadow-lg p-6 relative w-full max-w-4xl mx-4 sm:mx-auto left-20 right-20 flex flex-col items-center">
               <button
-                className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500"
+                className="hover:text-primary border px-2 py-0.5 rounded-full absolute top-0 right-0 mt-3 mr-3 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500"
                 onClick={closeModal}
               >
                 &times;
               </button>
-              <h2 className="text-lg font-medium text-gray-900 dark:text-gray-200 mb-4">
+              <h2 className="text-lg font-medium text-gray-900 dark:text-gray-200 mb-4 self-start">
                 Reports
               </h2>
-              <div className="mb-4 flex space-x-4">
-                <div>
+              <div className="mb-4 flex flex-col items-center sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <div className="flex flex-col items-start">
                   <label className="block text-gray-700 dark:text-gray-300">
                     From:
                   </label>
@@ -424,7 +512,7 @@ const PeriodicMaintenance = () => {
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-boxdark dark:text-gray-300"
                   />
                 </div>
-                <div>
+                <div className="flex flex-col items-start">
                   <label className="block text-gray-700 dark:text-gray-300">
                     To:
                   </label>
@@ -438,15 +526,15 @@ const PeriodicMaintenance = () => {
                   />
                 </div>
               </div>
-              <div className="mt-7">
+              <div className="mt-7 flex flex-col sm:flex-row gap-4 sm:gap-4 justify-center">
                 <button
-                  className="inline-flex items-center justify-center gap-1.5 rounded-md bg-yellow-500 py-1 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-3 mb-4"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-md bg-yellow-500 py-2 px-2.5 text-center font-medium text-white hover:bg-yellow-600 lg:px-3 mb-4 sm:mb-0"
                   onClick={() => exportToExcel(sortedData)}
                 >
                   <span className="text-sm">Periodic Maintenance Report</span>
                 </button>
                 <button
-                  className="ml-5 inline-flex items-center justify-center gap-1.5 rounded-md bg-yellow-500 py-1 px-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-3"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-md bg-red-500 py-2 px-2.5 text-center font-medium text-white hover:bg-red-600 lg:px-3"
                   onClick={() => exportCustomToExcel(sortedData)}
                 >
                   <span className="text-sm">

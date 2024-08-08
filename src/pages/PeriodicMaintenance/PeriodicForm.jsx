@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { FiUser } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
@@ -17,13 +17,7 @@ import {
   useGetOneVehiclePeriodicTypeDetailsQuery,
   useGetPeriodicParametersQuery,
 } from '../../services/periodicSlice';
-import {
-  stationOptions,
-  // periodicType,
-  periodicThreshold,
-} from '../../constants/Data';
 import { customStyles } from '../../constants/Styles';
-import BreadcrumbNav from '../../components/Breadcrumbs/BreadcrumbNav';
 
 const PeriodicForm = () => {
   const navigate = useNavigate();
@@ -139,7 +133,6 @@ const PeriodicForm = () => {
       ).toISOString();
     }
 
-    // console.log('form data', formData);
     try {
       await AddPeriodicRequest(formData).unwrap();
       showSuccessToast('Periodic Request Sent Successfully!');
@@ -164,7 +157,6 @@ const PeriodicForm = () => {
   useEffect(() => {
     let lastRecord =
       periodicTypeDetails?.data[periodicTypeDetails?.data?.length - 1];
-    console.log(periodicTypeDetails);
 
     setFormValues({
       ...formValues,
@@ -191,6 +183,16 @@ const PeriodicForm = () => {
   }, [formValues.lastChangedMeterReading, formValues.meterReading]);
 
   useEffect(() => {
+    if (formValues.lastDateOfChange) {
+      const lastChangeDate = new Date(formValues.lastDateOfChange);
+      const today = new Date();
+      const diffTime = Math.abs(today - lastChangeDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      setFormValues({ ...formValues, dayRunningDifference: diffDays });
+    }
+  }, [formValues.lastDateOfChange]);
+
+  useEffect(() => {
     const { station } = formValues;
     const resetFormValues = Object.keys(addPeriodicRequestSchema).reduce(
       (acc, key) => {
@@ -206,10 +208,6 @@ const PeriodicForm = () => {
     setFormValues(resetFormValues);
   }, [formValues.station]);
 
-  // useEffect(() => {
-  //   console.log(formValues);
-  // }, [formValues]);
-
   const getSelectedOption = (value, options) => {
     return options?.find((option) => option.value === value) || null;
   };
@@ -219,8 +217,8 @@ const PeriodicForm = () => {
       <div className="mx-auto max-w-600">
         <BreadcrumbNav
           pageName="Periodic Maintenance Request Form"
-          pageNameprev="Periodic Maintenance" //show the name on top heading
-          pagePrevPath="periodic" // add the previous path to the navigation
+          pageNameprev="Periodic Maintenance"
+          pagePrevPath="periodic"
         />
         <div className=" gap-8">
           <div className="col-span-5 xl:col-span-3">
@@ -232,7 +230,6 @@ const PeriodicForm = () => {
               </div>
 
               <div className="p-7">
-                {/*********************** INPUT FIELDS *************************************/}
                 <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                   <div className="w-full sm:w-1/2 md:w-1/3">
                     <label
@@ -326,7 +323,6 @@ const PeriodicForm = () => {
                   </div>
                 </div>
                 <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                  {/* Odometer Malfunction Radio Button */}
                   <div className="w-full sm:w-1/2 md:w-1/3">
                     <label className="block text-md font-medium text-black dark:text-white">
                       Odometer Malfunctioned?
@@ -371,7 +367,6 @@ const PeriodicForm = () => {
                         placeholder="50,000 km"
                         onChange={handleChangeValue}
                         value={formValues?.meterReading}
-                        // disabled
                       />
                     </div>
                   </div>
@@ -454,14 +449,6 @@ const PeriodicForm = () => {
                         styles={customStyles}
                         className="w-full rounded border border-stroke bg-gray h-[50px] text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         options={periodicType}
-                        // value={
-                        //   formValues.periodicType
-                        //     ? {
-                        //         value: formValues.periodicType,
-                        //         label: formValues.periodicType,
-                        //       }
-                        //     : null
-                        // }
                         value={getSelectedOption(
                           formValues.periodicType,
                           periodicType,
@@ -536,6 +523,26 @@ const PeriodicForm = () => {
                         id="runningDifference"
                         placeholder="Running Difference"
                         value={formValues?.runningDifference}
+                        disabled
+                      />
+                    </div>
+                  </div>
+
+                  <div className=" sm:w-1/2 md:w-1/3 lg:1/4">
+                    <label
+                      className="mb-3 block text-md font-medium text-black dark:text-white"
+                      htmlFor="dayRunningDifference"
+                    >
+                      Days Since Last Change
+                    </label>
+                    <div className="relative">
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary uneditable"
+                        type="text"
+                        name="dayRunningDifference"
+                        id="dayRunningDifference"
+                        placeholder="Days Since Last Change"
+                        value={formValues?.dayRunningDifference}
                         disabled
                       />
                     </div>

@@ -103,6 +103,7 @@ export const addPeriodicRequestSchema = {
   lastDateOfChange: '',
   lastChangedMeterReading: '',
   runningDifference: '',
+  dayRunningDifference: '',
   dueStatus: '',
   quantity: '',
   aplCardNo: '',

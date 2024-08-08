@@ -40,8 +40,6 @@ const UpdatePeriodicForm = () => {
   const [completionMeterImgUrl, setCompletionMeterImgUrl] = useState('');
   const [completionItemImgUrl, setCompletionItemImgUrl] = useState('');
 
-  console.log('periodicType', periodicType);
-
   useEffect(() => {
     if (parameters) {
       const _periodicType = parameters?.data?.map((e) => ({
@@ -120,6 +118,7 @@ const UpdatePeriodicForm = () => {
     const formData = {
       ...formValues,
       companyId: parseInt(user?.companyId),
+      id: parseInt(id), // Ensure ID is included in the payload and is an integer
     };
     if (formData.lastDateOfChange === '-') {
       delete formData.lastDateOfChange;
@@ -133,8 +132,21 @@ const UpdatePeriodicForm = () => {
       ).toISOString();
     }
 
+    // Transform the periodicType to periodicTypeId
+    if ('periodicType' in formData) {
+      formData.periodicTypeId = formData.periodicType;
+      delete formData.periodicType;
+    }
+
+    // Convert quantity to integer
+    if ('quantity' in formData) {
+      formData.quantity = parseInt(formData.quantity);
+    }
+
+    console.log('Form data', formData); // Log formData to check the payload
+
     try {
-      await UpdatePeriodicRequest(formData).unwrap();
+      await UpdatePeriodicRequest({ id, formData });
       showSuccessToast('Periodic Request Sent Successfully!');
       navigate(-1);
     } catch (err) {
@@ -167,7 +179,7 @@ const UpdatePeriodicForm = () => {
         driverName: vehicleDetails?.data?.name,
         gbmsNo: vehicleDetails?.data?.employeeId,
         make: vehicleDetails?.data?.make,
-        meterReading: vehicleDetails?.data?.oddometerReading,
+        meterReading: periodicData?.data?.oddometerReading,
         aplCardNo: vehicleDetails?.data?.cardNumber,
       }));
     }

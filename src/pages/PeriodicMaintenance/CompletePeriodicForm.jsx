@@ -70,7 +70,10 @@ const CompletePeriodicForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = {};
+    const formData = {
+      ...formValues,
+      id: parseInt(id), // Ensure ID is included in the payload and is an integer
+    };
     formData.completionMeterReading = formValues.completionMeterReading;
     formData.completionDate = new Date(formValues.completionDate).toISOString();
     formData.vendorType = formValues.vendorType;

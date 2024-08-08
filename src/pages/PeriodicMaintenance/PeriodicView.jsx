@@ -112,6 +112,14 @@ const PeriodicView = () => {
                   </p>
                 </div>
                 <div>
+                  <p className="text-md font-semibold">
+                    Days Since Last Change:
+                  </p>
+                  <p className="text-md mb-5 font-normal">
+                    {data?.dayRunningDifference || '-'}
+                  </p>
+                </div>
+                <div>
                   <p className="text-md font-semibold">Quantity:</p>
                   <p className="text-md mb-5 font-normal">
                     {data?.quantity || '-'}
